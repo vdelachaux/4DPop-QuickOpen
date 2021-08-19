@@ -1,0 +1,357 @@
+{
+	"$4d": {
+		"version": "1",
+		"kind": "form"
+	},
+	"windowSizingX": "fixed",
+	"windowSizingY": "fixed",
+	"windowMinWidth": 0,
+	"windowMinHeight": 0,
+	"windowMaxWidth": 32767,
+	"windowMaxHeight": 32767,
+	"rightMargin": 1,
+	"bottomMargin": 2,
+	"events": [
+		"onLoad",
+		"onClick",
+		"onDoubleClick",
+		"onAfterEdit"
+	],
+	"windowTitle": "Quick Open",
+	"destination": "detailScreen",
+	"pages": [
+		{
+			"objects": {}
+		},
+		{
+			"objects": {
+				"list.border": {
+					"type": "rectangle",
+					"top": 2,
+					"left": 2,
+					"width": 680,
+					"height": 403,
+					"borderRadius": 10,
+					"stroke": "#c0c0c0",
+					"fill": "automatic",
+					"visibility": "hidden"
+				},
+				"results": {
+					"type": "listbox",
+					"left": 3,
+					"top": 51,
+					"width": 678,
+					"height": 346,
+					"events": [
+						"onClick",
+						"onDoubleClick",
+						"onAlternateClick"
+					],
+					"listboxType": "collection",
+					"dataSource": "Form:C1466.result",
+					"selectionMode": "single",
+					"currentItemSource": "Form:C1466.current",
+					"currentItemPositionSource": "Form:C1466.index",
+					"resizingMode": "legacy",
+					"focusable": false,
+					"rowHeight": "30px",
+					"scrollbarHorizontal": "hidden",
+					"scrollbarVertical": "automatic",
+					"verticalAlign": "middle",
+					"sortable": false,
+					"showHeaders": false,
+					"horizontalLineStroke": "transparent",
+					"verticalLineStroke": "transparent",
+					"fill": "transparent",
+					"borderStyle": "none",
+					"visibility": "visible",
+					"columns": [
+						{
+							"header": {
+								"name": "Header4",
+								"text": "Header4"
+							},
+							"name": "Column4",
+							"dataSource": "Choose:C955(Bool:C1537(This:C1470.doc.exists); \"📎\"; \"\")",
+							"footer": {
+								"name": "Footer4"
+							},
+							"width": 30,
+							"textAlign": "center",
+							"fontSize": 10,
+							"stroke": "#808080"
+						},
+						{
+							"header": {
+								"name": "Header5",
+								"text": "Header5"
+							},
+							"name": "icons",
+							"dataSource": "This:C1470.icon",
+							"width": 32,
+							"maxWidth": 32,
+							"truncateMode": "none",
+							"dataSourceTypeHint": "picture",
+							"footer": {
+								"name": "Footer5"
+							},
+							"pictureFormat": "proportionalCenter",
+							"enterable": false,
+							"textAlign": "right"
+						},
+						{
+							"header": {
+								"name": "Header2",
+								"text": "Header2"
+							},
+							"name": "Column2",
+							"footer": {
+								"name": "Footer2"
+							},
+							"dataSource": "This:C1470.name",
+							"enterable": false,
+							"width": 226,
+							"fontWeight": "bold",
+							"textAlign": "left"
+						},
+						{
+							"header": {
+								"text": "Header1",
+								"name": "Header1"
+							},
+							"name": "Column1",
+							"footer": {
+								"name": "Footer1"
+							},
+							"dataSource": "design.desc[This:C1470.type]",
+							"enterable": false,
+							"width": 100,
+							"stroke": "#696969"
+						},
+						{
+							"header": {
+								"name": "Header3",
+								"text": "Header3"
+							},
+							"name": "Column3",
+							"footer": {
+								"name": "Footer3"
+							},
+							"dataSource": "This:C1470.folder",
+							"enterable": false,
+							"stroke": "#696969",
+							"fontStyle": "italic"
+						}
+					]
+				},
+				"search.border": {
+					"type": "rectangle",
+					"top": 2,
+					"left": 2,
+					"width": 680,
+					"height": 44,
+					"borderRadius": 10,
+					"stroke": "#c0c0c0",
+					"fill": "automatic"
+				},
+				"searchBox": {
+					"type": "input",
+					"left": 46,
+					"top": 9,
+					"width": 585,
+					"height": 30,
+					"dataSource": "Form:C1466.search",
+					"fontFamily": "system",
+					"fontSize": 24,
+					"contextMenu": "automatic",
+					"placeholder": "Open Quickly",
+					"hideFocusRing": true,
+					"fill": "transparent",
+					"borderStyle": "none",
+					"fontWeight": "normal",
+					"events": [
+						"onAfterEdit"
+					],
+					"multiline": "no"
+				},
+				"close": {
+					"type": "button",
+					"text": "␛",
+					"top": 425,
+					"left": 1,
+					"width": 50,
+					"height": 50,
+					"events": [
+						"onClick"
+					],
+					"focusable": false,
+					"shortcutAccel": false,
+					"shortcutControl": false,
+					"shortcutShift": false,
+					"shortcutAlt": false,
+					"shortcutKey": "[Esc]",
+					"style": "flat",
+					"stroke": "#ff6347",
+					"fontSize": 24,
+					"sizingY": "move"
+				},
+				"edit": {
+					"type": "button",
+					"text": "⏎",
+					"top": 425,
+					"left": 55,
+					"width": 50,
+					"height": 50,
+					"events": [
+						"onClick"
+					],
+					"focusable": false,
+					"shortcutAccel": false,
+					"shortcutControl": false,
+					"shortcutShift": false,
+					"shortcutAlt": false,
+					"shortcutKey": "[Return]",
+					"style": "flat",
+					"stroke": "#ff6347",
+					"fontSize": 18,
+					"sizingY": "move",
+					"defaultButton": true
+				},
+				"openDoc": {
+					"type": "button",
+					"text": "⌥ + ⏎",
+					"top": 425,
+					"left": 109,
+					"width": 100,
+					"height": 50,
+					"events": [
+						"onClick"
+					],
+					"focusable": false,
+					"shortcutAccel": false,
+					"shortcutControl": false,
+					"shortcutShift": false,
+					"shortcutAlt": true,
+					"shortcutKey": "[Return]",
+					"style": "flat",
+					"stroke": "#ff6347",
+					"fontSize": 18,
+					"sizingY": "move"
+				},
+				"upArrow": {
+					"type": "button",
+					"text": "↑",
+					"top": 425,
+					"left": 213,
+					"width": 50,
+					"height": 50,
+					"events": [
+						"onClick"
+					],
+					"focusable": false,
+					"shortcutAccel": false,
+					"shortcutControl": false,
+					"shortcutShift": false,
+					"shortcutAlt": false,
+					"shortcutKey": "[up arrow]",
+					"style": "flat",
+					"stroke": "#ff6347",
+					"fontSize": 18,
+					"sizingY": "move"
+				},
+				"downArrow": {
+					"type": "button",
+					"text": "↓",
+					"top": 425,
+					"left": 267,
+					"width": 50,
+					"height": 50,
+					"events": [
+						"onClick"
+					],
+					"focusable": false,
+					"shortcutAccel": false,
+					"shortcutControl": false,
+					"shortcutShift": false,
+					"shortcutAlt": false,
+					"shortcutKey": "[down arrow]",
+					"style": "flat",
+					"stroke": "#ff6347",
+					"fontSize": 18,
+					"sizingY": "move"
+				},
+				"currentIcon": {
+					"type": "input",
+					"left": 634,
+					"top": 7,
+					"width": 38,
+					"height": 33,
+					"dataSource": "Form:C1466.current.icon",
+					"dataSourceTypeHint": "picture",
+					"contextMenu": "none",
+					"enterable": false,
+					"focusable": false,
+					"pictureFormat": "proportionalCenter",
+					"borderStyle": "none",
+					"fill": "transparent",
+					"visibility": "hidden"
+				},
+				"weWork": {
+					"type": "spinner",
+					"left": 635,
+					"top": 5,
+					"width": 36,
+					"height": 36
+				},
+				"MagnifyingGlass": {
+					"type": "picture",
+					"top": 6,
+					"left": 7,
+					"width": 35,
+					"height": 36,
+					"picture": "/RESOURCES/Images/glass.png",
+					"pictureFormat": "scaled"
+				},
+				"clear": {
+					"type": "button",
+					"text": "⌥ + ⌫",
+					"top": 425,
+					"left": 322,
+					"width": 114,
+					"height": 50,
+					"events": [
+						"onClick"
+					],
+					"focusable": false,
+					"shortcutAccel": false,
+					"shortcutControl": false,
+					"shortcutShift": false,
+					"shortcutAlt": true,
+					"shortcutKey": "[Backspace]",
+					"style": "flat",
+					"stroke": "#ff6347",
+					"fontSize": 18,
+					"sizingY": "move"
+				},
+				"Line": {
+					"type": "line",
+					"top": 50,
+					"left": 2,
+					"width": 680,
+					"height": 1,
+					"stroke": "#c0c0c0"
+				}
+			}
+		}
+	],
+	"method": "method.4dm",
+	"geometryStamp": 593,
+	"editor": {
+		"activeView": "View 1",
+		"defaultView": "View 1",
+		"views": {
+			"View 1": {}
+		}
+	},
+	"formSizeAnchor": "search.border"
+}

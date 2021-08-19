@@ -1,0 +1,58 @@
+{
+	"_": {
+		"tables": [
+			"Table_1"
+		]
+	},
+	"classes": {
+		"groups": [
+			"formObjects"
+		],
+		"classes": [
+			"design",
+			"menu",
+			"regex"
+		]
+	},
+	"COMPONENT": {
+		"groups": [
+			"PRIVATE",
+			"PUBLIC"
+		],
+		"methods": [
+			"ON_EVENT_CALL"
+		]
+	},
+	"formObjects": {
+		"classes": [
+			"button",
+			"listbox",
+			"scrollable",
+			"static",
+			"thermometer",
+			"widget"
+		]
+	},
+	"PRIVATE": {
+		"methods": [
+			"COMPILER_quickOpen",
+			"noError",
+			"ON_STARTUP",
+			"quickOpen_CALLBACK",
+			"quickOpen_Event_handler",
+			"quickOpen_WORKER"
+		],
+		"forms": [
+			"QUICK_OPEN"
+		],
+		"classes": [
+			"quickOpen"
+		]
+	},
+	"PUBLIC": {
+		"methods": [
+			"QUICK_OPEN"
+		]
+	},
+	"trash": {}
+}

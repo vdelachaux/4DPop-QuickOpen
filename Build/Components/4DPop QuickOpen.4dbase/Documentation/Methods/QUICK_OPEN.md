@@ -1,0 +1,1 @@
+﻿# QUICK_OPEN Method Documentation
