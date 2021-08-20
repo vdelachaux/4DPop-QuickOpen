@@ -19,8 +19,8 @@
 			"PRIVATE",
 			"PUBLIC"
 		],
-		"methods": [
-			"ON_EVENT_CALL"
+		"classes": [
+			"quickOpen"
 		]
 	},
 	"formObjects": {
@@ -39,19 +39,17 @@
 			"noError",
 			"ON_STARTUP",
 			"quickOpen_CALLBACK",
-			"quickOpen_Event_handler",
 			"quickOpen_WORKER"
 		],
 		"forms": [
 			"QUICK_OPEN"
-		],
-		"classes": [
-			"quickOpen"
 		]
 	},
 	"PUBLIC": {
 		"methods": [
-			"QUICK_OPEN"
+			"QUICK_OPEN",
+			"quickOpenEventHandler",
+			"quickOpenInit"
 		]
 	},
 	"trash": {}

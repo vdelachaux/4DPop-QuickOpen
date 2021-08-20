@@ -20,27 +20,33 @@ The Quick Open window can be opened in two ways:
 <img src="./Documentation/4DPop.png">
 
 # Installation
- 
 
-### 1 - Create a `ON_EVENT_CALL` method & paste this code:
+## A - If you do not use an event-catching method
 
-```4D
-var $caught : Boolean// Only if the component is loadedARRAY TEXT($components; 0)COMPONENT LIST($components)If (Find in array($components; "4DPop QuickOpen")>0)		If (MODIFIERS ?? Option key bit)  // ⌥				If (KEYCODE=202)  // Space						// Only for the design process			var $t : Text			var $i : Integer			PROCESS PROPERTIES(Frontmost process(*); $t; $i; $i; $i; $i; $i)						$caught:=($i=Design process)					End if 	End if End if If ($caught)		FILTER EVENT	EXECUTE METHOD("QUICK_OPEN")	Else 		// <THE DATABASE EVENT HANDLER CODE, IF ANY>	End if
-```
- 
-> **Note**: It's in this method that you can change the shortcut to invoke the quick search dialog.
-
- 
-### 2 - Create, if any the database method `On startup` and install the event handler:
+#### Create, if any, the database method `On startup` and enter this code:
 
 ```4D
-If (Not(Is compiled mode(*)))		// Install the event manager	ON EVENT CALL("ON_EVENT_CALL"; "$eventListener")	End if
+If (Not(Is compiled mode))		ARRAY TEXT($componentsArray; 0)	COMPONENT LIST($componentsArray)		If (Find in array($componentsArray; "4DPop QuickOpen")>0)				// Installing quickOpen		EXECUTE METHOD("quickOpenInit"; *; Formula(MODIFIERS); Formula(KEYCODE))		ON EVENT CALL("quickOpenEventHandler"; "$quickOpenListener")			End if End if
+```
+
+> **Note**: This is where you can change the shortcut to invoke the quick search dialog by passing 2 additional parameters to the `quickOpenInit` method (see below: `How to change the main QuickOpen shortcut`)
+
+
+## B - If you already use an event-catching method
+
+#### 1 - Call the init method before installing your event-catching method. Something like:
+
+```4D
+ARRAY TEXT($componentsArray; 0)COMPONENT LIST($componentsArray)If (Find in array($componentsArray; "4DPop QuickOpen")>0)		// Installing quickOpen	EXECUTE METHOD("quickOpenInit"; *; Formula(MODIFIERS); Formula(KEYCODE))	End if ON EVENT CALL("MY_METHOD"; "$eventHandler")
 ```
  
-> **Note**: If an event handler is already used in your database, you should use this code to modify your method
+#### 2 - Modify your event-catching method like this:
 
+```4D
+var $quickOpen : Boolean// Only in development modeIf (Not(Is compiled mode(*)))		// Only if the component is loaded	ARRAY TEXT($components; 0)	COMPONENT LIST($components)		If (Find in array($components; "4DPop QuickOpen")>0)				// Is it a quickOpen call?		EXECUTE METHOD("quickOpenEventHandler"; $quickOpen)			End if End if If (Not($quickOpen))		// <THE DATABASE EVENT HANDLER CODE>	End if 
+```
  
-### 3 - Restart the database and hit Option-Space in design mode to display the UI
+## Restart the database and hit Option-Space in design mode to display the UI
 
 The QuickOpen dialog box should appear
 
@@ -75,6 +81,19 @@ The QuickOpen dialog box should appear
 |`⌥ + ⌫`|Clear the search|
 |`Esc`|Close the dialog|
 
+# How to change the main QuickOpen shortcut
+
+When you call the `quickOpenInit` method, you can pass 1 or 2 additional parameters: 
+
+* The first is the modifier (default is _`Option key bit`_).
+* The second is the character code of the associated key (default is 202 for space).
+
+For example, if you want to install `Cmd-%` as a shortcut:
+
+```4D
+EXECUTE METHOD("quickOpenInit"; *; Formula(MODIFIERS); Formula(KEYCODE); Command key bit; Character code("%"))
+```
+**_WARNING_**: If you install a key combination that gone wrong. You can use the key combination **Ctrl + Shift + Backspace** (on Windows) or **Command + Shift + Control + Backspace** (on Macintosh) to kill the Event Manager process.
 
 
 
