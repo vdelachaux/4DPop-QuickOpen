@@ -4,6 +4,11 @@
 Case of 
 		
 		//______________________________________________________
+	: (Is compiled mode:C492(*))
+		
+		// <NOTHING MORE TO DO>
+		
+		//______________________________________________________
 	: ($eventCode=On before host database startup:K74:3)
 		
 /*
