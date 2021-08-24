@@ -16,18 +16,21 @@ The host database has just been started, its On Startup method has not been call
 and will not be called until the execution of this method is finished.
 */
 		
-		ARRAY TEXT:C222($arrPaths; 0x0000)
-		METHOD GET PATHS:C1163(Path database method:K72:2; $arrPaths; *)
-		
-		// So, if the On Startup method does not exist, we can create it.
-		If (Find in array:C230($arrPaths; "[databaseMethod]/onStartup")=-1)
+		If (Bool:C1537(Get database parameter:C643(Is host database a project:K37:99)))
 			
-			var $folder : 4D:C1709.Folder
-			var $file : 4D:C1709.File
-			$folder:=Folder:C1567(Folder:C1567(fk database folder:K87:14; *).platformPath; fk platform path:K87:2).folder("Project/Sources/DatabaseMethods")
-			$file:=File:C1566("/RESOURCES/init"+Choose:C955(Command name:C538(1)="Sum"; "US"; "FR")+".4dm").copyTo($folder; "onStartup.4dm")
-			RELOAD PROJECT:C1739
+			ARRAY TEXT:C222($arrPaths; 0x0000)
+			METHOD GET PATHS:C1163(Path database method:K72:2; $arrPaths; *)
 			
+			// So, if the On Startup method does not exist, we can create it.
+			If (Find in array:C230($arrPaths; "[databaseMethod]/onStartup")=-1)
+				
+				var $folder : 4D:C1709.Folder
+				var $file : 4D:C1709.File
+				$folder:=Folder:C1567(Folder:C1567(fk database folder:K87:14; *).platformPath; fk platform path:K87:2).folder("Project/Sources/DatabaseMethods")
+				$file:=File:C1566("/RESOURCES/init"+Choose:C955(Command name:C538(1)="Sum"; "US"; "FR")+".4dm").copyTo($folder; "onStartup.4dm")
+				RELOAD PROJECT:C1739
+				
+			End if 
 		End if 
 		
 		//______________________________________________________
