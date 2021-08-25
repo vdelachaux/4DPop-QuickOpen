@@ -37,7 +37,6 @@
 		"methods": [
 			"COMPILER_quickOpen",
 			"noError",
-			"ON_STARTUP",
 			"quickOpen_CALLBACK",
 			"quickOpen_WORKER"
 		],
