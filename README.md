@@ -14,7 +14,7 @@ So the description is consistent with that of the inspiration 😉 :
 
 The Quick Open window can be opened in two ways:
 
-1. By pressing Option-Space. This means that an event manager must be running (see [Installation](# Installation) below).
+1. By pressing Option-Space. This means that an event manager must be running (see [Installation](#Installation) below).
 
 2. By clicking on its icon in the 4DPop palette.
 <img src="./Documentation/4DPop.png">
@@ -26,7 +26,19 @@ The Quick Open window can be opened in two ways:
 #### Create, if any, the database method `On startup` and enter this code:
 
 ```4D
-If (Not(Is compiled mode))		ARRAY TEXT($componentsArray; 0)	COMPONENT LIST($componentsArray)		If (Find in array($componentsArray; "4DPop QuickOpen")>0)				// Installing quickOpen		EXECUTE METHOD("quickOpenInit"; *; Formula(MODIFIERS); Formula(KEYCODE))		ON EVENT CALL("quickOpenEventHandler"; "$quickOpenListener")			End if End if
+If (Not(Is compiled mode))
+	
+	ARRAY TEXT($componentsArray; 0)
+	COMPONENT LIST($componentsArray)
+	
+	If (Find in array($componentsArray; "4DPop QuickOpen")>0)
+		
+		// Installing quickOpen
+		EXECUTE METHOD("quickOpenInit"; *; Formula(MODIFIERS); Formula(KEYCODE))
+		ON EVENT CALL("quickOpenEventHandler"; "$quickOpenListener")
+		
+	End if 
+End if
 ```
 
 > **Note**: This is where you can change the shortcut to invoke the quick search dialog by passing 2 additional parameters to the `quickOpenInit` method (see below: `How to change the main QuickOpen shortcut`)
@@ -37,13 +49,44 @@ If (Not(Is compiled mode))		ARRAY TEXT($componentsArray; 0)	COMPONENT LIST($c
 #### 1 - Call the init method before installing your event-catching method. Something like:
 
 ```4D
-ARRAY TEXT($componentsArray; 0)COMPONENT LIST($componentsArray)If (Find in array($componentsArray; "4DPop QuickOpen")>0)		// Installing quickOpen	EXECUTE METHOD("quickOpenInit"; *; Formula(MODIFIERS); Formula(KEYCODE))	End if ON EVENT CALL("MY_METHOD"; "$eventHandler")
+ARRAY TEXT($componentsArray; 0)
+COMPONENT LIST($componentsArray)
+
+If (Find in array($componentsArray; "4DPop QuickOpen")>0)
+	
+	// Installing quickOpen
+	EXECUTE METHOD("quickOpenInit"; *; Formula(MODIFIERS); Formula(KEYCODE))
+	
+End if 
+
+ON EVENT CALL("MY_METHOD"; "$eventHandler")
 ```
  
 #### 2 - Modify your event-catching method like this:
 
 ```4D
-var $quickOpen : Boolean// Only in development modeIf (Not(Is compiled mode(*)))		// Only if the component is loaded	ARRAY TEXT($components; 0)	COMPONENT LIST($components)		If (Find in array($components; "4DPop QuickOpen")>0)				// Is it a quickOpen call?		EXECUTE METHOD("quickOpenEventHandler"; $quickOpen)			End if End if If (Not($quickOpen))		// <THE DATABASE EVENT HANDLER CODE>	End if 
+var $quickOpen : Boolean
+
+// Only in development mode
+If (Not(Is compiled mode(*)))
+	
+	// Only if the component is loaded
+	ARRAY TEXT($components; 0)
+	COMPONENT LIST($components)
+	
+	If (Find in array($components; "4DPop QuickOpen")>0)
+		
+		// Is it a quickOpen call?
+		EXECUTE METHOD("quickOpenEventHandler"; $quickOpen)
+		
+	End if 
+End if 
+
+If (Not($quickOpen))
+	
+	// <THE DATABASE EVENT HANDLER CODE>
+	
+End if 
 ```
  
 ## Restart the database and hit Option-Space in design mode to display the UI
