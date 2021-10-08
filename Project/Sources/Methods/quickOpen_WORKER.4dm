@@ -1,5 +1,9 @@
 //%attributes = {"invisible":true}
-// Instantiate the "design" class if needed, and create/update the list of sources if any
+/* 
+Instantiate the "design" class if needed,
+and create/update the list of sources if any
+*/
+
 #DECLARE($signal : Object)
 
 COMPILER_quickOpen

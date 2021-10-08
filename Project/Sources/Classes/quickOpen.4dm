@@ -30,7 +30,8 @@ Function search($tring : Text)
 			
 			//………………………………………………………………………………………………………………………
 		: ((Length:C16(Form:C1466.search)>=3)\
-			 | (Character code:C91(Form:C1466.search)=At sign:K15:46))\
+			 | (Character code:C91(Form:C1466.search)=At sign:K15:46)\
+			 | (Form:C1466.search="_"))\
 			 & (Not:C34(Form:C1466.isMaximized))
 			
 			$toMaximize:=True:C214  // At least 3 characters or "@" & minimized -> Needs to be maximized
@@ -105,6 +106,12 @@ Function open($item : Object)
 		Case of 
 				
 				//______________________________________________________
+			: ($item.type=-1)
+				
+				//This._doExtras($item)
+				CALL WORKER:C1389(1; "quickOpen_DO_EXTRAS"; $item)
+				
+				//______________________________________________________
 			: ($item.target=Null:C1517)
 				
 				This:C1470.edit($item)
@@ -166,112 +173,115 @@ Function menu($item : Object)
 	
 	If ($item#Null:C1517)
 		
-		$menu:=cs:C1710.menu.new()\
-			.append("edit"; "edit")
-		
-		If ($item.type=Path project form:K72:3)\
-			 | ($item.type=Path table form:K72:5)
+		If ($item.type>0)
 			
-			$menu.append("editFormMethod"; "method")
+			$menu:=cs:C1710.menu.new()\
+				.append("edit"; "edit")
 			
-		End if 
-		
-		$menu.append(Choose:C955(Bool:C1537($item.doc.exists); "editDocumentation"; "createDocumentation"); "doc")\
-			.append("showSourceFile"; "showSource")\
-			.append("showDocumentationFile"; "showDoc").enable(Bool:C1537($item.doc.exists))\
-			.line()\
-			.append("copyTheName"; "copy")\
-			.line()\
-			.append("deleteSourceFile"; "deleteSource")
-		
-		If (Bool:C1537($item.doc.exists))
+			If ($item.type=Path project form:K72:3)\
+				 | ($item.type=Path table form:K72:5)
+				
+				$menu.append("editFormMethod"; "method")
+				
+			End if 
 			
-			$menu.append("deleteDocumentation"; "deleteDoc")
+			$menu.append(Choose:C955(Bool:C1537($item.doc.exists); "editDocumentation"; "createDocumentation"); "doc")\
+				.append("showSourceFile"; "showSource")\
+				.append("showDocumentationFile"; "showDoc").enable(Bool:C1537($item.doc.exists))\
+				.line()\
+				.append("copyTheName"; "copy")\
+				.line()\
+				.append("deleteSourceFile"; "deleteSource")
 			
-		End if 
-		
-		If ($item.type=Path project form:K72:3)\
-			 | ($item.type=Path table form:K72:5)
+			If (Bool:C1537($item.doc.exists))
+				
+				$menu.append("deleteDocumentation"; "deleteDoc")
+				
+			End if 
 			
-			$menu.append("deleteFormMethod"; "deleteFormMethod")
+			If ($item.type=Path project form:K72:3)\
+				 | ($item.type=Path table form:K72:5)
+				
+				$menu.append("deleteFormMethod"; "deleteFormMethod")
+				
+			End if 
 			
-		End if 
-		
-		$menu.popup()
-		
-		Case of 
-				
-				//________________________________________
-			: (Not:C34($menu.selected))
-				
-				// <NOTHING MORE TO DO>
-				
-				//=======================================================
-			: ($menu.choice="edit")
-				
-				This:C1470.open($item)
-				
-				//=======================================================
-			: ($menu.choice="method")\
-				 | ($menu.choice="doc")
-				
-				$item.target:=$menu.choice
-				This:C1470.open($item)
-				
-				//=======================================================
-			: ($menu.choice="showSource")
-				
-				// Shows the file on disk
-				This:C1470.show($item)
-				
-				//=======================================================
-			: ($menu.choice="showDoc")
-				
-				// Shows the documentation file on disk
-				This:C1470.show($item; True:C214)
-				
-				//=======================================================
-			: ($menu.choice="copy")
-				
-				// Copies the name of the selected item to the clipboard.
-				SET TEXT TO PASTEBOARD:C523($item.name)
-				This:C1470.close()
-				
-				//=======================================================
-			: ($menu.choice="deleteSource")
-				
-				CONFIRM:C162(Replace string:C233(Replace string:C233(Get localized string:C991("areYouSureYouWantToDeleteTheTypeItem"); "{type}"; $item.desc); "{item}"; $item.name); \
-					Get localized string:C991("delete"); \
-					Get localized string:C991("keepIt"))
-				
-				If (Bool:C1537(OK))
+			$menu.popup()
+			
+			Case of 
 					
-					This:C1470.delete($item)
+					//________________________________________
+				: (Not:C34($menu.selected))
+					
+					// <NOTHING MORE TO DO>
+					
+					//=======================================================
+				: ($menu.choice="edit")
+					
+					This:C1470.open($item)
+					
+					//=======================================================
+				: ($menu.choice="method")\
+					 | ($menu.choice="doc")
+					
+					$item.target:=$menu.choice
+					This:C1470.open($item)
+					
+					//=======================================================
+				: ($menu.choice="showSource")
+					
+					// Shows the file on disk
+					This:C1470.show($item)
+					
+					//=======================================================
+				: ($menu.choice="showDoc")
+					
+					// Shows the documentation file on disk
+					This:C1470.show($item; True:C214)
+					
+					//=======================================================
+				: ($menu.choice="copy")
+					
+					// Copies the name of the selected item to the clipboard.
+					SET TEXT TO PASTEBOARD:C523($item.name)
 					This:C1470.close()
 					
-				End if 
-				
-				//=======================================================
-			: ($menu.choice="deleteDoc")
-				
-				CONFIRM:C162(Replace string:C233(Replace string:C233(Get localized string:C991("areYouSureYouWantToDeleteTheDocumentationForTypeItem"); "{type}"; $item.desc); "{item}"; $item.name); \
-					Get localized string:C991("delete"); \
-					Get localized string:C991("keepIt"))
-				
-				If (Bool:C1537(OK))
+					//=======================================================
+				: ($menu.choice="deleteSource")
 					
-					This:C1470.deleteDoc($item)
-					This:C1470.close()
+					CONFIRM:C162(Replace string:C233(Replace string:C233(Get localized string:C991("areYouSureYouWantToDeleteTheTypeItem"); "{type}"; $item.desc); "{item}"; $item.name); \
+						Get localized string:C991("delete"); \
+						Get localized string:C991("keepIt"))
 					
-				End if 
-				
-				//________________________________________
-			Else 
-				
-				ALERT:C41("We are going tout doux 🤣")
-				
-				//________________________________________
-		End case 
+					If (Bool:C1537(OK))
+						
+						This:C1470.delete($item)
+						This:C1470.close()
+						
+					End if 
+					
+					//=======================================================
+				: ($menu.choice="deleteDoc")
+					
+					CONFIRM:C162(Replace string:C233(Replace string:C233(Get localized string:C991("areYouSureYouWantToDeleteTheDocumentationForTypeItem"); "{type}"; $item.desc); "{item}"; $item.name); \
+						Get localized string:C991("delete"); \
+						Get localized string:C991("keepIt"))
+					
+					If (Bool:C1537(OK))
+						
+						This:C1470.deleteDoc($item)
+						This:C1470.close()
+						
+					End if 
+					
+					//________________________________________
+				Else 
+					
+					ALERT:C41("We are going tout doux 🤣")
+					
+					//________________________________________
+			End case 
+		End if 
 	End if 
 	
 	//======================================================================================
