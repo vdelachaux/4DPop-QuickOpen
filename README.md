@@ -19,6 +19,14 @@ The Quick Open window can be opened in two ways:
 2. By clicking on its icon in the 4DPop palette.
 <img src="./Documentation/4DPop.png">
 
+# What's new!
+
+Action shortcuts now available. [Select one and 4DPop QuickOpen do the work!](#new)
+
+I strongly encourage you to enrich this project through pull request. This can only benefit the [4D developer community](https://discuss.4d.com/search?q=4D%20for%20iOS). 
+
+`Enjoy the 4th dimension`
+
 # Installation
 
 ## A - If you do not use an event-catching method
@@ -93,7 +101,7 @@ End if
 
 The QuickOpen dialog box should appear
 
-<img src="./Documentation/empty.png">
+<p align="center"><img src="./Documentation/empty.png" width="500"></p>
 
 # Features
 
@@ -105,16 +113,23 @@ The QuickOpen dialog box should appear
 * No need for @, the search is a "contains" search.
 * A list of entries will appear, sorted by relevance
  
-<img src="./Documentation/quick.png">
+<p align="center"><img src="./Documentation/quick.png" width="500"></p>
 
 * You can keep typing or use the up/down arrow keys to select an item to open it.
 * You can right-click on an item for additional options (create/edit/delete documentation, show file, edit,…).
 
-<img src="./Documentation/menu.png" width="184">
+<p align="center"><img src="./Documentation/menu.png" width="184"></p>
  
 * The list will show a paperclip on left for items that have documentation.
 * The list shows the name of the object's folder (which is useful for finding the folder of an item if it is misplaced).
 
+* <a name="new">🆕</a> Some actions are available such as: Opening a folder, performing a syntax check or starting the web server...
+
+<p align="center"><img src="./Documentation/actionWeb.png" width="500"></p>
+
+To explore all actions available, just type an underscore…
+
+<p align="center"><img src="./Documentation/underscore.png" width="500"></p>
 
 # Shortcuts
 |||
