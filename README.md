@@ -123,14 +123,6 @@ The QuickOpen dialog box should appear
 * The list will show a paperclip on left for items that have documentation.
 * The list shows the name of the object's folder (which is useful for finding the folder of an item if it is misplaced).
 
-* <a name="new">🆕</a> Some actions are available such as: Opening a folder, performing a syntax check or starting the web server...
-
-<p align="center"><img src="./Documentation/actionWeb.png" width="500"></p>
-
-To explore all actions available, just type an underscore…
-
-<p align="center"><img src="./Documentation/underscore.png" width="500"></p>
-
 # Shortcuts
 |||
 |:----:|----|
@@ -138,6 +130,75 @@ To explore all actions available, just type an underscore…
 |`⌥ + ⏎`|Open or create the item's documentation|
 |`⌥ + ⌫`|Clear the search|
 |`Esc`|Close the dialog|
+
+# <a name="new">🆕</a> Quick Actions
+
+Some actions are available such as: Opening a folder, performing a syntax check or starting the web server...
+
+<p align="center"><img src="./Documentation/actionWeb.png" width="500"></p>
+
+To explore all actions available, just type a "$"…
+
+<p align="center"><img src="./Documentation/actions.png" width="500"></p>
+
+To search only in actions, type "$" followed by keywords.
+
+## Embedded actions
+
+|Names|Actions|Notes|
+|----|----|----|
+|Active 4D Folder| Opens the Active 4D Folder
+|Build| Launches the generation process
+|Check syntax| Performs a syntax check
+|Compile| Launch the compilation
+|Data Folder| Opens the current Data Folder|Local mode only
+|Database Folder| Opens the Database Folder
+|Documentation Folder| Opens the Documentation Folder| Local mode only
+|Editor Theme Folder| Opens the Editor Theme Folder
+|Logs Folder| Opens the current Logs Folder
+|MobileApps Folder| Opens the MobileApps Folder| Local mode only
+|Project Folder| Opens the Project Folder| Local mode only
+|Quit 4D| Exits the current 4D application
+|Reload Project| Reload the current Project
+|Resources Folder| Opens the Project Resources Folder
+|Restart| Restarts the current Project
+|Runtime exlorer| Displays the Runtime Explorer
+|Security Center| Displays the Maintenance and Security Center (MSC) window
+|Server Administration| Displays the server administration window|Remote mode only
+|Settings Folder| Opens the Settings Folder
+|Start Web Server| Starts the web server
+|Stop Web Server| Stops the web server
+|Structure Settings| Opens the Database Settings dialog box 
+|User Settings| Opens the User Database Settings dialog box 
+|Web Folder| Opens the Web Folder|If exists
+
+## User actions
+
+The shared method ***quickOpenPushAction*** allows you to add your own actions.
+
+The user's actions can be code or a form.
+
+### Code actions
+
+The code to execute is defined by a formula. It can be a simple line or a method call.
+
+```4d
+$o:=New object$o.name:="Test formula"$o.formula:=Formula(ALERT("hello world"))quickOpenPushAction($o)
+```
+
+```4d
+$o:=New object$o.name:="Test formula"$o.formula:=Formula(myMethod)quickOpenPushAction($o)
+```
+
+### Form actions
+
+Form actions allow you to directly display a form.
+<br/>The form to be displayed must be in a folder located in the `quickAction` folder located in the `Resources` folder.
+<br/>The component executes the form in a new process and ensures the installation of a default menu bar.
+
+```4d
+$o:=New object$o.name:="test form"$o.form:="TEST"quickOpenPushAction($o)
+```
 
 # How to change the main QuickOpen shortcut
 

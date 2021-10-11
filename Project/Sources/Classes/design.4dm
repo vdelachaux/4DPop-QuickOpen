@@ -73,233 +73,6 @@ Class constructor
 		"comment"; "Table Form"; \
 		"icon"; $icon))
 	
-	This:C1470._extras()
-	
-	//-----------------------------------------------------------
-Function _extras()
-	
-	This:C1470.extras:=New collection:C1472
-	
-	var $icon : Picture
-	READ PICTURE FILE:C678(File:C1566("/RESOURCES/Images/objectsIcons/Icon_604.png").platformPath; $icon)
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Runtime Explorer"; \
-		"desc"; "runtimeExplorer"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Structure Settings"; \
-		"desc"; "structureSettings"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "User settings"; \
-		"desc"; "userSettings"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Security Center"; \
-		"desc"; "msc"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Restart"; \
-		"desc"; "restart"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Build Application"; \
-		"desc"; "build"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Check Syntax"; \
-		"desc"; "checkSyntax"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Compil"; \
-		"desc"; "compile"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Active 4D Folder"; \
-		"desc"; "4dFolder"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Database Folder"; \
-		"desc"; "dataBaseFolder"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Resources Folder"; \
-		"desc"; "resourcesFolder"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Editor Theme Folder"; \
-		"desc"; "editorThemeFolder"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Web Folder"; \
-		"desc"; "webFolder"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Licences Folder"; \
-		"desc"; "licensesFolder"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Logs Folder"; \
-		"desc"; "logsFolder"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "MobileApps Folder"; \
-		"desc"; "mobileAppsFolder"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Settings Folder"; \
-		"desc"; "settingsFolder"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	If (Application type:C494=4D Remote mode:K5:5)
-		
-		This:C1470.extras.push(New object:C1471(\
-			"type"; -1; \
-			"name"; "Server Administration Window"; \
-			"desc"; "serverAdministrationWindow"; \
-			"folder"; "_"; \
-			"doc"; ""; \
-			"icon"; $icon; \
-			"attributes"; Null:C1517))
-		
-	Else 
-		
-		This:C1470.extras.push(New object:C1471(\
-			"type"; -1; \
-			"name"; "Data Folder"; \
-			"desc"; "dataFolder"; \
-			"folder"; "_"; \
-			"doc"; ""; \
-			"icon"; $icon; \
-			"attributes"; Null:C1517))
-		
-		This:C1470.extras.push(New object:C1471(\
-			"type"; -1; \
-			"name"; "Documentation Folder"; \
-			"desc"; "docFolder"; \
-			"folder"; "_"; \
-			"doc"; ""; \
-			"icon"; $icon; \
-			"attributes"; Null:C1517))
-		
-		If (Bool:C1537(Get database parameter:C643(Is host database a project:K37:99)))
-			
-			This:C1470.extras.push(New object:C1471(\
-				"type"; -1; \
-				"name"; "Project Folder"; \
-				"desc"; "projectFolder"; \
-				"folder"; "_"; \
-				"doc"; ""; \
-				"icon"; $icon; \
-				"attributes"; Null:C1517))
-			
-		End if 
-		
-	End if 
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Start Web Server"; \
-		"desc"; "startWebServer"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
-	This:C1470.extras.push(New object:C1471(\
-		"type"; -1; \
-		"name"; "Stop Web Server"; \
-		"desc"; "stopWebServer"; \
-		"folder"; "_"; \
-		"doc"; ""; \
-		"icon"; $icon; \
-		"attributes"; Null:C1517))
-	
 	//-----------------------------------------------------------
 	// Build the list of source files
 Function getSources()->$this : cs:C1710.design
@@ -394,8 +167,7 @@ Function getSources()->$this : cs:C1710.design
 		This:C1470._load(Path table form:K72:5)
 		This:C1470._load(Path trigger:K72:4)
 		
-		This:C1470.sources.combine(This:C1470.extras)
-		This:C1470.sources:=This:C1470.sources.orderBy("type asc name asc")  //.orderBy("folder asc, name asc, type asc")
+		This:C1470.sources:=This:C1470.sources.orderBy("type asc name asc")
 		
 	End if 
 	
@@ -419,9 +191,15 @@ Function search($tring : Text)->$result : Collection
 			$result:=This:C1470.sources
 			
 			//______________________________________________________
-		: ($tring="_")
+		: ($tring="$@")
 			
-			$found:=Form:C1466.list.query("folder = _")
+			$found:=Form:C1466.list.query("folder = '_'")
+			
+			If (Length:C16($tring)>1)
+				
+				$found:=$found.query("name = :1 OR folder = :1 or desc = :1"; "@"+Delete string:C232($tring; 1; 1)+"@")
+				
+			End if 
 			
 			// Sort results by nale. 
 			$result:=$found.orderBy("name asc")
@@ -432,10 +210,16 @@ Function search($tring : Text)->$result : Collection
 			If (Form:C1466.list#Null:C1517)
 				
 				// Filter the list according to what is entered
-				$found:=Form:C1466.list.query("name = :1 OR folder = :1 or desc = :1"; "@"+$tring+"@")
+				$found:=Form:C1466.list.query("name = :1 OR folder = :1 or desc = :1 or shortcut = :1"; "@"+$tring+"@")
 				
 				// Assign a ranking with fewer points the farther from the beginning of the chain.
 				For each ($o; $found)
+					
+					If (OB Is shared:C1759($o))
+						
+						$o:=OB Copy:C1225($o)
+						
+					End if 
 					
 					$o.rank:=0
 					
