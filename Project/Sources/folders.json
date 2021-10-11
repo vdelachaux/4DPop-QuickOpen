@@ -37,7 +37,9 @@
 		"methods": [
 			"COMPILER_quickOpen",
 			"noError",
+			"quickOpen_ACTIONS",
 			"quickOpen_CALLBACK",
+			"quickOpen_FORM",
 			"quickOpen_WORKER"
 		],
 		"forms": [
@@ -48,7 +50,8 @@
 		"methods": [
 			"QUICK_OPEN",
 			"quickOpenEventHandler",
-			"quickOpenInit"
+			"quickOpenInit",
+			"quickOpenPushAction"
 		]
 	},
 	"trash": {}

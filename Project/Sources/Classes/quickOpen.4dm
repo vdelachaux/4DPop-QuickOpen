@@ -4,6 +4,55 @@ Class constructor
 	
 	Super:C1705()
 	
+	This:C1470.commands:=New collection:C1472
+	
+	This:C1470._loadActions()
+	
+	//-----------------------------------------------------------
+Function _loadActions()
+	
+	var $o : Object
+	var $file : 4D:C1709.File
+	var $icon : Picture
+	
+	$file:=File:C1566("/RESOURCES/quickOpen.json")
+	
+	If ($file.exists)
+		
+		$o:=JSON Parse:C1218($file.getText())
+		$o:=JSON Resolve pointers:C1478($o; New object:C1471("merge"; True:C214))
+		
+		If ($o.success)
+			
+			READ PICTURE FILE:C678(File:C1566("/RESOURCES/Images/objectsIcons/Icon_604.png").platformPath; $icon)
+			
+			For each ($o; $o.value.actions)
+				
+				$o.type:=-1
+				$o.icon:=$icon
+				$o.desc:=Choose:C955($o.desc=Null:C1517; $o.name; $o.desc)
+				
+				$o.folder:="_"
+				$o.doc:=""
+				$o.attributes:=Null:C1517
+				
+				If ($o.condition#Null:C1517)
+					
+					If (Formula from string:C1601($o.condition).call())
+						
+						This:C1470.commands.push($o)
+						
+					End if 
+					
+				Else 
+					
+					This:C1470.commands.push($o)
+					
+				End if 
+			End for each 
+		End if 
+	End if 
+	
 	//======================================================================================
 	// Handles updating the window and list as keystrokes are entered in the search field.
 Function search($tring : Text)
@@ -29,9 +78,7 @@ Function search($tring : Text)
 			$toMinimize:=True:C214  // Zero character & maximized -> Needs to be minimized
 			
 			//………………………………………………………………………………………………………………………
-		: ((Length:C16(Form:C1466.search)>=3)\
-			 | (Character code:C91(Form:C1466.search)=At sign:K15:46)\
-			 | (Form:C1466.search="_"))\
+		: ((Length:C16(Form:C1466.search)>=3) | (Character code:C91(Form:C1466.search)=At sign:K15:46) | (Form:C1466.search="$@"))\
 			 & (Not:C34(Form:C1466.isMaximized))
 			
 			$toMaximize:=True:C214  // At least 3 characters or "@" & minimized -> Needs to be maximized
@@ -40,7 +87,7 @@ Function search($tring : Text)
 		: (Length:C16(Form:C1466.search)<3)\
 			 & (Form:C1466.isMaximized)
 			
-			$toMinimize:=True:C214  // Less than 3 characters & maximized -> Needs to be minimized
+			$toMinimize:=(Form:C1466.search#"$@")  // Less than 3 characters & maximized -> Needs to be minimized
 			
 			//………………………………………………………………………………………………………………………
 	End case 
@@ -108,8 +155,7 @@ Function open($item : Object)
 				//______________________________________________________
 			: ($item.type=-1)
 				
-				//This._doExtras($item)
-				CALL WORKER:C1389(1; "quickOpen_DO_EXTRAS"; $item)
+				CALL WORKER:C1389(1; "quickOpen_ACTIONS"; $item)
 				
 				//______________________________________________________
 			: ($item.target=Null:C1517)

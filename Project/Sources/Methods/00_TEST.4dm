@@ -1,14 +1,14 @@
 //%attributes = {}
+var $o : Object
 
-//var stamp; $Stamp : Real
-//ARRAY TEXT($dummy; 0x0000)
+$o:=New object:C1471
+$o.name:="Test formula"
+$o.formula:=Formula:C1597(ALERT:C41("hello world"))
 
-//METHOD GET PATHS(Path project method; $dummy; $Stamp; *)
+quickOpenPushAction($o)
 
-//If (stamp#0)
+$o:=New object:C1471
+$o.name:="test form"
+$o.form:="TEST"
 
-//ASSERT($stamp#stamp)
-
-//End if 
-
-//stamp:=$Stamp
+quickOpenPushAction($o)
