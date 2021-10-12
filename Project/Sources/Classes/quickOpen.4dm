@@ -105,7 +105,7 @@ Function search($tring : Text)
 			SET WINDOW RECT:C444($left; $top; $right; $bottom+(Form:C1466.maximized.coordinates.bottom-Form:C1466.minimized.coordinates.bottom))
 			
 			Form:C1466.minimized.hide()
-			Form:C1466.maximized.show()
+			Form:C1466.maximized.show(Is macOS:C1572)
 			
 			Form:C1466.isMaximized:=True:C214
 			
@@ -116,7 +116,7 @@ Function search($tring : Text)
 			SET WINDOW RECT:C444($left; $top; $right; $bottom-(Form:C1466.maximized.coordinates.bottom-Form:C1466.minimized.coordinates.bottom))
 			
 			Form:C1466.maximized.hide()
-			Form:C1466.minimized.show()
+			Form:C1466.minimized.show(Is macOS:C1572)
 			
 			Form:C1466.isMaximized:=False:C215
 			

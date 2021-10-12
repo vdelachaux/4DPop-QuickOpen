@@ -14,7 +14,7 @@ So the description is consistent with that of the inspiration 😉 :
 
 The Quick Open window can be opened in two ways:
 
-1. By pressing Option-Space. This means that an event manager must be running (see [Installation](#Installation) below).
+1. By pressing `Option-Space` on macOS or `Control-Space` on Windows. This means that an event manager must be running (see [Installation](#Installation) below).
 
 2. By clicking on its icon in the 4DPop palette.
 <img src="./Documentation/4DPop.png">
@@ -99,7 +99,7 @@ If (Not($quickOpen))
 End if 
 ```
  
-## Restart the database and hit Option-Space in design mode to display the UI
+## Restart the database and hit Option/Control-Space in design mode to display the UI
 
 The QuickOpen dialog box should appear
 

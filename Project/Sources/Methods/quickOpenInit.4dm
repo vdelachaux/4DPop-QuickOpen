@@ -15,9 +15,19 @@ Use (Storage:C1525)
 	
 	Use (Storage:C1525.shortcut)
 		
-		// Default shortcut is ⌥ + Space
-		Storage:C1525.shortcut.modifiers:=Option key bit:K16:8
-		Storage:C1525.shortcut.keycode:=202
+		If (Is macOS:C1572)
+			
+			// Default shortcut is ⌥ + Space
+			Storage:C1525.shortcut.modifiers:=Option key bit:K16:8
+			Storage:C1525.shortcut.keycode:=202
+			
+		Else 
+			
+			// Default shortcut is Ctrl + Space
+			Storage:C1525.shortcut.modifiers:=Command key bit:K16:2
+			Storage:C1525.shortcut.keycode:=Character code:C91(" ")
+			
+		End if 
 		
 		If (Count parameters:C259>=3)
 			
