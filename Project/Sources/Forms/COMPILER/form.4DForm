@@ -1,0 +1,105 @@
+{
+	"$4d": {
+		"version": "1",
+		"kind": "form"
+	},
+	"windowSizingX": "variable",
+	"windowSizingY": "variable",
+	"windowMinWidth": 0,
+	"windowMinHeight": 0,
+	"windowMaxWidth": 32767,
+	"windowMaxHeight": 32767,
+	"rightMargin": 0,
+	"bottomMargin": 0,
+	"events": [
+		"onDoubleClick"
+	],
+	"destination": "detailScreen",
+	"pages": [
+		{
+			"objects": {}
+		},
+		{
+			"objects": {
+				"List Box": {
+					"type": "listbox",
+					"left": 0,
+					"top": 0,
+					"width": 783,
+					"height": 411,
+					"events": [
+						"onDoubleClick"
+					],
+					"listboxType": "collection",
+					"dataSource": "Form:C1466.errors",
+					"resizingMode": "legacy",
+					"horizontalLineStroke": "transparent",
+					"verticalLineStroke": "transparent",
+					"sizingX": "grow",
+					"sizingY": "grow",
+					"selectionMode": "single",
+					"hideFocusRing": true,
+					"scrollbarHorizontal": "hidden",
+					"scrollbarVertical": "automatic",
+					"headerHeight": "2em",
+					"currentItemSource": "Form:C1466.current",
+					"selectedItemsSource": "Form:C1466.selected",
+					"currentItemPositionSource": "Form:C1466.position",
+					"focusable": false,
+					"columns": [
+						{
+							"header": {
+								"text": ":xliff:where",
+								"name": "Header1",
+								"fontWeight": "bold"
+							},
+							"name": "Column1",
+							"footer": {
+								"name": "Footer1"
+							},
+							"dataSource": "This:C1470.method",
+							"width": 200,
+							"fontWeight": "bold"
+						},
+						{
+							"header": {
+								"name": "Header2",
+								"text": ":xliff:line",
+								"fontWeight": "bold"
+							},
+							"name": "Column2",
+							"footer": {
+								"name": "Footer2"
+							},
+							"dataSource": "This:C1470.line",
+							"width": 58,
+							"textAlign": "center"
+						},
+						{
+							"header": {
+								"name": "Header3",
+								"text": ":xliff:error",
+								"fontWeight": "bold"
+							},
+							"name": "Column3",
+							"footer": {
+								"name": "Footer3"
+							},
+							"dataSource": "This:C1470.message"
+						}
+					]
+				}
+			}
+		}
+	],
+	"geometryStamp": 12,
+	"editor": {
+		"activeView": "View 1",
+		"defaultView": "View 1",
+		"views": {
+			"View 1": {}
+		}
+	},
+	"method": "method.4dm",
+	"formSizeAnchor": "List Box"
+}

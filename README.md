@@ -23,6 +23,8 @@ The Quick Open window can be opened in two ways:
 
 Action shortcuts now available. [Select one and 4DPop QuickOpen do the work!](#new)
 
+And more, you can register, very easily, [your own actions](#userActions) from the host database or from a component to run code or display a form!
+
 I strongly encourage you to enrich this project through pull request. This can only benefit the [4D developer community](https://discuss.4d.com/search?q=4D%20for%20iOS). 
 
 `Enjoy the 4th dimension`
@@ -148,9 +150,10 @@ To search only in actions, type "$" followed by keywords.
 |Names|Actions|Notes|
 |----|----|----|
 |Active 4D Folder| Opens the Active 4D Folder
+|Backup| Launches a backup with the current settings
 |Build| Launches the generation process
-|Check syntax| Performs a syntax check
-|Compile| Launch the compilation
+|Check syntax| Performs a syntax check & diplays the list of errors if any
+|Compile| Launch the compilation & diplays the list of errors if any
 |Data Folder| Opens the current Data Folder|Local mode only
 |Database Folder| Opens the Database Folder
 |Documentation Folder| Opens the Documentation Folder| Local mode only
@@ -172,7 +175,7 @@ To search only in actions, type "$" followed by keywords.
 |User Settings| Opens the User Database Settings dialog box 
 |Web Folder| Opens the Web Folder|If exists
 
-## User actions
+## <a name="userActions">User actions</a>
 
 The shared method ***quickOpenPushAction*** allows you to add your own actions.
 
@@ -189,16 +192,17 @@ $o:=New object$o.name:="Test formula"$o.formula:=Formula(ALERT("hello world"))
 ```4d
 $o:=New object$o.name:="Test formula"$o.formula:=Formula(myMethod)quickOpenPushAction($o)
 ```
+> 📌 Unless you set a "modal" property to true, the code is executed in a new process and provides a default menu bar.
 
 ### Form actions
 
 Form actions allow you to directly display a form.
-<br/>The form to be displayed must be in a folder located in the `quickAction` folder located in the `Resources` folder.
-<br/>The component executes the form in a new process and ensures the installation of a default menu bar.
+<br/>The form to be displayed must be in a folder located in the `quickAction` folder located in the `Resources` folder of the database.
 
 ```4d
 $o:=New object$o.name:="test form"$o.form:="TEST"quickOpenPushAction($o)
 ```
+> 📌 The form is displayed in a new process and provides a default menu bar.
 
 # How to change the main QuickOpen shortcut
 
