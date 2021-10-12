@@ -184,6 +184,7 @@ Function search($tring : Text)->$result : Collection
 	var $found : Collection
 	
 	Case of 
+			
 			//______________________________________________________
 		: (Length:C16($tring)=0)
 			
@@ -197,12 +198,56 @@ Function search($tring : Text)->$result : Collection
 			
 			If (Length:C16($tring)>1)
 				
-				$found:=$found.query("name = :1 OR folder = :1 or desc = :1"; "@"+Delete string:C232($tring; 1; 1)+"@")
+				$found:=$found.query("name = :1 OR folder = :1 or desc = :1 or shortcut = :1"; "@"+Delete string:C232($tring; 1; 1)+"@")
+				
+				// Assign a ranking with fewer points the farther from the beginning of the chain.
+				For each ($o; $found)
+					
+					If (OB Is shared:C1759($o))
+						
+						$o:=OB Copy:C1225($o)
+						
+					End if 
+					
+					$o.rank:=0
+					
+					$pos:=Position:C15($tring; String:C10($o.shortcut))
+					
+					If ($pos>0)
+						
+						$o.rank:=$o.rank+(1000-($pos*25))
+						
+					End if 
+					
+					$pos:=Position:C15($tring; $o.name)
+					
+					If ($pos>0)
+						
+						$o.rank:=$o.rank+(400-($pos*20))
+						
+					End if 
+					
+					$pos:=Position:C15($tring; String:C10($o.desc))
+					
+					If ($pos>0)
+						
+						$o.rank:=$o.rank+(100-($pos*10))
+						
+					End if 
+					
+					$o.rank:=$o.rank+Choose:C955($o.name=$tring; 1000; 0)
+					
+				End for each 
+				
+				// Sort results by relevance.
+				$result:=$found.orderBy("rank desc, name asc")
+				
+			Else 
+				
+				// Sort results by name.
+				$result:=$found.orderBy("name asc")
 				
 			End if 
-			
-			// Sort results by nale. 
-			$result:=$found.orderBy("name asc")
 			
 			//______________________________________________________
 		Else 
@@ -231,7 +276,7 @@ Function search($tring : Text)->$result : Collection
 						
 					End if 
 					
-					$pos:=Position:C15($tring; $o.folder)
+					$pos:=Position:C15($tring; String:C10($o.folder))
 					
 					If ($pos>0)
 						
@@ -239,7 +284,7 @@ Function search($tring : Text)->$result : Collection
 						
 					End if 
 					
-					$pos:=Position:C15($tring; $o.desc)
+					$pos:=Position:C15($tring; String:C10($o.desc))
 					
 					If ($pos>0)
 						
@@ -251,7 +296,7 @@ Function search($tring : Text)->$result : Collection
 					
 				End for each 
 				
-				// Sort results by relevance. 
+				// Sort results by relevance.
 				$result:=$found.orderBy("rank desc, name asc")
 				
 			End if 

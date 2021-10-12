@@ -19,6 +19,10 @@
 			"PRIVATE",
 			"PUBLIC"
 		],
+		"forms": [
+			"COMPILER",
+			"QUICK_OPEN"
+		],
 		"classes": [
 			"quickOpen"
 		]
@@ -37,13 +41,12 @@
 		"methods": [
 			"COMPILER_quickOpen",
 			"noError",
+			"quickAction_COMPILE",
+			"quickAction_FORM",
+			"quickAction_FORMULA",
 			"quickOpen_ACTIONS",
 			"quickOpen_CALLBACK",
-			"quickOpen_FORM",
 			"quickOpen_WORKER"
-		],
-		"forms": [
-			"QUICK_OPEN"
 		]
 	},
 	"PUBLIC": {
