@@ -25,7 +25,7 @@ Action shortcuts now available. [Select one and 4DPop QuickOpen do the work!](#n
 
 And more, you can register, very easily, [your own actions](#userActions) from the host database or from a component to run code or display a form!
 
-I strongly encourage you to enrich this project through pull request. This can only benefit the [4D developer community](https://discuss.4d.com/search?q=4D%20for%20iOS). 
+I strongly encourage you to enrich this project through pull request. This can only benefit the [4D developer community](https://discuss.4d.com). 
 
 `Enjoy the 4th dimension`
 
@@ -186,11 +186,17 @@ The user's actions can be code or a form.
 The code to execute is defined by a formula. It can be a simple line or a method call.
 
 ```4d
-$o:=New object$o.name:="Test formula"$o.formula:=Formula(ALERT("hello world"))quickOpenPushAction($o)
+$o:=New object
+$o.name:="Test formula"
+$o.formula:=Formula(ALERT("hello world"))
+quickOpenPushAction($o)
 ```
 
 ```4d
-$o:=New object$o.name:="Test formula"$o.formula:=Formula(myMethod)quickOpenPushAction($o)
+$o:=New object
+$o.name:="Test formula"
+$o.formula:=Formula(myMethod)
+quickOpenPushAction($o)
 ```
 > 📌 Unless you set a "modal" property to true, the code is executed in a new process and provides a default menu bar.
 
@@ -200,7 +206,10 @@ Form actions allow you to directly display a form.
 <br/>The form to be displayed must be in a folder located in the `quickAction` folder located in the `Resources` folder of the database.
 
 ```4d
-$o:=New object$o.name:="test form"$o.form:="TEST"quickOpenPushAction($o)
+$o:=New object
+$o.name:="test form"
+$o.form:="TEST"
+quickOpenPushAction($o)
 ```
 > 📌 The form is displayed in a new process and provides a default menu bar.
 
