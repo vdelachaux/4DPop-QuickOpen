@@ -12,14 +12,18 @@ So the description is consistent with that of the inspiration 😉 :
 
 > *(4DPop)* Quick Open is a development tool with the major goal of quickly opening forms, methods, classes, etc. in 4D and is inspired by Xcode's Quickly Open or macOS' Spotlight features. Beyond that, it also handles the creation and opening of documentation and a few smaller things.
 
+<p align="center"><img src="./Documentation/empty.png" width="500"></p>
+
 The Quick Open window can be opened in two ways:
 
-1. By pressing `Option-Space` on macOS or `Control-Space` on Windows. This means that an event manager must be running (see [Installation](#Installation) below).
+1. By pressing `Option-Space` on macOS or `Control-Space` on Windows. <br/>This means that an event manager must be running (see [Installation](#installation) below).
 
-2. By clicking on its icon in the 4DPop palette.
-<img src="./Documentation/4DPop.png">
+2. If the 4DPop component is installed, by clicking on its icon in the 4DPop palette
+<br/><p align="center"><img src="./Documentation/4DPop.png" width="700"></p>
 
-# What's new!
+> 📌 The 4DPop component _is not mandatory_ for QuickOpen to be fully operational
+
+# 🆕 What's new!
 
 Action shortcuts now available. [Select one and 4DPop QuickOpen do the work!](#new)
 
@@ -28,82 +32,6 @@ And more, you can register, very easily, [your own actions](#userActions) from t
 I strongly encourage you to enrich this project through pull request. This can only benefit the [4D developer community](https://discuss.4d.com). 
 
 `Enjoy the 4th dimension`
-
-# Installation
-
-## A - If you do not use an event-catching method
-
-#### Create, if any, the database method `On startup` and enter this code:
-
-```4D
-If (Not(Is compiled mode))
-	
-	ARRAY TEXT($componentsArray; 0)
-	COMPONENT LIST($componentsArray)
-	
-	If (Find in array($componentsArray; "4DPop QuickOpen")>0)
-		
-		// Installing quickOpen
-		EXECUTE METHOD("quickOpenInit"; *; Formula(MODIFIERS); Formula(KEYCODE))
-		ON EVENT CALL("quickOpenEventHandler"; "$quickOpenListener")
-		
-	End if 
-End if
-```
-
-> **Note**: This is where you can change the shortcut to invoke the quick search dialog by passing 2 additional parameters to the `quickOpenInit` method (see below: `How to change the main QuickOpen shortcut`)
-
-
-## B - If you already use an event-catching method
-
-#### 1 - Call the init method before installing your event-catching method. Something like:
-
-```4D
-ARRAY TEXT($componentsArray; 0)
-COMPONENT LIST($componentsArray)
-
-If (Find in array($componentsArray; "4DPop QuickOpen")>0)
-	
-	// Installing quickOpen
-	EXECUTE METHOD("quickOpenInit"; *; Formula(MODIFIERS); Formula(KEYCODE))
-	
-End if 
-
-ON EVENT CALL("MY_METHOD"; "$eventHandler")
-```
- 
-#### 2 - Modify your event-catching method like this:
-
-```4D
-var $quickOpen : Boolean
-
-// Only in development mode
-If (Not(Is compiled mode(*)))
-	
-	// Only if the component is loaded
-	ARRAY TEXT($components; 0)
-	COMPONENT LIST($components)
-	
-	If (Find in array($components; "4DPop QuickOpen")>0)
-		
-		// Is it a quickOpen call?
-		EXECUTE METHOD("quickOpenEventHandler"; $quickOpen)
-		
-	End if 
-End if 
-
-If (Not($quickOpen))
-	
-	// <THE DATABASE EVENT HANDLER CODE>
-	
-End if 
-```
- 
-## Restart the database and hit Option/Control-Space in design mode to display the UI
-
-The QuickOpen dialog box should appear
-
-<p align="center"><img src="./Documentation/empty.png" width="500"></p>
 
 # Features
 
@@ -179,41 +107,87 @@ To search only in actions, type "$" followed by keywords.
 
 The shared method ***quickOpenPushAction*** allows you to add your own actions.
 
-The user's actions can be code or a form.
+User actions can call **code** or a **form**. See the <a href="Documentation/Methods/quickOpenPushAction.md"> method documentation</a> for more information on how to define user actions.
 
-### Code actions
+# <a name="installation">Installation</a>
+If you want to open the QuickOpen window with a shortcut, you must install an event capture method. Otherwise, you can call from one of your methods the shared method ***QUICK_OPEN*** or use the "QuickOpen" button of the `4DPop` palette if this component is installed.
 
-The code to execute is defined by a formula. It can be a simple line or a method call.
+The installation of the QuickOpen shortcut depends on whether you use an event-catching method in your development.
 
-```4d
-$o:=New object
-$o.name:="Test formula"
-$o.formula:=Formula(ALERT("hello world"))
-quickOpenPushAction($o)
+## A - If you do not use an event-catching method
+
+#### Create, if any, the database method `On startup` and enter this code:
+
+```4D
+If (Not(Is compiled mode))
+	
+	ARRAY TEXT($componentsArray; 0)
+	COMPONENT LIST($componentsArray)
+	
+	If (Find in array($componentsArray; "4DPop QuickOpen")>0)
+		
+		// Installing quickOpen
+		EXECUTE METHOD("quickOpenInit"; *; Formula(MODIFIERS); Formula(KEYCODE))
+		ON EVENT CALL("quickOpenEventHandler"; "$quickOpenListener")
+		
+	End if 
+End if
 ```
 
-```4d
-$o:=New object
-$o.name:="Test formula"
-$o.formula:=Formula(myMethod)
-quickOpenPushAction($o)
+> **Note**: This is where you can change the shortcut to invoke the quick search dialog by passing 2 additional parameters to the `quickOpenInit` method (see [How to change the main QuickOpen shortcut](#shortcut))
+>
+> 📌 If the **On Startup** database method does not exist and the **Execute "On Host Database Event" method of components"** structure setting option  is enabled, the method is automatically created at startup.
+
+## B - If you already use an event-catching method
+
+#### 1 - Call the init method before installing your event-catching method. Something like:
+
+```4D
+ARRAY TEXT($componentsArray; 0)
+COMPONENT LIST($componentsArray)
+
+If (Find in array($componentsArray; "4DPop QuickOpen")>0)
+	
+	// Installing quickOpen
+	EXECUTE METHOD("quickOpenInit"; *; Formula(MODIFIERS); Formula(KEYCODE))
+	
+End if 
+
+ON EVENT CALL("MY_METHOD"; "$eventHandler")
 ```
-> 📌 Unless you set a "modal" property to true, the code is executed in a new process and provides a default menu bar.
 
-### Form actions
+#### 2 - Modify your event-catching method like this:
 
-Form actions allow you to directly display a form.
-<br/>The form to be displayed must be in a folder located in the `quickAction` folder located in the `Resources` folder of the database.
+```4D
+var $quickOpen : Boolean
 
-```4d
-$o:=New object
-$o.name:="test form"
-$o.form:="TEST"
-quickOpenPushAction($o)
+// Only in development mode
+If (Not(Is compiled mode(*)))
+	
+	// Only if the component is loaded
+	ARRAY TEXT($components; 0)
+	COMPONENT LIST($components)
+	
+	If (Find in array($components; "4DPop QuickOpen")>0)
+		
+		// Is it a quickOpen call?
+		EXECUTE METHOD("quickOpenEventHandler"; $quickOpen)
+		
+	End if 
+End if 
+
+If (Not($quickOpen))
+	
+	// <THE DATABASE EVENT HANDLER CODE>
+	
+End if 
 ```
-> 📌 The form is displayed in a new process and provides a default menu bar.
 
-# How to change the main QuickOpen shortcut
+## Restart the database and hit Option/Control-Space in design mode to display the UI
+
+The QuickOpen dialog box should appear
+
+# <a name="shortcut">How to change the main QuickOpen shortcut</a>
 
 When you call the `quickOpenInit` method, you can pass 1 or 2 additional parameters: 
 

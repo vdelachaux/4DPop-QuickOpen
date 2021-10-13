@@ -2,6 +2,12 @@
 	"_": {
 		"tables": [
 			"Table_1"
+		],
+		"methods": [
+			"00_TEST"
+		],
+		"forms": [
+			"IMPORT_PICTURE"
 		]
 	},
 	"classes": {
