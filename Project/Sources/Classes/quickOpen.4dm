@@ -340,7 +340,7 @@ Function close
 	
 	var $file : 4D:C1709.File
 	
-	$file:=Folder:C1567(fk database folder:K87:14; *).file("Preferences/4dPop design.preferences")
+	$file:=Folder:C1567(fk database folder:K87:14; *).file("Preferences/4DPop design.preferences")
 	$file.setText(JSON Stringify:C1217(Form:C1466.preferences; *))
 	
 	CANCEL:C270

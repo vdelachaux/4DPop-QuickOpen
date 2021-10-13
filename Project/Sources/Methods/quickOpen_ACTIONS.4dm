@@ -12,11 +12,6 @@ var $o : Object
 Case of 
 		
 		//______________________________________________________
-	: ($action.form#Null:C1517)
-		
-		$process:=New process:C317("quickAction_FORM"; 0; "$quickOpen"; OB Copy:C1225($action))
-		
-		//______________________________________________________
 	: ($action.formula#Null:C1517)
 		
 		If (Bool:C1537($action.modal))
@@ -28,6 +23,11 @@ Case of
 			$process:=New process:C317("quickAction_FORMULA"; 0; "$quickOpen"; OB Copy:C1225($action))
 			
 		End if 
+		
+		//______________________________________________________
+	: ($action.form#Null:C1517)
+		
+		$process:=New process:C317("quickAction_FORM"; 0; "$quickOpen"; OB Copy:C1225($action))
 		
 		//______________________________________________________
 	: ($action.action="userSettings")
