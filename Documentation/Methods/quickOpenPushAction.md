@@ -18,7 +18,7 @@ The code to execute is defined by a **Formula** defined in the "[formula](#formu
 $o:=New object
 $o.name:="Test formula"
 $o.formula:=Formula(ALERT("hello world"))
-quickOpenPushAction($o)
+EXECUTE METHOD("quickOpenPushAction"; *; $o)
 ```
 or a project method call.
  
@@ -26,7 +26,7 @@ or a project method call.
 $o:=New object
 $o.name:="Test formula"
 $o.formula:=Formula(myMethod)
-quickOpenPushAction($o)
+EXECUTE METHOD("quickOpenPushAction"; *; $o)
 ```
 > 📌 Unless you set a "[modal](#modal)" property to true, the code is executed in a new process and provides a default menu bar (with the `Edit` menu).
 
@@ -39,9 +39,18 @@ The component automatically manages the display of a form that you have defined.
 $o:=New object
 $o.name:="test form"
 $o.form:="TEST"
-quickOpenPushAction($o)
+EXECUTE METHOD("quickOpenPushAction"; *; $o)
 ```
 > 📌 The form is displayed in a new process and provides a default menu bar (with the `Edit` menu).
+
+🚨 **Note**: As the purpose of this component is only development, to avoid including the `4DPop quickOpen` component in the final application, it is strongly recommended to test if the component is loaded and then use EXECUTE METHOD to call the `quickOpenPushAction` shared method like this:
+
+```4d
+If (Not(Is compiled mode))	
+	COMPONENT LIST($componentsArray)		If (Find in array($componentsArray; "4DPop QuickOpen")>0)
+		$o:=New object(\			"name";"Hello";\			"formula";Formula(ALERT("Hello World"))
+		EXECUTE METHOD("quickOpenPushAction"; *; $o)	End if End if 
+```
 
 ## Action Object Properties
 
@@ -54,7 +63,7 @@ This optional property contains additional keywords, other than those in the nam
 ### • <a name="formula">formula</a>
 The formula to be executed. 
 	
-> 📌 If the formula calls one of your methods, there is no need to share this method since the formula is called in the context where it was created.
+> 📌 If the formula calls one of your methods, there is no need to declare them as "shared by components and host database" since when called, the formula object is evaluated within the context of the database or component that created it. See [Formula documentation](https://developer.4d.com/docs/en/API/FunctionClass.html#formula)
 	
 ### • <a name="form">form</a>
 The name of a folder containing the form definition to be displayed. This folder must be in a folder named `quickAction` located in the `Resources` folder of the database.

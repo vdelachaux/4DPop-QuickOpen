@@ -1,8 +1,18 @@
 Class extends design
 
-Class constructor
+Class constructor()
+	
+	var $icon : Picture
 	
 	Super:C1705()
+	
+	READ PICTURE FILE:C678(File:C1566("/RESOURCES/Images/objectsIcons/Icon_604.png").platformPath; $icon)
+	This:C1470.paths.push(New object:C1471(\
+		"type"; -1; \
+		"comment"; "embedded action"; \
+		"icon"; $icon; \
+		"folder"; "_"; \
+		"desc"; "action"))
 	
 	This:C1470.commands:=New collection:C1472
 	
@@ -12,49 +22,45 @@ Class constructor
 Function _loadActions()
 	
 	var $t : Text
-	var $icon : Picture
-	var $o : Object
-	var $file : 4D:C1709.File
+	var $toPush : Boolean
+	var $o; $tmpl : Object
 	
-	$file:=File:C1566("/RESOURCES/quickOpen.json")
+	$o:=JSON Parse:C1218(File:C1566("/RESOURCES/quickOpen.json").getText())
+	$o:=JSON Resolve pointers:C1478($o; New object:C1471("merge"; True:C214))
 	
-	If ($file.exists)
+	If ($o.success)
 		
-		$o:=JSON Parse:C1218($file.getText())
-		$o:=JSON Resolve pointers:C1478($o; New object:C1471("merge"; True:C214))
+		$tmpl:=This:C1470.paths.query("type = :1"; -1).pop()
 		
-		If ($o.success)
+		For each ($o; $o.value.actions)
 			
-			READ PICTURE FILE:C678(File:C1566("/RESOURCES/Images/objectsIcons/Icon_604.png").platformPath; $icon)
-			
-			For each ($o; $o.value.actions)
+			If ($o.condition#Null:C1517)
 				
+				$toPush:=Formula from string:C1601($o.condition).call()
+				
+			Else 
+				
+				$toPush:=True:C214  // Default
+				
+			End if 
+			
+			If ($toPush)
+				
+				// Localize
 				$t:=Get localized string:C991(String:C10($o.name))
 				$o.name:=Choose:C955(Bool:C1537(OK); $t; $o.name)
 				
-				$o.type:=-1
-				$o.icon:=$icon
-				$o.desc:=Choose:C955($o.desc=Null:C1517; $o.name; $o.desc)
-				
-				$o.folder:="_"
+				$o.type:=$tmpl.type
+				$o.icon:=$tmpl.icon
+				$o.desc:=$tmpl.desc
+				$o.folder:=$tmpl.folder
 				$o.doc:=""
 				$o.attributes:=Null:C1517
 				
-				If ($o.condition#Null:C1517)
-					
-					If (Formula from string:C1601($o.condition).call())
-						
-						This:C1470.commands.push($o)
-						
-					End if 
-					
-				Else 
-					
-					This:C1470.commands.push($o)
-					
-				End if 
-			End for each 
-		End if 
+				This:C1470.commands.push($o)
+				
+			End if 
+		End for each 
 	End if 
 	
 	//======================================================================================

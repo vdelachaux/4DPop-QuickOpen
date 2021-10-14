@@ -6,7 +6,9 @@ If (False:C215)
 	C_OBJECT:C1216(quickOpenPushAction; $1)
 End if 
 
+var $key : Text
 var $icon : Picture
+var $o : Object
 
 If (Storage:C1525.actions=Null:C1517)
 	
@@ -17,15 +19,20 @@ If (Storage:C1525.actions=Null:C1517)
 	End use 
 End if 
 
-If (Storage:C1525.actions.query("name = :1"; $action.name).pop()=Null:C1517)
+$o:=Storage:C1525.actions.query("name = :1"; $action.name).pop()
+
+Use (Storage:C1525.actions)
 	
-	Use (Storage:C1525.actions)
+	If ($o=Null:C1517)  // *CREATE
 		
 		$action:=OB Copy:C1225($action; ck shared:K85:29)
 		
 		Use ($action)
 			
 			$action.type:=-1
+			$action.desc:="action"
+			$action.comment:="embedded action"
+			$action.folder:="_"
 			
 			If ($action.icon=Null:C1517)
 				
@@ -38,15 +45,31 @@ If (Storage:C1525.actions.query("name = :1"; $action.name).pop()=Null:C1517)
 			End if 
 			
 			$action.icon:=$icon
-			$action.desc:=Choose:C955($action.desc=Null:C1517; $action.name; $action.desc)
 			
-			$action.folder:="_"
+			Storage:C1525.actions.push($action)
 			
 		End use 
 		
-		Storage:C1525.actions.push($action)
+	Else   // *UPDATE
 		
-	End use 
-	
-Else   // ACTION ALREADY EXISTS
-End if 
+		For each ($key; $action)
+			
+			Case of 
+					
+					//______________________________________________________
+				: ($key="icon")
+					
+					CREATE THUMBNAIL:C679($action.icon; $icon; 16; 16)
+					$o.icon:=$icon
+					
+					//______________________________________________________
+				Else 
+					
+					$o[$key]:=$action[$key]
+					
+					//______________________________________________________
+			End case 
+			
+		End for each 
+	End if 
+End use 
