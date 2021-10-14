@@ -1,11 +1,11 @@
 ## Description
-The `quickOpenPushAction` method allows you to record your own actions.
+The `quickOpenPushAction` method allows you to define your own actions.
 
 ## Syntax
 
 `quickOpenPushAction(Object)`
 
-🚨 **Note**: As the purpose of this component is only development, to avoid including it in the final application, it is strongly recommended to test if the component is loaded and then use EXECUTE METHOD to call the `quickOpenPushAction` shared method like this:
+🚨 **Note**: As the purpose of this component is only development, to avoid including it in the final application, it is strongly recommended to test if the component is loaded and then use EXECUTE METHOD to call the shared method like this:
 
 ```4d
 If (Not(Is compiled mode))	
