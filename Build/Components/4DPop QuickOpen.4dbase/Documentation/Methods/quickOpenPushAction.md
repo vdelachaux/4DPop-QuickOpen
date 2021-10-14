@@ -1,9 +1,23 @@
 ## Description
-The `quickOpenPushAction` method allows you to record your own actions.
+The `quickOpenPushAction` method allows you to define your own actions.
 
 ## Syntax
 
-`quickOpenEventHandler(Object)`
+`quickOpenPushAction(Object)`
+
+🚨 **Note**: As the purpose of this component is only development, to avoid including it in the final application, it is strongly recommended to test if the component is loaded and then use EXECUTE METHOD to call the shared method like this:
+
+```4d
+If (Not(Is compiled mode))	
+	COMPONENT LIST($componentsArray)	
+	If (Find in array($componentsArray; "4DPop QuickOpen")>0)
+		$o:=New object(\
+			"name";"Hello";\
+			"formula";Formula(ALERT("Hello World"))
+		EXECUTE METHOD("quickOpenPushAction"; *; $o)
+	End if 
+End if 
+```
 
 ## Usage
 
@@ -43,15 +57,6 @@ EXECUTE METHOD("quickOpenPushAction"; *; $o)
 ```
 > 📌 The form is displayed in a new process and provides a default menu bar (with the `Edit` menu).
 
-🚨 **Note**: As the purpose of this component is only development, to avoid including the `4DPop quickOpen` component in the final application, it is strongly recommended to test if the component is loaded and then use EXECUTE METHOD to call the `quickOpenPushAction` shared method like this:
-
-```4d
-If (Not(Is compiled mode))	
-	COMPONENT LIST($componentsArray)		If (Find in array($componentsArray; "4DPop QuickOpen")>0)
-		$o:=New object(\			"name";"Hello";\			"formula";Formula(ALERT("Hello World"))
-		EXECUTE METHOD("quickOpenPushAction"; *; $o)	End if End if 
-```
-
 ## Action Object Properties
 
 ### • name
@@ -79,4 +84,4 @@ Optional. Allows you to provide a custom icon to use in the list.
 	
 ### • <a name="modal">modal</a>
 By default the code is executed in a new process. If the optional property `modal`is True, the code will be executed into the design process.
-
+

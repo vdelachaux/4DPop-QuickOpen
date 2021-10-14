@@ -8,6 +8,8 @@
 
 `quickOpenEventHandler() ➞ Boolean`
 
+🚨 **Note**: As the purpose of this component is only development, to avoid including it in the final application, it is strongly recommended to test if the component is loaded and then use EXECUTE METHOD to call the shared method.
+
 ## Usage
 
 See the [complete documentation](https://github.com/vdelachaux/4DPop-QuickOpen/blob/master/README.md) 
