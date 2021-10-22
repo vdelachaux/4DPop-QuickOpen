@@ -92,7 +92,7 @@
       "formula": "SHOW ON DISK:C922(Folder:C1567(fk database folder:K87:14;*).platformPath;*)", 
       "shortcut": "FolderDossier", 
       "name": "databaseFolder", 
-      "condition": "Not:C34(Application type:C494=4D Remote mode:K5:5)"
+      "$ref" :"#/islocalMode"
     }, 
     {
       "formula": "SHOW ON DISK:C922(Folder:C1567(fk data folder:K87:12;*).platformPath;*)", 

@@ -130,7 +130,7 @@ Function search($tring : Text)
 	End case 
 	
 	// Handle the search
-	Form:C1466.result:=Super:C1706.search(Form:C1466.search)
+	Form:C1466.result:=This:C1470._search(Form:C1466.search)
 	
 	If (Form:C1466.isMaximized)
 		
@@ -160,10 +160,21 @@ Function open($item : Object)
 	
 	If ($item#Null:C1517)  // Make sure an item is selected
 		
+		Form:C1466.preferences.lastItem:=New object:C1471("name"; $item.name)
+		
 		Case of 
 				
 				//______________________________________________________
 			: ($item.type=-1)
+				
+				// Include in the list of the last used to allow the most used to be presented first
+				Form:C1466.preferences.latestActions.insert(0; New object:C1471("name"; $item.name))
+				
+				If (Form:C1466.preferences.latestActions.length>10)
+					
+					Form:C1466.preferences.latestActions.resize(10)
+					
+				End if 
 				
 				CALL WORKER:C1389(1; "quickOpen_ACTIONS"; $item)
 				
@@ -350,4 +361,149 @@ Function close
 	$file.setText(JSON Stringify:C1217(Form:C1466.preferences; *))
 	
 	CANCEL:C270
+	
+	//======================================================================================
+Function _search($tring : Text)->$result : Collection
+	
+	var $pos : Integer
+	var $o : Object
+	var $found : Collection
+	
+	Case of 
+			
+			//______________________________________________________
+		: (Length:C16($tring)=0)
+			
+			This:C1470.getSources()
+			$result:=This:C1470.sources
+			
+			//______________________________________________________
+		: ($tring="$@")
+			
+			$found:=Form:C1466.list.query("folder = '_'")
+			
+			If (Length:C16($tring)>1)
+				
+				$found:=$found.query("name = :1 OR folder = :1 or desc = :1 or shortcut = :1"; "@"+Delete string:C232($tring; 1; 1)+"@")
+				
+				// Assign a ranking with fewer points the farther from the beginning of the chain.
+				For each ($o; $found)
+					
+					If (OB Is shared:C1759($o))
+						
+						$o:=OB Copy:C1225($o)
+						
+					End if 
+					
+					$o.rank:=0
+					
+					$pos:=Position:C15($tring; String:C10($o.shortcut))
+					
+					If ($pos>0)
+						
+						$o.rank:=$o.rank+(1000-($pos*25))
+						
+					End if 
+					
+					$pos:=Position:C15($tring; $o.name)
+					
+					If ($pos>0)
+						
+						$o.rank:=$o.rank+(400-($pos*20))
+						
+					End if 
+					
+					$pos:=Position:C15($tring; String:C10($o.desc))
+					
+					If ($pos>0)
+						
+						$o.rank:=$o.rank+(100-($pos*10))
+						
+					End if 
+					
+					$o.rank:=$o.rank+Choose:C955($o.name=$tring; 1000; 0)
+					
+					If ($o.type=-1)
+						
+						$o.rank:=$o.rank+(2000*Form:C1466.preferences.latestActions.indices("name = :1"; $o.name).length)
+						
+					End if 
+				End for each 
+				
+				// Sort results by relevance.
+				$result:=$found.orderBy("rank desc, name asc")
+				
+			Else 
+				
+				// Sort results by number of uses.
+				For each ($o; $found)
+					
+					If (OB Is shared:C1759($o))
+						
+						$o:=OB Copy:C1225($o)
+						
+					End if 
+					
+					$o.rank:=2000*Form:C1466.preferences.latestActions.indices("name = :1"; $o.name).length
+					
+				End for each 
+				
+				$result:=$found.orderBy("rank desc, name asc")
+				
+			End if 
+			
+			//______________________________________________________
+		Else 
+			
+			If (Form:C1466.list#Null:C1517)
+				
+				// Filter the list according to what is entered
+				$found:=Form:C1466.list.query("name = :1 OR folder = :1 or desc = :1 or shortcut = :1"; "@"+$tring+"@")
+				
+				// Assign a ranking with fewer points the farther from the beginning of the chain.
+				For each ($o; $found)
+					
+					If (OB Is shared:C1759($o))
+						
+						$o:=OB Copy:C1225($o)
+						
+					End if 
+					
+					$o.rank:=0
+					
+					$pos:=Position:C15($tring; $o.name)
+					
+					If ($pos>0)
+						
+						$o.rank:=$o.rank+(1000-($pos*25))
+						
+					End if 
+					
+					$pos:=Position:C15($tring; String:C10($o.folder))
+					
+					If ($pos>0)
+						
+						$o.rank:=$o.rank+(400-($pos*20))
+						
+					End if 
+					
+					$pos:=Position:C15($tring; String:C10($o.desc))
+					
+					If ($pos>0)
+						
+						$o.rank:=$o.rank+(100-($pos*10))
+						
+					End if 
+					
+					$o.rank:=$o.rank+Choose:C955($o.name=$tring; 1000; 0)
+					
+				End for each 
+				
+				// Sort results by relevance.
+				$result:=$found.orderBy("rank desc, name asc")
+				
+			End if 
+			
+			//______________________________________________________
+	End case 
 	

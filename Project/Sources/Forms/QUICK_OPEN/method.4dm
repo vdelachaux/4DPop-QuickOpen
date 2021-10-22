@@ -20,12 +20,21 @@ Case of
 		If ($file.exists)
 			
 			Form:C1466.preferences:=JSON Parse:C1218($file.getText())
+			
+			If (Form:C1466.preferences.latestActions=Null:C1517)
+				
+				Form:C1466.preferences.latestActions:=New collection:C1472
+				
+			End if 
+			
 			Form:C1466.search:=Form:C1466.preferences.lastSearch
 			
 		Else 
 			
 			// First use
-			Form:C1466.preferences:=New object:C1471("lastSearch"; "")
+			Form:C1466.preferences:=New object:C1471(\
+				"lastSearch"; ""; \
+				"latestActions"; New collection:C1472)
 			
 		End if 
 		

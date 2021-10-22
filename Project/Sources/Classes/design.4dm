@@ -176,135 +176,6 @@ Function getSources()->$this : cs:C1710.design
 	$this:=This:C1470
 	
 	//-----------------------------------------------------------
-	// Handle the search
-Function search($tring : Text)->$result : Collection
-	
-	var $pos : Integer
-	var $o : Object
-	var $found : Collection
-	
-	Case of 
-			
-			//______________________________________________________
-		: (Length:C16($tring)=0)
-			
-			This:C1470.getSources()
-			$result:=This:C1470.sources
-			
-			//______________________________________________________
-		: ($tring="$@")
-			
-			$found:=Form:C1466.list.query("folder = '_'")
-			
-			If (Length:C16($tring)>1)
-				
-				$found:=$found.query("name = :1 OR folder = :1 or desc = :1 or shortcut = :1"; "@"+Delete string:C232($tring; 1; 1)+"@")
-				
-				// Assign a ranking with fewer points the farther from the beginning of the chain.
-				For each ($o; $found)
-					
-					If (OB Is shared:C1759($o))
-						
-						$o:=OB Copy:C1225($o)
-						
-					End if 
-					
-					$o.rank:=0
-					
-					$pos:=Position:C15($tring; String:C10($o.shortcut))
-					
-					If ($pos>0)
-						
-						$o.rank:=$o.rank+(1000-($pos*25))
-						
-					End if 
-					
-					$pos:=Position:C15($tring; $o.name)
-					
-					If ($pos>0)
-						
-						$o.rank:=$o.rank+(400-($pos*20))
-						
-					End if 
-					
-					$pos:=Position:C15($tring; String:C10($o.desc))
-					
-					If ($pos>0)
-						
-						$o.rank:=$o.rank+(100-($pos*10))
-						
-					End if 
-					
-					$o.rank:=$o.rank+Choose:C955($o.name=$tring; 1000; 0)
-					
-				End for each 
-				
-				// Sort results by relevance.
-				$result:=$found.orderBy("rank desc, name asc")
-				
-			Else 
-				
-				// Sort results by name.
-				$result:=$found.orderBy("name asc")
-				
-			End if 
-			
-			//______________________________________________________
-		Else 
-			
-			If (Form:C1466.list#Null:C1517)
-				
-				// Filter the list according to what is entered
-				$found:=Form:C1466.list.query("name = :1 OR folder = :1 or desc = :1 or shortcut = :1"; "@"+$tring+"@")
-				
-				// Assign a ranking with fewer points the farther from the beginning of the chain.
-				For each ($o; $found)
-					
-					If (OB Is shared:C1759($o))
-						
-						$o:=OB Copy:C1225($o)
-						
-					End if 
-					
-					$o.rank:=0
-					
-					$pos:=Position:C15($tring; $o.name)
-					
-					If ($pos>0)
-						
-						$o.rank:=$o.rank+(1000-($pos*25))
-						
-					End if 
-					
-					$pos:=Position:C15($tring; String:C10($o.folder))
-					
-					If ($pos>0)
-						
-						$o.rank:=$o.rank+(400-($pos*20))
-						
-					End if 
-					
-					$pos:=Position:C15($tring; String:C10($o.desc))
-					
-					If ($pos>0)
-						
-						$o.rank:=$o.rank+(100-($pos*10))
-						
-					End if 
-					
-					$o.rank:=$o.rank+Choose:C955($o.name=$tring; 1000; 0)
-					
-				End for each 
-				
-				// Sort results by relevance.
-				$result:=$found.orderBy("rank desc, name asc")
-				
-			End if 
-			
-			//______________________________________________________
-	End case 
-	
-	//-----------------------------------------------------------
 Function edit($designObject : Object; $formMethod : Boolean)
 	
 	var $formMethodƒ : Boolean
@@ -752,7 +623,11 @@ Function _load($type : Integer)
 			: ($type=Path project method:K72:1)
 				
 				var $attributes : Object
+				
+				var $onErrCallMethod : Text
+				$onErrCallMethod:=This:C1470._errorCatch()
 				METHOD GET ATTRIBUTES:C1334($item.name; $attributes; *)
+				This:C1470._errorCatch($onErrCallMethod)
 				
 				This:C1470.sources.push(New object:C1471(\
 					"type"; $type; \
