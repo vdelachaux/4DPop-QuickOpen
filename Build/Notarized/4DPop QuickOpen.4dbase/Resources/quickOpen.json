@@ -1,0 +1,132 @@
+{
+	"isRemoteMode": {
+		"condition": "Application type:C494=4D Remote mode:K5:5"
+	},
+	"islocalMode": {
+		"condition": "Not:C34(Application type:C494=4D Remote mode:K5:5)"
+	},
+  "actions": [
+    {
+      "formula": "OPEN RUNTIME EXPLORER:C1781", 
+      "name": "runtimeExplorer"
+    }, 
+    {
+      "formula": "OPEN SETTINGS WINDOW:C903(\"/\"; False:C215; Structure settings:K5:26)", 
+      "name": "structureSettings"
+    }, 
+    {
+      "action": "userSettings", 
+      "name": "userSettings"
+    }, 
+    {
+      "action": "checkSyntax", 
+      "name": "checkSyntax"
+    }, 
+    {
+      "action": "compile", 
+      "name": "compile"
+    }, 
+    {
+      "formula": "BACKUP:C887", 
+      "name": "backup"
+    }, 
+    {
+      "formula": "OPEN SECURITY CENTER:C1018", 
+      "name": "securityCenter",
+      "modal": true, 
+      "shortcut": "msc"
+    }, 
+    {
+      "formula": "RESTART 4D:C1292", 
+      "name": "restart"
+    }, 
+    {
+      "formula": "RELOAD PROJECT:C1739", 
+      "name": "reloadProject"
+    }, 
+    {
+      "formula": "QUIT 4D:C291", 
+      "name": "quit"
+    }, 
+    {
+      "formula": "BUILD APPLICATION:C871(File:C1566(Build application settings file:K5:60;*).platformPath)", 
+      "name": "build"
+    }, 
+    {
+      "formula": "OPEN ADMINISTRATION WINDOW:C1047", 
+      "name": "openAdministrationWindow", 
+      "$ref" :"#/isRemoteMode"
+    }, 
+    {
+      "formula": "WEB Server:C1674(Web server host database:K73:31).start()", 
+      "name": "startWebServer", 
+      "shortcut": "web"
+    }, 
+    {
+      "formula": "WEB Server:C1674(Web server host database:K73:31).stop()", 
+      "name": "stopWebServer", 
+      "shortcut": "web"
+    }, 
+    {
+      "formula": "SHOW ON DISK:C922(Folder:C1567(fk user preferences folder:K87:10).platformPath;*)", 
+      "name": "active4dFolder", 
+      "shortcut": "FolderDossier"
+    }, 
+    {
+      "formula": "SHOW ON DISK:C922(Folder:C1567(fk resources folder:K87:11;*).platformPath)", 
+      "name": "resourcesFolder", 
+      "shortcut": "FolderDossier"
+    }, 
+    {
+      "formula": "SHOW ON DISK:C922(Folder:C1567(fk editor theme folder:K87:23).platformPath)", 
+      "name": "editorThemeFolder", 
+      "shortcut": "FolderDossier"
+    }, 
+    {
+      "formula": "SHOW ON DISK:C922(Folder:C1567(fk web root folder:K87:15;*).platformPath;*)", 
+      "shortcut": "webfolder", 
+      "name": "webFolder", 
+      "condition": "Folder:C1567(fk web root folder:K87:15;*).exists"
+    }, 
+    {
+      "formula": "SHOW ON DISK:C922(Folder:C1567(fk database folder:K87:14;*).platformPath;*)", 
+      "shortcut": "FolderDossier", 
+      "name": "databaseFolder", 
+      "$ref" :"#/islocalMode"
+    }, 
+    {
+      "formula": "SHOW ON DISK:C922(Folder:C1567(fk data folder:K87:12;*).platformPath;*)", 
+      "shortcut": "FolderDossierData", 
+      "name": "dataFolder", 
+      "$ref" :"#/islocalMode"
+    }, 
+    {
+      "formula": "SHOW ON DISK:C922(Folder:C1567(fk logs folder:K87:17;*).platformPath;*)", 
+      "name": "logsFolder", 
+      "shortcut": "FolderDossierLog"
+    }, 
+    {
+      "formula": "SHOW ON DISK:C922(Folder:C1567(fk database folder:K87:14;*).folder(\"settings\").platformPath;*)", 
+      "name": "settingsFolder", 
+      "shortcut": "FolderDossierSettings"
+    }, 
+    {
+      "formula": "SHOW ON DISK:C922(Folder:C1567(fk database folder:K87:14;*).folder(\"Documentation\").platformPath;*)", 
+      "shortcut": "FolderDossier", 
+      "name": "documentationFolder", 
+      "$ref" :"#/islocalMode"
+    }, 
+    {
+      "formula": "SHOW ON DISK:C922(Folder:C1567(fk mobileApps folder:K87:18;*).platformPath;*)", 
+      "shortcut": "FolderDossier", 
+      "name": "mobileappsFolder", 
+      "$ref" :"#/islocalMode"
+    }, 
+    {
+      "formula": "SHOW ON DISK:C922(Folder:C1567(fk database folder:K87:14;*).folder(\"Project\").platformPath;*)", 
+      "shortcut": "FolderDossier", 
+      "name": "projectFolder", 
+      "$ref" :"#/islocalMode"
+    }
+  ]
+}
