@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?><preferences stamp="11">
+<?xml version="1.0" encoding="UTF-8"?><preferences stamp="13">
 	<com.4d>
 		<web>
 			<standalone_server>
@@ -27,7 +27,7 @@
 			</network>
 		</server>
 		<database>
-			<misc mac_use_lf="false" no_bom="false" standard_xpath="true"/>
+			<misc mac_use_lf="true" no_bom="true" prefer_null_than_blank_values="false" standard_xpath="true"/>
 		</database>
 		<deployment>
 			<options/>
