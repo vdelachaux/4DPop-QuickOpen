@@ -1,10 +1,6 @@
-#--------------------------------
-# Ignore invisible files/folders
-#--------------------------------
+# Ignore invisible files/folders except .gitignore
 .*
-!.git*
-
-.git/
+!.gitignore
 
 #--------------------------------
 # Ignore data file
@@ -38,6 +34,13 @@ Settings/
 userPreferences.*/
 
 #--------------------------------
+# Ignore Trash
+#--------------------------------
+Project/Trash/
+
+Resources/php.ini
+
+#--------------------------------
 # Miscellaneous
 #--------------------------------
 *__Orphan__*
@@ -48,11 +51,15 @@ Thumbs.db
 #--------------------------------
 # Added by user
 #--------------------------------
+Components/
+!Build/Components
 
-Resources/php.ini
+_gsdata_
+
+Project/Sources/Methods/Method*.4dm
+Project/Sources/Methods/00_*.4dm
+
 Libraries/lib4d-arm64.dylib
-Project/Trash
+
 Resources/quickOpen/TEST
 Build/Components/4DPop QuickOpen.4dbase/Resources/quickOpen/TEST
-Build/Components/4DPop QuickOpen.4dbase/Resources/php.ini
-Build/Components/4DPop QuickOpen.4dbase/_gsdata_
