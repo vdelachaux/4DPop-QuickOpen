@@ -475,7 +475,7 @@ Function _search($tring : Text)->$result : Collection
 					
 					If ($pos>0)
 						
-						$o.rank:=$o.rank+(1000-($pos*25))
+						$o.rank+=(1000-($pos*25))
 						
 					End if 
 					
@@ -483,7 +483,7 @@ Function _search($tring : Text)->$result : Collection
 					
 					If ($pos>0)
 						
-						$o.rank:=$o.rank+(400-($pos*20))
+						$o.rank+=(400-($pos*20))
 						
 					End if 
 					
@@ -491,11 +491,11 @@ Function _search($tring : Text)->$result : Collection
 					
 					If ($pos>0)
 						
-						$o.rank:=$o.rank+(100-($pos*10))
+						$o.rank+=(100-($pos*10))
 						
 					End if 
 					
-					$o.rank:=$o.rank+Choose:C955($o.name=$tring; 1000; 0)
+					$o.rank+=Choose:C955($o.name=$tring; 1000; 0)
 					
 				End for each 
 				
