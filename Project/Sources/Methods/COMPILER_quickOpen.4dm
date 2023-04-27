@@ -4,7 +4,7 @@ var design : cs:C1710.design
 If (False:C215)  // * SHARED
 	
 	//______________________________________________________
-	C_VARIANT:C1683(QUICK_OPEN; $1)
+	//C_VARIANT(QUICK_OPEN; $1)
 	
 	//______________________________________________________
 	C_OBJECT:C1216(quickOpenInit; $1)

@@ -1,67 +1,62 @@
 {
-	"00_DEV": {
-		"tables": [
-			"Table_1"
-		],
+	"- #️⃣ API": {
 		"methods": [
-			"00_TEST"
-		],
-		"forms": [
-			"IMPORT_PICTURE"
+			"quickOpenEventHandler",
+			"quickOpenInit",
+			"quickOpenPushAction"
 		]
 	},
-	"classes": {
+	"-👥 NAMESPACE": {},
+	"# 🚧 DEV": {
+		"methods": [
+			"00_TEST"
+		]
+	},
+	"♻️ LIBRAIRIES": {
 		"groups": [
 			"formObjects"
 		],
 		"classes": [
-			"design",
-			"menu",
-			"regex"
-		]
-	},
-	"COMPONENT": {
-		"groups": [
-			"PRIVATE",
-			"PUBLIC"
-		],
-		"forms": [
-			"COMPILER",
-			"QUICK_OPEN"
-		],
-		"classes": [
-			"quickOpen"
-		]
-	},
-	"formObjects": {
-		"classes": [
 			"button",
+			"design",
 			"listbox",
+			"menu",
+			"regex",
 			"scrollable",
 			"static",
 			"thermometer",
 			"widget"
 		]
 	},
-	"PRIVATE": {
+	"⚙️ MACROS": {},
+	"📦 COMPONENT": {
 		"methods": [
 			"COMPILER_quickOpen",
 			"noError",
+			"QUICK_OPEN",
 			"quickAction_COMPILE",
 			"quickAction_FORM",
 			"quickAction_FORMULA",
 			"quickOpen_ACTIONS",
 			"quickOpen_CALLBACK",
 			"quickOpen_WORKER"
+		],
+		"forms": [
+			"COMPILER",
+			"QUICK_OPEN"
+		],
+		"classes": [
+			"_quickOpen"
 		]
 	},
-	"PUBLIC": {
+	"🛠️ Tools": {},
+	"4️⃣ 4DPop": {
 		"methods": [
-			"QUICK_OPEN",
-			"quickOpenEventHandler",
-			"quickOpenInit",
-			"quickOpenPushAction"
+			"_4DPopQuickOpen",
+			"COMPILER_4DPop",
+			"open"
 		]
 	},
+	"formObjects": {},
 	"trash": {}
 }
