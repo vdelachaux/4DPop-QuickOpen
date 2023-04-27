@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no" ?>
+<Preferences4D>
+    <BuildApp>
+        <BuildCompiled>False</BuildCompiled>
+        <IncludeAssociatedFolders>False</IncludeAssociatedFolders>
+        <BuildComponent>True</BuildComponent>
+        <BuildApplicationSerialized>False</BuildApplicationSerialized>
+        <BuildApplicationLight>False</BuildApplicationLight>
+        <SourcesFiles>
+            <RuntimeVL>
+                <RuntimeVLIncludeIt>True</RuntimeVLIncludeIt>
+            </RuntimeVL>
+            <CS>
+                <ServerIncludeIt>False</ServerIncludeIt>
+                <ClientMacIncludeIt>False</ClientMacIncludeIt>
+                <ClientWinIncludeIt>False</ClientWinIncludeIt>
+            </CS>
+        </SourcesFiles>
+        <CS>
+            <BuildServerApplication>False</BuildServerApplication>
+            <BuildCSUpgradeable>False</BuildCSUpgradeable>
+            <CurrentVers>1</CurrentVers>
+            <HardLink></HardLink>
+            <LastDataPathLookup>ByAppName</LastDataPathLookup>
+        <AllowMacSiliconClient>False</AllowMacSiliconClient>
+      <CompiledDatabaseFolder/>
+      <MacCompiledDatabaseToWinIncludeIt>False</MacCompiledDatabaseToWinIncludeIt>
+      <MacCompiledDatabaseToWin></MacCompiledDatabaseToWin>
+      <ServerEmbedsProjectDirectoryFile>False</ServerEmbedsProjectDirectoryFile></CS>
+        <BuildApplicationName>4DPop QuickOpen</BuildApplicationName>
+        <BuildMacDestFolder>:Build:</BuildMacDestFolder>
+        <BuildWinDestFolder>..\Build/</BuildWinDestFolder>
+        <ArrayExcludedPluginName>
+            <ItemsCount>0</ItemsCount>
+        </ArrayExcludedPluginName>
+        <ArrayExcludedPluginID>
+            <ItemsCount>0</ItemsCount>
+        </ArrayExcludedPluginID>
+        <ArrayExcludedComponentName>
+            <ItemsCount>0</ItemsCount>
+        </ArrayExcludedComponentName>
+        <Licenses>
+            <ArrayLicenseMac>
+                <ItemsCount>0</ItemsCount>
+            </ArrayLicenseMac>
+        </Licenses>
+        <SignApplication>
+            <MacSignature>True</MacSignature>
+            <MacCertificate>Vincent de Lachaux (DYRKW64QA9)</MacCertificate>
+        <AdHocSign>True</AdHocSign></SignApplication>
+        <RuntimeVL>
+            <LastDataPathLookup>ByAppName</LastDataPathLookup>
+        </RuntimeVL>
+    <ArrayExcludedModuleName>
+      <ItemsCount>0</ItemsCount>
+    </ArrayExcludedModuleName>
+  </BuildApp>
+
+
+
+</Preferences4D>
