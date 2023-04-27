@@ -4,17 +4,17 @@
 
   <dict>
     <key>NSHumanReadableCopyright</key>
-    <string>©vdl 2021-2023</string>
+    <string>©VDL 2023</string>
     <key>CFBundleVersion</key>
-    <string>73</string>
+    <string>74</string>
     <key>CFBundleDisplayName</key>
     <string>4DPop QuickOpen</string>
     <key>CFBundleShortVersionString</key>
-    <string>19R8</string>
+    <string>20R2</string>
     <key>CFBundleGetInfoString</key>
-    <string>19R8</string>
+    <string>20R2</string>
     <key>CFBundleLongVersionString</key>
-    <string>19R8 (72)</string>
+    <string>20R2 (73)</string>
     <key>CFBundleName</key>
     <string>4DPop QuickOpen</string>
   </dict>

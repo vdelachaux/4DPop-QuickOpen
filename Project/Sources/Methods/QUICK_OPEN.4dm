@@ -1,7 +1,5 @@
-//%attributes = {"invisible":true,"shared":true}
+//%attributes = {"invisible":true}
 // Open the QUICK_OPEN dialog in its own process & launch the quickOpen_WORKER
-#DECLARE($dummy)
-
 var $t : Text
 var $form; $signal : Object
 
@@ -21,7 +19,7 @@ Else
 		"current"; Null:C1517; \
 		"index"; 0; \
 		"isMaximized"; False:C215; \
-		"quickOpen"; cs:C1710.quickOpen.new())
+		"quickOpen"; cs:C1710._quickOpen.new())
 	
 	$signal:=New signal:C1641("quickOpen")
 	
