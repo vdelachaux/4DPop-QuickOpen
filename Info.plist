@@ -6,7 +6,7 @@
     <key>NSHumanReadableCopyright</key>
     <string>©vdl 2022-2023</string>
     <key>CFBundleVersion</key>
-    <string>79</string>
+    <string>80</string>
     <key>CFBundleDisplayName</key>
     <string>4DPop QuickOpen</string>
     <key>CFBundleShortVersionString</key>
@@ -14,7 +14,7 @@
     <key>CFBundleGetInfoString</key>
     <string>20</string>
     <key>CFBundleLongVersionString</key>
-    <string>20 (78)</string>
+    <string>20 (79)</string>
     <key>CFBundleName</key>
     <string>4DPop QuickOpen</string>
   </dict>

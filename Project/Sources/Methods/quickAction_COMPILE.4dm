@@ -11,8 +11,8 @@ var $compiler; $error : Object
 var $components : Collection
 
 $context:=Get localized string:C991(Choose:C955(Bool:C1537($options.checkSyntax); "syntaxCheck"; "compilation"))
-$progress:=Progress New
-Progress SET TITLE($progress; $context; -1; ""; True:C214)
+//$progress:=Progress New
+//Progress SET TITLE($progress; $context; -1; ""; True)
 
 ARRAY TEXT:C222($names; 0x0000)
 $components:=New collection:C1472
@@ -35,13 +35,13 @@ $compiler:=Compile project:C1760($compiler)
 
 If ($compiler.success)
 	
-	Progress SET MESSAGE($progress; $context+" "+Get localized string:C991("isSuccessful"); True:C214)
-	DELAY PROCESS:C323(Current process:C322; 60)
-	Progress QUIT($progress)
+	//Progress SET MESSAGE($progress; $context+" "+Get localized string("isSuccessful"); True)
+	//DELAY PROCESS(Current process; 60)
+	//Progress QUIT($progress)
 	
 Else 
 	
-	Progress QUIT($progress)
+	//Progress QUIT($progress)
 	
 	BEEP:C151
 	
