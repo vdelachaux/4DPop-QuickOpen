@@ -3,6 +3,7 @@
 ![code-size](https://img.shields.io/github/languages/code-size/vdelachaux/4DPop-QuickOpen.svg)
 [![license](https://img.shields.io/github/license/vdelachaux/4DPop-QuickOpen)](LICENSE)
 [![release](https://img.shields.io/github/v/release/vdelachaux/4DPop-QuickOpen?include_prereleases)](https://github.com/vdelachaux/4DPop-QuickOpen/releases/latest)
+[![Build](https://github.com/vdelachaux/4DPop-QuickOpen/actions/workflows/build.yml/badge.svg)](https://github.com/vdelachaux/4DPop-QuickOpen/actions/workflows/build.yml)
 
 # Overview
 
