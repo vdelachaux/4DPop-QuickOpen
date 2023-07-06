@@ -2,7 +2,8 @@
 // The method for catching events
 #DECLARE() : Boolean
 
-If (Storage:C1525.MODIFIERS#Null:C1517)\
+If (Not:C34(Shift down:C543))\
+ && (Storage:C1525.MODIFIERS#Null:C1517)\
  && (Storage:C1525.MODIFIERS.call() ?? Storage:C1525.shortcut.modifiers)\
  && (Storage:C1525.KEYCODE.call()=Storage:C1525.shortcut.keycode)
 	
