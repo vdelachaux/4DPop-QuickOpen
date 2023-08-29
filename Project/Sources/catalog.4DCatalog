@@ -17,7 +17,7 @@
 			<table_ref uuid="C479B2D8E14C41A383255807BD39E591" name="(Table_1)"/>
 		</field_ref>
 	</index>
-	<base_extra __stringCompHash="icu:72.1.0" __keywordBuildingHash="icu:72.1.0" package_name="4DPop Structure" structure_file_name="4DPop Structure" data_file_path=":4DPop Structure.4DD">
+	<base_extra package_name="4DPop Structure" structure_file_name="4DPop Structure" data_file_path=":4DPop Structure.4DD">
 		<temp_folder folder_selector="system"/>
 		<journal_file journal_file_enabled="false"/>
 	</base_extra>

@@ -147,7 +147,7 @@ Function updateCell()->$this : cs:C1710.listbox
 Function cellPosition($event : Object)->$position : Object
 	
 	var $_; $column; $row; $x; $y : Integer
-	var $e; $event : Object
+	var $e : Object
 	
 	$e:=Choose:C955(Count parameters:C259>=1; $event; FORM Event:C1606)
 	
