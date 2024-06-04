@@ -1,11 +1,7 @@
 //%attributes = {"invisible":true}
-#DECLARE($action : Variant)
+#DECLARE($action)
 
-If (False:C215)
-	C_VARIANT:C1683(quickAction_FORMULA; $1)
-End if 
-
-cs:C1710.menu.new().defaultMinimalMenuBar().setBar()
+cs:C1710.menuBar.new().defaultMinimalMenuBar().set()
 
 Case of 
 		

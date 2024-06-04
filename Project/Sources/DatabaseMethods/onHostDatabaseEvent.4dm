@@ -30,7 +30,7 @@ So, if the On Startup method does not exist, we can create it.
 			var $folder : 4D:C1709.Folder
 			var $file : 4D:C1709.File
 			$folder:=Folder:C1567(Folder:C1567(fk database folder:K87:14; *).platformPath; fk platform path:K87:2).folder("Project/Sources/DatabaseMethods")
-			$file:=File:C1566("/RESOURCES/init"+Choose:C955(Command name:C538(1)="Sum"; "US"; "FR")+".4dm").copyTo($folder; "onStartup.4dm")
+			$file:=File:C1566("/RESOURCES/init"+(Command name:C538(1)="Sum" ? "US" : "FR")+".4dm").copyTo($folder; "onStartup.4dm")
 			RELOAD PROJECT:C1739
 			
 		End if 

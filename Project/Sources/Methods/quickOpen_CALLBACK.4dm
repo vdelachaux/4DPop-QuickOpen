@@ -14,7 +14,7 @@ If (Storage:C1525.actions#Null:C1517)
 	
 End if 
 
-design.sources:=design.sources.orderBy("type asc name asc")  //.orderBy("folder asc, name asc, type asc")
+design.sources:=design.sources.orderBy("type asc name asc")
 Form:C1466.list:=design.sources
 
 // Update UI

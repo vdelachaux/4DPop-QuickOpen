@@ -1,3 +1,7 @@
+property isRefreshing : Boolean
+property desc; paths; sources : Collection
+property methodStamp; formStamp : Integer
+
 Class constructor
 	
 	var $icon : Picture
@@ -7,7 +11,7 @@ Class constructor
 	This:C1470.methodStamp:=0
 	This:C1470.formStamp:=0
 	
-	This:C1470.desc:=New collection:C1472
+	This:C1470.desc:=[]
 	This:C1470.desc[Path class:K72:19]:="class"
 	This:C1470.desc[Path database method:K72:2]:="DB method"
 	This:C1470.desc[Path project method:K72:1]:="method"
@@ -17,61 +21,61 @@ Class constructor
 	This:C1470.desc[8858]:="DevDoc"
 	
 	// List of managed source types
-	This:C1470.paths:=New collection:C1472
+	This:C1470.paths:=[]
 	
 	READ PICTURE FILE:C678(File:C1566("/RESOURCES/Images/objectsIcons/Icon_628.png").platformPath; $icon)
-	This:C1470.paths.push(New object:C1471(\
-		"type"; Path class:K72:19; \
-		"path"; "[class]/"; \
-		"sources"; Folder:C1567("/PACKAGE/Project/Sources/Classes/"; *); \
-		"doc"; Folder:C1567("/PACKAGE/Documentation/Classes/"; *); \
-		"comment"; "Class"; \
-		"icon"; $icon))
+	This:C1470.paths.push({\
+		type: Path class:K72:19; \
+		path: "[class]/"; \
+		sources: Folder:C1567("/PACKAGE/Project/Sources/Classes/"; *); \
+		doc: Folder:C1567("/PACKAGE/Documentation/Classes/"; *); \
+		comment: "Class"; \
+		icon: $icon})
 	
 	READ PICTURE FILE:C678(File:C1566("/RESOURCES/Images/objectsIcons/Icon_602.png").platformPath; $icon)
-	This:C1470.paths.push(New object:C1471(\
-		"type"; Path project method:K72:1; \
-		"path"; ""; \
-		"sources"; Folder:C1567("/PACKAGE/Project/Sources/Methods/"; *); \
-		"doc"; Folder:C1567("/PACKAGE/Documentation/Methods/"; *); \
-		"comment"; "Method"; \
-		"icon"; $icon))
+	This:C1470.paths.push({\
+		type: Path project method:K72:1; \
+		path: ""; \
+		sources: Folder:C1567("/PACKAGE/Project/Sources/Methods/"; *); \
+		doc: Folder:C1567("/PACKAGE/Documentation/Methods/"; *); \
+		comment: "Method"; \
+		icon: $icon})
 	
 	READ PICTURE FILE:C678(File:C1566("/RESOURCES/Images/objectsIcons/Icon_601.png").platformPath; $icon)
-	This:C1470.paths.push(New object:C1471(\
-		"type"; Path project form:K72:3; \
-		"path"; ""; \
-		"sources"; Folder:C1567("/PACKAGE/Project/Sources/Forms/"; *); \
-		"doc"; Folder:C1567("/PACKAGE/Documentation/Forms/"; *); \
-		"comment"; "Form"; \
-		"icon"; $icon))
+	This:C1470.paths.push({\
+		type: Path project form:K72:3; \
+		path: ""; \
+		sources: Folder:C1567("/PACKAGE/Project/Sources/Forms/"; *); \
+		doc: Folder:C1567("/PACKAGE/Documentation/Forms/"; *); \
+		comment: "Form"; \
+		icon: $icon})
 	
 	READ PICTURE FILE:C678(File:C1566("/RESOURCES/Images/objectsIcons/Icon_622.png").platformPath; $icon)
-	This:C1470.paths.push(New object:C1471(\
-		"type"; Path database method:K72:2; \
-		"path"; "[databaseMethod]/"; \
-		"sources"; Folder:C1567("/PACKAGE/Project/Sources/DatabaseMethods/"; *); \
-		"doc"; Folder:C1567("/PACKAGE/Documentation/DatabaseMethods/"; *); \
-		"comment"; "Database Method"; \
-		"icon"; $icon))
+	This:C1470.paths.push({\
+		type: Path database method:K72:2; \
+		path: "[databaseMethod]/"; \
+		sources: Folder:C1567("/PACKAGE/Project/Sources/DatabaseMethods/"; *); \
+		doc: Folder:C1567("/PACKAGE/Documentation/DatabaseMethods/"; *); \
+		comment: "Database Method"; \
+		icon: $icon})
 	
 	READ PICTURE FILE:C678(File:C1566("/RESOURCES/Images/objectsIcons/Icon_600.png").platformPath; $icon)
-	This:C1470.paths.push(New object:C1471(\
-		"type"; Path trigger:K72:4; \
-		"path"; "[trigger]/"; \
-		"sources"; Folder:C1567("/PACKAGE/Project/Sources/Triggers/"; *); \
-		"doc"; Folder:C1567("/PACKAGE/Documentation/Triggers/"; *); \
-		"comment"; "Trigger"; \
-		"icon"; $icon))
+	This:C1470.paths.push({\
+		type: Path trigger:K72:4; \
+		path: "[trigger]/"; \
+		sources: Folder:C1567("/PACKAGE/Project/Sources/Triggers/"; *); \
+		doc: Folder:C1567("/PACKAGE/Documentation/Triggers/"; *); \
+		comment: "Trigger"; \
+		icon: $icon})
 	
 	READ PICTURE FILE:C678(File:C1566("/RESOURCES/Images/objectsIcons/Icon_601.png").platformPath; $icon)
-	This:C1470.paths.push(New object:C1471(\
-		"type"; Path table form:K72:5; \
-		"path"; "[tableForm]/table_"; \
-		"sources"; Folder:C1567("/PACKAGE/Project/Sources/TableForms/"; *); \
-		"doc"; Folder:C1567("/PACKAGE/Documentation/TableForms/"; *); \
-		"comment"; "Table Form"; \
-		"icon"; $icon))
+	This:C1470.paths.push({\
+		type: Path table form:K72:5; \
+		path: "[tableForm]/table_"; \
+		sources: Folder:C1567("/PACKAGE/Project/Sources/TableForms/"; *); \
+		doc: Folder:C1567("/PACKAGE/Documentation/TableForms/"; *); \
+		comment: "Table Form"; \
+		icon: $icon})
 	
 	//-----------------------------------------------------------
 	// Build the list of source files
@@ -130,14 +134,14 @@ Function getSources()->$this : cs:C1710.design
 				var $c; $c1 : Collection
 				
 				FORM GET NAMES:C1167($dummy; *)
-				$c:=New collection:C1472
+				$c:=[]
 				ARRAY TO COLLECTION:C1563($c; $dummy)
 				
 				For each ($table; ds:C1482)
 					
 					$i:=ds:C1482[$table].getInfo().tableNumber
 					FORM GET NAMES:C1167(Table:C252($i)->; $dummy; *)
-					$c1:=New collection:C1472
+					$c1:=[]
 					ARRAY TO COLLECTION:C1563($c1; $dummy)
 					$c:=$c.combine($c1)
 					
@@ -158,7 +162,7 @@ Function getSources()->$this : cs:C1710.design
 	If ($mustBeUpdated)
 		
 		// Update source lists
-		This:C1470.sources:=New collection:C1472
+		This:C1470.sources:=[]
 		
 		This:C1470._load(Path class:K72:19)
 		This:C1470._load(Path project method:K72:1)
@@ -201,30 +205,25 @@ Function edit($designObject : Object; $formMethod : Boolean)
 	If ($formMethodƒ)
 		
 		// ⚠️ METHOD OPEN PATH could generate an error if form method doesn't exists
-		var $onErrCallMethod : Text
-		$onErrCallMethod:=This:C1470._errorCatch()
-		
 		Case of 
 				
 				//………………………………………………………………………………………………
 			: ($designObject.type=Path table form:K72:5)
 				
-				METHOD OPEN PATH:C1213(METHOD Get path:C1164(Path table form:K72:5; Table:C252($designObject.tableNumber)->; $regex.matches[1].data); *)
+				Try(METHOD OPEN PATH:C1213(METHOD Get path:C1164(Path table form:K72:5; Table:C252($designObject.tableNumber)->; $regex.matches[1].data); *))
 				
 				//………………………………………………………………………………………………
 			: ($designObject.type=Path project form:K72:3)
 				
-				METHOD OPEN PATH:C1213("[projectForm]/"+This:C1470.paths.query("type = :1"; $designObject.type).pop().path+$designObject.name+"/{formMethod}"; *)
+				Try(METHOD OPEN PATH:C1213("[projectForm]/"+This:C1470.paths.query("type = :1"; $designObject.type).pop().path+$designObject.name+"/{formMethod}"; *))
 				
 				//………………………………………………………………………………………………
 			Else 
 				
-				METHOD OPEN PATH:C1213(This:C1470.paths.query("type = :1"; $designObject.type).pop().path+$designObject.name; *)
+				Try(METHOD OPEN PATH:C1213(This:C1470.paths.query("type = :1"; $designObject.type).pop().path+$designObject.name; *))
 				
 				//………………………………………………………………………………………………
 		End case 
-		
-		This:C1470._errorCatch($onErrCallMethod)
 		
 	Else 
 		
@@ -465,11 +464,11 @@ Function _folders()
 	var $file : 4D:C1709.File
 	var $sources : 4D:C1709.Folder
 	
-	This:C1470.folders:=New object:C1471(\
-		"classes"; New object:C1471; \
-		"methods"; New object:C1471; \
-		"forms"; New object:C1471; \
-		"tables"; New object:C1471)
+	This:C1470.folders:={\
+		classes: {}; \
+		methods: {}; \
+		forms: {}; \
+		tables: {}}
 	
 	$sources:=Folder:C1567("/PACKAGE/Project/Sources/"; *)
 	
@@ -554,15 +553,15 @@ Function _load($type : Integer)
 				
 				If ($tableNumber>0)
 					
-					This:C1470.sources.push(New object:C1471(\
-						"type"; Path trigger:K72:4; \
-						"tableNumber"; $tableNumber; \
-						"name"; Table name:C256($tableNumber); \
-						"desc"; This:C1470.desc[Path trigger:K72:4]; \
-						"folder"; String:C10(This:C1470.folders.tables["Table_"+String:C10($tableNumber)]); \
-						"doc"; $docFiles.query("name = :1"; "table_"+String:C10($tableNumber)).pop(); \
-						"icon"; $o.icon; \
-						"attributes"; Null:C1517))
+					This:C1470.sources.push({\
+						type: Path trigger:K72:4; \
+						tableNumber: $tableNumber; \
+						name: Table name:C256($tableNumber); \
+						desc: This:C1470.desc[Path trigger:K72:4]; \
+						folder: String:C10(This:C1470.folders.tables["Table_"+String:C10($tableNumber)]); \
+						doc: $docFiles.query("name = :1"; "table_"+String:C10($tableNumber)).pop(); \
+						icon: $o.icon; \
+						attributes: Null:C1517})
 					
 				End if 
 				
@@ -577,15 +576,15 @@ Function _load($type : Integer)
 						
 						If ($form.file("form.4DForm").exists)
 							
-							This:C1470.sources.push(New object:C1471(\
-								"type"; Path table form:K72:5; \
-								"tableNumber"; $tableNumber; \
-								"name"; "["+Table name:C256($tableNumber)+"]"+$form.name; \
-								"desc"; This:C1470.desc[Path table form:K72:5]; \
-								"folder"; String:C10(This:C1470.folders.tables["Table_"+String:C10($tableNumber)]); \
-								"doc"; $o.doc.folder(String:C10($tableNumber)).folder($form.name).file("form.md"); \
-								"icon"; $o.icon; \
-								"attributes"; Null:C1517))
+							This:C1470.sources.push({\
+								type: Path table form:K72:5; \
+								tableNumber: $tableNumber; \
+								name: "["+Table name:C256($tableNumber)+"]"+$form.name; \
+								desc: This:C1470.desc[Path table form:K72:5]; \
+								folder: String:C10(This:C1470.folders.tables["Table_"+String:C10($tableNumber)]); \
+								doc: $o.doc.folder(String:C10($tableNumber)).folder($form.name).file("form.md"); \
+								icon: $o.icon; \
+								attributes: Null:C1517})
 							
 						End if 
 					End for each 
@@ -596,59 +595,56 @@ Function _load($type : Integer)
 				
 				If ($item.file("form.4DForm").exists)
 					
-					This:C1470.sources.push(New object:C1471(\
-						"type"; Path project form:K72:3; \
-						"name"; $item.name; \
-						"desc"; This:C1470.desc[Path project form:K72:3]; \
-						"folder"; String:C10(This:C1470.folders.forms[$item.name]); \
-						"doc"; $o.doc.folder($item.name).file("form.md"); \
-						"icon"; $o.icon; \
-						"attributes"; Null:C1517))
+					This:C1470.sources.push({\
+						type: Path project form:K72:3; \
+						name: $item.name; \
+						desc: This:C1470.desc[Path project form:K72:3]; \
+						folder: String:C10(This:C1470.folders.forms[$item.name]); \
+						doc: $o.doc.folder($item.name).file("form.md"); \
+						icon: $o.icon; \
+						attributes: Null:C1517})
 					
 				End if 
 				
 				//………………………………………………………………………………………………
 			: ($type=Path class:K72:19)
 				
-				This:C1470.sources.push(New object:C1471(\
-					"type"; $type; \
-					"name"; $item.name; \
-					"desc"; This:C1470.desc[$type]; \
-					"folder"; String:C10(This:C1470.folders.classes[$item.name]); \
-					"doc"; $docFiles.query("name = :1"; $item.name).pop(); \
-					"icon"; $o.icon; \
-					"attributes"; Null:C1517))
+				This:C1470.sources.push({\
+					type: $type; \
+					name: $item.name; \
+					desc: This:C1470.desc[$type]; \
+					folder: String:C10(This:C1470.folders.classes[$item.name]); \
+					doc: $docFiles.query("name = :1"; $item.name).pop(); \
+					icon: $o.icon; \
+					attributes: Null:C1517})
 				
 				//………………………………………………………………………………………………
 			: ($type=Path project method:K72:1)
 				
 				var $attributes : Object
 				
-				var $onErrCallMethod : Text
-				$onErrCallMethod:=This:C1470._errorCatch()
-				METHOD GET ATTRIBUTES:C1334($item.name; $attributes; *)
-				This:C1470._errorCatch($onErrCallMethod)
+				Try(METHOD GET ATTRIBUTES:C1334($item.name; $attributes; *))
 				
-				This:C1470.sources.push(New object:C1471(\
-					"type"; $type; \
-					"name"; $item.name; \
-					"desc"; This:C1470.desc[$type]; \
-					"folder"; String:C10(This:C1470.folders.methods[$item.name]); \
-					"doc"; $docFiles.query("name = :1"; $item.name).pop(); \
-					"icon"; $o.icon; \
-					"attributes"; $attributes))
+				This:C1470.sources.push({\
+					type: $type; \
+					name: $item.name; \
+					desc: This:C1470.desc[$type]; \
+					folder: String:C10(This:C1470.folders.methods[$item.name]); \
+					doc: $docFiles.query("name = :1"; $item.name).pop(); \
+					icon: $o.icon; \
+					attributes: $attributes})
 				
 				//………………………………………………………………………………………………
 			: ($type=Path database method:K72:2)
 				
-				This:C1470.sources.push(New object:C1471(\
-					"type"; $type; \
-					"name"; $item.name; \
-					"desc"; This:C1470.desc[$type]; \
-					"folder"; ""; \
-					"doc"; $docFiles.query("name = :1"; $item.name).pop(); \
-					"icon"; $o.icon; \
-					"attributes"; Null:C1517))
+				This:C1470.sources.push({\
+					type: $type; \
+					name: $item.name; \
+					desc: This:C1470.desc[$type]; \
+					folder: ""; \
+					doc: $docFiles.query("name = :1"; $item.name).pop(); \
+					icon: $o.icon; \
+					attributes: Null:C1517})
 				
 				//………………………………………………………………………………………………
 			Else 
@@ -657,18 +653,3 @@ Function _load($type : Integer)
 				//………………………………………………………………………………………………
 		End case 
 	End for each 
-	
-	//-----------------------------------------------------------
-Function _errorCatch($onErrCallMethod : Text)->$currentOnErrCallMethod : Text
-	
-	If (Count parameters:C259>=1)
-		
-		ON ERR CALL:C155($onErrCallMethod)
-		
-	Else 
-		
-		$currentOnErrCallMethod:=Method called on error:C704
-		ON ERR CALL:C155("noError")
-		CLEAR VARIABLE:C89(ERROR)
-		
-	End if 

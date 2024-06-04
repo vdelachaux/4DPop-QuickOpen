@@ -1,6 +1,4 @@
-var $e : Object
-
-$e:=FORM Event:C1606
+var $e : Object:=FORM Event:C1606
 
 Case of 
 		
@@ -23,7 +21,7 @@ Case of
 			
 			If (Form:C1466.preferences.latestActions=Null:C1517)
 				
-				Form:C1466.preferences.latestActions:=New collection:C1472
+				Form:C1466.preferences.latestActions:=[]
 				
 			End if 
 			
@@ -32,9 +30,9 @@ Case of
 		Else 
 			
 			// First use
-			Form:C1466.preferences:=New object:C1471(\
-				"lastSearch"; ""; \
-				"latestActions"; New collection:C1472)
+			Form:C1466.preferences:={\
+				lastSearch: ""; \
+				latestActions: []}
 			
 		End if 
 		
@@ -75,14 +73,12 @@ Case of
 				//…………………………………………………………………
 			: ($e.objectName="results")
 				
-				If (Contextual click:C713)
+				If (Contextual click:C713)\
+					 && (Form:C1466.current#Null:C1517)
 					
-					If (Form:C1466.current#Null:C1517)
-						
-						// Display the contextual menu
-						Form:C1466.quickOpen.menu(Form:C1466.current)
-						
-					End if 
+					// Display the contextual menu
+					Form:C1466.quickOpen.menu(Form:C1466.current)
+					
 				End if 
 				
 				//…………………………………………………………………
@@ -105,7 +101,7 @@ Case of
 			: ($e.objectName="upArrow")
 				
 				If ((Form:C1466.index>1)\
-					 & (Form:C1466.index<=Form:C1466.result.length))
+					 && (Form:C1466.index<=Form:C1466.result.length))
 					
 					Form:C1466.resultList.select(Form:C1466.index-1)
 					
@@ -115,7 +111,7 @@ Case of
 			: ($e.objectName="downArrow")
 				
 				If ((Form:C1466.index>=0)\
-					 & (Form:C1466.index<Form:C1466.result.length))
+					 && (Form:C1466.index<Form:C1466.result.length))
 					
 					Form:C1466.resultList.select(Form:C1466.index+1)
 					

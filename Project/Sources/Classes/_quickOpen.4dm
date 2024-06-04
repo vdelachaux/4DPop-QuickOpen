@@ -7,14 +7,14 @@ Class constructor()
 	Super:C1705()
 	
 	READ PICTURE FILE:C678(File:C1566("/RESOURCES/Images/objectsIcons/Icon_604.png").platformPath; $icon)
-	This:C1470.paths.push(New object:C1471(\
-		"type"; -1; \
-		"comment"; "embedded action"; \
-		"icon"; $icon; \
-		"folder"; "_"; \
-		"desc"; "action"))
+	This:C1470.paths.push({\
+		type: -1; \
+		comment: "embedded action"; \
+		icon: $icon; \
+		folder: "_"; \
+		desc: "action"})
 	
-	This:C1470.commands:=New collection:C1472
+	This:C1470.commands:=[]
 	
 	This:C1470._loadActions()
 	
@@ -26,7 +26,7 @@ Function _loadActions()
 	var $o; $tmpl : Object
 	
 	$o:=JSON Parse:C1218(File:C1566("/RESOURCES/quickOpen.json").getText())
-	$o:=JSON Resolve pointers:C1478($o; New object:C1471("merge"; True:C214))
+	$o:=JSON Resolve pointers:C1478($o; {merge: True:C214})
 	
 	If ($o.success)
 		
@@ -48,7 +48,7 @@ Function _loadActions()
 				
 				// Localize
 				$t:=Get localized string:C991(String:C10($o.name))
-				$o.name:=Choose:C955(Bool:C1537(OK); $t; $o.name)
+				$o.name:=Bool:C1537(OK) ? $t : $o.name
 				
 				$o.type:=$tmpl.type
 				$o.icon:=$tmpl.icon
@@ -160,7 +160,7 @@ Function open($item : Object)
 	
 	If ($item#Null:C1517)  // Make sure an item is selected
 		
-		Form:C1466.preferences.lastItem:=New object:C1471("name"; $item.name)
+		Form:C1466.preferences.lastItem:={name: $item.name}
 		
 		Case of 
 				
@@ -168,7 +168,7 @@ Function open($item : Object)
 			: ($item.type=-1)
 				
 				// Include in the list of the last used to allow the most used to be presented first
-				Form:C1466.preferences.latestActions.insert(0; New object:C1471("name"; $item.name))
+				Form:C1466.preferences.latestActions.insert(0; {name: $item.name})
 				
 				If (Form:C1466.preferences.latestActions.length>10)
 					
@@ -241,7 +241,7 @@ Function menu($item : Object)
 	If ($item#Null:C1517)
 		
 		$menu:=cs:C1710.menu.new()\
-			.append(Choose:C955($item.type>0; "edit"; "execute"); "edit")
+			.append($item.type>0 ? "edit" : "execute"; "edit")
 		
 		If ($item.type>0)
 			
@@ -252,7 +252,7 @@ Function menu($item : Object)
 				
 			End if 
 			
-			$menu.append(Choose:C955(Bool:C1537($item.doc.exists); "editDocumentation"; "createDocumentation"); "doc")\
+			$menu.append(Bool:C1537($item.doc.exists) ? "editDocumentation" : "createDocumentation"; "doc")\
 				.append("showSourceFile"; "showSource")\
 				.append("showDocumentationFile"; "showDoc").enable(Bool:C1537($item.doc.exists))\
 				.line()\
@@ -401,7 +401,7 @@ Function _search($tring : Text)->$result : Collection
 					
 					If ($pos>0)
 						
-						$o.rank:=$o.rank+(1000-($pos*25))
+						$o.rank+=1000-($pos*25)
 						
 					End if 
 					
@@ -409,7 +409,7 @@ Function _search($tring : Text)->$result : Collection
 					
 					If ($pos>0)
 						
-						$o.rank:=$o.rank+(400-($pos*20))
+						$o.rank+=400-($pos*20)
 						
 					End if 
 					
@@ -417,15 +417,15 @@ Function _search($tring : Text)->$result : Collection
 					
 					If ($pos>0)
 						
-						$o.rank:=$o.rank+(100-($pos*10))
+						$o.rank+=100-($pos*10)
 						
 					End if 
 					
-					$o.rank:=$o.rank+Choose:C955($o.name=$tring; 1000; 0)
+					$o.rank+=$o.name=$tring ? 1000 : 0
 					
 					If ($o.type=-1)
 						
-						$o.rank:=$o.rank+(2000*Form:C1466.preferences.latestActions.indices("name = :1"; $o.name).length)
+						$o.rank+=2000*Form:C1466.preferences.latestActions.indices("name = :1"; $o.name).length
 						
 					End if 
 				End for each 
@@ -475,7 +475,7 @@ Function _search($tring : Text)->$result : Collection
 					
 					If ($pos>0)
 						
-						$o.rank+=(1000-($pos*25))
+						$o.rank+=1000-($pos*25)
 						
 					End if 
 					
@@ -483,7 +483,7 @@ Function _search($tring : Text)->$result : Collection
 					
 					If ($pos>0)
 						
-						$o.rank+=(400-($pos*20))
+						$o.rank+=400-($pos*20)
 						
 					End if 
 					
@@ -491,11 +491,11 @@ Function _search($tring : Text)->$result : Collection
 					
 					If ($pos>0)
 						
-						$o.rank+=(100-($pos*10))
+						$o.rank+=100-($pos*10)
 						
 					End if 
 					
-					$o.rank+=Choose:C955($o.name=$tring; 1000; 0)
+					$o.rank+=$o.name=$tring ? 1000 : 0
 					
 				End for each 
 				

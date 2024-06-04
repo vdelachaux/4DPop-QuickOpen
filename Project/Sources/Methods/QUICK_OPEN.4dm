@@ -12,20 +12,20 @@ Else
 	
 	COMPILER_quickOpen
 	
-	$form:=New object:C1471(\
-		"search"; ""; \
-		"list"; New collection:C1472; \
-		"result"; New collection:C1472; \
-		"current"; Null:C1517; \
-		"index"; 0; \
-		"isMaximized"; False:C215; \
-		"quickOpen"; cs:C1710._quickOpen.new())
+	$form:={\
+		search: ""; \
+		list: []; \
+		result: []; \
+		current: Null:C1517; \
+		index: 0; \
+		isMaximized: False:C215; \
+		quickOpen: cs:C1710._quickOpen.new()}
 	
 	$signal:=New signal:C1641("quickOpen")
 	
 	Use ($signal)
 		
-		$signal.window:=Open form window:C675("QUICK_OPEN"; Pop up form window:K39:11+Choose:C955(Is macOS:C1572; 0x8000; 0x0000); Horizontally centered:K39:1; Menu bar height:C440+Tool bar height:C1016+40)
+		$signal.window:=Open form window:C675("QUICK_OPEN"; Pop up form window:K39:11+(Is macOS:C1572 ? 0x8000 : 0x0000); Horizontally centered:K39:1; Menu bar height:C440+Tool bar height:C1016+40)
 		
 	End use 
 	
