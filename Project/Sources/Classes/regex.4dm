@@ -99,7 +99,7 @@ Function match($start; $all : Boolean)->$this : cs:C1710.regex
 	End if 
 	
 	This:C1470.success:=False:C215
-	This:C1470.matches:=New collection:C1472
+	This:C1470.matches:=[]
 	
 	$currentMethodCalledOnError:=This:C1470._errorCatch()
 	

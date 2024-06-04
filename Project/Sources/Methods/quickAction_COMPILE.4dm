@@ -1,31 +1,25 @@
 //%attributes = {"invisible":true}
 #DECLARE($options : Object)
 
-If (False:C215)
-	C_OBJECT:C1216(quickAction_COMPILE; $1)
-End if 
-
 var $context; $t : Text
-var $progress : Integer
 var $compiler; $error : Object
 var $components : Collection
 
-$context:=Get localized string:C991(Choose:C955(Bool:C1537($options.checkSyntax); "syntaxCheck"; "compilation"))
+$context:=Get localized string:C991(Bool:C1537($options.checkSyntax) ? "syntaxCheck" : "compilation")
 //$progress:=Progress New
 //Progress SET TITLE($progress; $context; -1; ""; True)
 
 ARRAY TEXT:C222($names; 0x0000)
-$components:=New collection:C1472
+$components:=[]
 
 COMPONENT LIST:C1001($names)
 ARRAY TO COLLECTION:C1563($components; $names)
 
-$compiler:=New object:C1471(\
-"components"; $components)
+$compiler:={components: $components}
 
 If (Bool:C1537($options.checkSyntax))
 	
-	$compiler.targets:=New collection:C1472
+	$compiler.targets:=[]
 	
 End if 
 
@@ -59,7 +53,7 @@ Else
 				//______________________________________________________
 			: ($error.code.type="classFunction")
 				
-				$error.method:=$error.code.className+":"+Choose:C955(Length:C16($error.code.functionName)>0; $error.code.functionName; "constructor")
+				$error.method:=$error.code.className+":"+(Length:C16($error.code.functionName)>0 ? $error.code.functionName : "constructor")
 				
 				//______________________________________________________
 			: ($error.code.type="databaseMethod")
@@ -77,7 +71,7 @@ Else
 		End case 
 	End for each 
 	
-	cs:C1710.menu.new().defaultMinimalMenuBar().setBar()
+	cs:C1710.menuBar.new().defaultMinimalMenuBar().set()
 	
 	$compiler.window:=Open form window:C675("COMPILER"; Plain form window:K39:10; Horizontally centered:K39:1; At the bottom:K39:6; *)
 	SET WINDOW TITLE:C213($context+" result")

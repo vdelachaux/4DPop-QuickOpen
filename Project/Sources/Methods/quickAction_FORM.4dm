@@ -1,10 +1,6 @@
 //%attributes = {"invisible":true}
 #DECLARE($action : Object)
 
-If (False:C215)
-	C_OBJECT:C1216(quickAction_FORM; $1)
-End if 
-
 var $formName : Text
 
 $formName:=String:C10($action.form)
@@ -19,7 +15,7 @@ Else
 	
 End if 
 
-cs:C1710.menu.new().defaultMinimalMenuBar().setBar()
+cs:C1710.menuBar.new().defaultMinimalMenuBar().set()
 
 If ($action.file.exists)
 	

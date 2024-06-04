@@ -2,10 +2,6 @@
 // Allows the host database or a component to push its own actions.
 #DECLARE($action : Object)
 
-If (False:C215)
-	C_OBJECT:C1216(quickOpenPushAction; $1)
-End if 
-
 var $key : Text
 var $icon : Picture
 var $o : Object

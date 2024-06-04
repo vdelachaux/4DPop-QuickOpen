@@ -1,4 +1,5 @@
-﻿{
+{
 	"$comment": "The project file serves as an anchor to locate other project files",
-	"compatibilityVersion": 1860
+	"compatibilityVersion": 1860,
+	"$4DPopAppMakerToolVersion": "20R6"
 }

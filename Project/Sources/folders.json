@@ -14,18 +14,11 @@
 	},
 	"♻️ LIBRAIRIES": {
 		"groups": [
-			"formObjects"
+			"UI"
 		],
 		"classes": [
-			"button",
 			"design",
-			"listbox",
-			"menu",
-			"regex",
-			"scrollable",
-			"static",
-			"thermometer",
-			"widget"
+			"regex"
 		]
 	},
 	"⚙️ MACROS": {},
@@ -53,10 +46,25 @@
 	"4️⃣ 4DPop": {
 		"methods": [
 			"_4DPopQuickOpen",
-			"COMPILER_4DPop",
 			"open"
 		]
 	},
-	"formObjects": {},
+	"UI": {
+		"classes": [
+			"button",
+			"coord",
+			"dim",
+			"evt",
+			"group",
+			"listbox",
+			"menu",
+			"menuBar",
+			"scrollable",
+			"static",
+			"thermometer",
+			"tips",
+			"widget"
+		]
+	},
 	"trash": {}
 }
