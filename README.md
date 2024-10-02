@@ -1,9 +1,17 @@
-[![language](https://img.shields.io/static/v1?label=language&message=4d&color=blue)](https://developer.4d.com/)
-[![language](https://img.shields.io/github/languages/top/vdelachaux/4DPop-QuickOpen.svg)](https://developer.4d.com/)
-![code-size](https://img.shields.io/github/languages/code-size/vdelachaux/4DPop-QuickOpen.svg)
-[![license](https://img.shields.io/github/license/vdelachaux/4DPop-QuickOpen)](LICENSE)
-[![release](https://img.shields.io/github/v/release/vdelachaux/4DPop-QuickOpen?include_prereleases)](https://github.com/vdelachaux/4DPop-QuickOpen/releases/latest)
-[![Build](https://github.com/vdelachaux/4DPop-QuickOpen/actions/workflows/build.yml/badge.svg)](https://github.com/vdelachaux/4DPop-QuickOpen/actions/workflows/build.yml)
+<!-- MARKDOWN LINKS & IMAGES -->
+[release-shield]: https://img.shields.io/github/v/release/vdelachaux/4DPop-QuickOpen.svg?include_prereleases
+[release-url]: https://github.com/vdelachaux/4DPop-QuickOpen.svg/releases/latest
+
+[license-shield]: https://img.shields.io/github/license/vdelachaux/4DPop-QuickOpen.svg
+
+<!--BADGES-->
+![Static Badge](https://img.shields.io/badge/Dev%20Component-blue?logo=4d&link=https%3A%2F%2Fdeveloper.4d.com)
+![Static Badge](https://img.shields.io/badge/Project%20Dependencies-blue?logo=4d&link=https%3A%2F%2Fdeveloper.4d.com%2Fdocs%2FProject%2Fcomponents%2F%23loading-components)
+<br>
+[![release][release-shield]][release-url]
+[![license][license-shield]](LICENSE)
+<br>
+<img src="https://img.shields.io/github/downloads/vdelachaux/4DPop-QuickOpen/total"/>
 
 # Overview
 
