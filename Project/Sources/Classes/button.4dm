@@ -158,43 +158,6 @@ Function setBackgroundPicture($proxy : Text) : cs:C1710.button
 	
 	return This:C1470
 	
-	// *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
-Function _proxy($proxy : Text) : Text
-	
-	Case of 
-			
-			//______________________________________________________
-		: (Position:C15("path:"; $proxy)=1)\
-			 || (Position:C15("file:"; $proxy)=1)\
-			 || (Position:C15("var:"; $proxy)=1)\
-			 || (Position:C15("!"; $proxy)=1)
-			
-			return $proxy
-			
-			//______________________________________________________
-		: (Position:C15("#"; $proxy)=1)  // Shortcut for Resources folder
-			
-			return "path:/RESOURCES/"+Delete string:C232($proxy; 1; 1)
-			
-			//______________________________________________________
-		: ($proxy="|@")
-			
-			return "path:/.PRODUCT_RESOURCES/"+Delete string:C232($proxy; 1; 1)
-			
-			//______________________________________________________
-		: (Position:C15("/"; $proxy)=1)
-			
-			return "path:"+$proxy
-			
-			//______________________________________________________
-		Else 
-			
-			// Relative to the form.4DForm
-			return "path:/FORM/"+$proxy
-			
-			//______________________________________________________
-	End case 
-	
 	// <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <==
 Function get numStates() : Integer
 	

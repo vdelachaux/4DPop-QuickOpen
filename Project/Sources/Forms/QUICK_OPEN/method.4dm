@@ -12,8 +12,7 @@ Case of
 		Form:C1466.maximized:=cs:C1710.widget.new("list.border")
 		Form:C1466.weWork:=cs:C1710.thermometer.new("weWork").start()
 		
-		var $file : 4D:C1709.File
-		$file:=Folder:C1567(fk database folder:K87:14; *).file("Preferences/4DPop design.preferences")
+		var $file : 4D:C1709.File:=Folder:C1567(fk database folder:K87:14; *).file("Preferences/4DPop design.preferences")
 		
 		If ($file.exists)
 			

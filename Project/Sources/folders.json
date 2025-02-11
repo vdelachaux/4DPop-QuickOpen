@@ -24,7 +24,6 @@
 	"⚙️ MACROS": {},
 	"📦 COMPONENT": {
 		"methods": [
-			"COMPILER_quickOpen",
 			"noError",
 			"QUICK_OPEN",
 			"quickAction_COMPILE",
