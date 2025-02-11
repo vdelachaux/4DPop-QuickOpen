@@ -1,10 +1,12 @@
 Class extends design
 
-property commands:=[]
+property commands : Collection
 
 Class constructor()
 	
 	Super:C1705()
+	
+	This:C1470.commands:=[]
 	
 	var $icon : Picture
 	
