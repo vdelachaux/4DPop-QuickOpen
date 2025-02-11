@@ -2,6 +2,9 @@ property isRefreshing : Boolean
 property desc; paths; sources : Collection
 property methodStamp; formStamp : Integer
 
+property folders : Object
+property formHash : Text
+
 Class constructor
 	
 	var $icon : Picture
@@ -551,7 +554,7 @@ Function _load($type : Integer)
 				
 				$tableNumber:=Num:C11($item.name)
 				
-				If ($tableNumber>0)
+				If (Is table number valid:C999($tableNumber))
 					
 					This:C1470.sources.push({\
 						type: Path trigger:K72:4; \
@@ -570,7 +573,7 @@ Function _load($type : Integer)
 				
 				$tableNumber:=Num:C11($item.name)
 				
-				If ($tableNumber>0)
+				If (Is table number valid:C999($tableNumber))
 					
 					For each ($form; $item.folders(fk ignore invisible:K87:22))
 						
