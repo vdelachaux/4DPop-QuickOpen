@@ -3,9 +3,11 @@ property _pattern : Text:=""
 property time : Integer:=0
 property success : Boolean:=True:C214
 property matches : Collection
-property errors:=[]
+property errors : Collection
 
 Class constructor($target; $pattern : Text)
+	
+	This:C1470.errors:=[]
 	
 	If (Count parameters:C259>=1)
 		
