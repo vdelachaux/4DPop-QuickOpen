@@ -2,21 +2,6 @@
 <!DOCTYPE base SYSTEM "http://www.4d.com/dtd/2007/base.dtd" >
 <base name="4DPop QuickOpen" uuid="B6C53570206A484DB044F986B4CBC351" collation_locale="en">
 	<schema name="DEFAULT_SCHEMA"/>
-	<table name="(Table_1)" uuid="C479B2D8E14C41A383255807BD39E591" id="1" hide_in_REST="true">
-		<field name="ID" uuid="135AFDCB3AA24885949B747D3617002B" type="4" unique="true" autosequence="true" not_null="true" id="1"/>
-		<primary_key field_name="ID" field_uuid="135AFDCB3AA24885949B747D3617002B"/>
-		<table_extra trashed="true">
-			<editor_table_info fields_ordering="1" displayable_fields_count="6">
-				<color red="255" green="255" blue="255" alpha="0"/>
-				<coordinates left="40" top="40" width="120" height="167.33203125"/>
-			</editor_table_info>
-		</table_extra>
-	</table>
-	<index kind="regular" unique_keys="true" uuid="C901ED7525DE430E947E1E6CE77B62AC" type="7">
-		<field_ref uuid="135AFDCB3AA24885949B747D3617002B" name="ID">
-			<table_ref uuid="C479B2D8E14C41A383255807BD39E591" name="(Table_1)"/>
-		</field_ref>
-	</index>
 	<base_extra package_name="4DPop Structure" structure_file_name="4DPop Structure" data_file_path=":4DPop Structure.4DD">
 		<temp_folder folder_selector="system"/>
 		<journal_file journal_file_enabled="false"/>

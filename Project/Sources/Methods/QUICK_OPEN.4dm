@@ -1,18 +1,13 @@
 //%attributes = {"invisible":true}
 // Open the QUICK_OPEN dialog in its own process & launch the quickOpen_WORKER
-var $t : Text
-var $form; $signal : Object
-
 If (Count parameters:C259=0)
 	
-	$t:=Current method name:C684
+	var $t:=Current method name:C684
 	BRING TO FRONT:C326(New process:C317($t; 0; "$"+$t; $t; *))
 	
 Else 
 	
-	COMPILER_quickOpen
-	
-	$form:={\
+	var $form:={\
 		search: ""; \
 		list: []; \
 		result: []; \
@@ -21,7 +16,7 @@ Else
 		isMaximized: False:C215; \
 		quickOpen: cs:C1710._quickOpen.new()}
 	
-	$signal:=New signal:C1641("quickOpen")
+	var $signal:=New signal:C1641("quickOpen")
 	
 	Use ($signal)
 		

@@ -1,5 +1,20 @@
 Class extends scrollable
 
+property source : Collection
+property type : Integer
+
+property item : Object
+property itemPosition : Integer
+property items : Collection
+
+property kind : Integer
+property properties : Object
+property definition : Collection
+property columns : Object
+
+property previous : Object
+property cellBox : Object
+
 // === === === === === === === === === === === === === === === === === === === === === === === === === ===
 Class constructor($name : Text)
 	
@@ -215,7 +230,7 @@ Function setSource($source) : cs:C1710.listbox
 	
 	This:C1470.source:=Null:C1517
 	This:C1470.data:=Null:C1517
-	This:C1470.kind:=Null:C1517
+	This:C1470.kind:=0
 	
 	return This:C1470
 	
@@ -548,7 +563,7 @@ Function cellPosition($e : cs:C1710.evt) : Object
 		
 	Else 
 		
-		GET MOUSE:C468($x; $y; $button)
+		MOUSE POSITION:C468($x; $y; $button)
 		LISTBOX GET CELL POSITION:C971(*; This:C1470.name; $x; $y; $column; $row)
 		
 	End if 
@@ -613,11 +628,10 @@ Function rowCoordinates($row : Integer) : Object
 Function cellCoordinates($column : Integer; $row : Integer) : Object
 	
 	var $bottom; $left; $right; $top : Integer
-	var $e : cs:C1710.evt
 	
 	If (Count parameters:C259=0)
 		
-		$e:=FORM Event:C1606
+		var $e:=FORM Event:C1606
 		
 		If ($e.column#Null:C1517)
 			

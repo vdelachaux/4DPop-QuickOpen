@@ -2,6 +2,13 @@
 This class is the parent class of all form objects classes
 */
 
+property __CLASS__ : Object
+property name : Text
+property type : Integer
+
+property _coordinates; initialPosition : Object
+property _fonts : Collection
+
 Class constructor($name : Text)
 	
 	This:C1470.__CLASS__:=OB Class:C1730(This:C1470)
@@ -29,20 +36,7 @@ Function set title($title : Text)
 	// === === === === === === === === === === === === === === === === === === === === === === === === === ===
 Function setTitle($title : Text) : cs:C1710.static
 	
-	var $t : Text
-	
-	//%W-533.1
-	If (Length:C16($title)>0)\
-		 && (Length:C16($title)<=255)\
-		 && ($title[[1]]#Char:C90(1))
-		
-		$t:=Formula from string:C1601("Get localized string:C991($1)"; sk execute in host database:K88:5).call(Null:C1517; $title)
-		$title:=Length:C16($t)>0 ? $t : $title  // Revert if no localization
-		
-	End if 
-	//%W+533.1
-	
-	OBJECT SET TITLE:C194(*; This:C1470.name; $title)
+	OBJECT SET TITLE:C194(*; This:C1470.name; This:C1470._getLocalizeString($title))
 	
 	return This:C1470
 	
@@ -301,6 +295,9 @@ Function setCoordinates($left; $top : Integer; $right : Integer; $bottom : Integ
 	// <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <==
 Function get windowCoordinates() : Object
 	
+	
+	This:C1470.updateCoordinates()
+	
 	var $bottom; $left; $right; $top : Integer
 	
 	$left:=This:C1470._coordinates.left
@@ -413,8 +410,16 @@ Function bestSize($alignment; $minWidth : Integer; $maxWidth : Integer) : cs:C17
 			: (This:C1470.type=Object type push button:K79:16)\
 				 || (This:C1470.type=Object type 3D button:K79:17)
 				
-				// Add 10% for margins
-				$width:=Round:C94($width*1.1; 0)
+				If (Length:C16(OBJECT Get title:C1068(*; This:C1470.name))>0)
+					
+					// Add 10% for margins
+					$width:=Round:C94($width*1.1; 0)
+					
+				Else 
+					
+					OB REMOVE:C1226($o; "minWidth")
+					
+				End if 
 				
 				//______________________________
 			Else 
@@ -643,7 +648,7 @@ Function get disabled() : Boolean
 	// ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==> ==>
 Function set disabled($disabled : Boolean)
 	
-	OBJECT SET VISIBLE:C603(*; This:C1470.name; Not:C34($disabled))
+	OBJECT SET ENABLED:C1123(*; This:C1470.name; Not:C34($disabled))
 	
 	// === === === === === === === === === === === === === === === === === === === === === === === === === ===
 Function disable() : cs:C1710.static
@@ -897,6 +902,21 @@ Function setColors($foreground : Variant; $background : Variant; $altBackground 
 	
 	return This:C1470
 	
+	// === === === === === === === === === === === === === === === === === === === === === === === === === ===
+Function restoreForegroundColor()
+	
+	This:C1470.foregroundColor:=Foreground color:K23:1
+	
+	// === === === === === === === === === === === === === === === === === === === === === === === === === ===
+Function restoreBackgroundColor()
+	
+	This:C1470.backgroundColor:=Background color:K23:2
+	
+	// === === === === === === === === === === === === === === === === === === === === === === === === === ===
+Function removeBackgroundColor()
+	
+	This:C1470.backgroundColor:=Background color none:K23:10
+	
 	//MARK:-[Text]
 	// <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <== <==
 Function get horizontalAlignment() : Integer
@@ -1073,3 +1093,63 @@ Function hiddenFromView() : cs:C1710.static
 	OBJECT SET COORDINATES:C1248(*; This:C1470.name; -100; -100; -100; -100)
 	
 	return This:C1470
+	
+	// *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+Function _proxy($proxy : Text) : Text
+	
+	Case of 
+			
+			//______________________________________________________
+		: (Position:C15("path:"; $proxy)=1)\
+			 || (Position:C15("file:"; $proxy)=1)\
+			 || (Position:C15("var:"; $proxy)=1)\
+			 || (Position:C15("!"; $proxy)=1)
+			
+			return $proxy
+			
+			//______________________________________________________
+		: (Position:C15("#"; $proxy)=1)  // Shortcut for Resources folder
+			
+			return "path:/RESOURCES/"+Delete string:C232($proxy; 1; 1)
+			
+			//______________________________________________________
+		: ($proxy="|@")
+			
+			return "path:/.PRODUCT_RESOURCES/"+Delete string:C232($proxy; 1; 1)
+			
+			//______________________________________________________
+		: (Position:C15("/"; $proxy)=1)
+			
+			return "path:"+$proxy
+			
+			//______________________________________________________
+		Else 
+			
+			// Relative to the form.4DForm
+			return "path:/FORM/"+$proxy
+			
+			//______________________________________________________
+	End case 
+	
+	// *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+Function _getLocalizeString($resname : Text) : Text
+	
+	var $t : Text
+	
+	If (Position:C15(":xliff:"; $resname)=1)
+		
+		$resname:=Delete string:C232($resname; 1; 7)
+		
+	End if 
+	
+	//%W-533.1
+	If (Length:C16($resname)>0)\
+		 && (Length:C16($resname)<=255)\
+		 && ($resname[[1]]#Char:C90(1))
+		
+		$t:=Formula from string:C1601("Get localized string:C991($1)"; sk execute in host database:K88:5).call(Null:C1517; $resname)
+		
+	End if 
+	//%W+533.1
+	
+	return Length:C16($t)>0 ? $t : $resname  // Revert if no localization

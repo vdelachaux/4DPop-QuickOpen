@@ -14,11 +14,12 @@ in this case, all named objects are initialized with widget class
 */
 
 property members : Collection
+property type : Integer
+
+property _data
+property __CLASS__ : Object
 
 Class constructor($members : Variant;  ... )
-	
-	C_LONGINT:C283($i)
-	C_TEXT:C284($t)
 	
 	This:C1470.__CLASS__:=OB Class:C1730(This:C1470)
 	
@@ -26,20 +27,23 @@ Class constructor($members : Variant;  ... )
 	
 	Case of 
 			
-			//___________________________
+			// ___________________________
 		: (Count parameters:C259=0)
 			
 			This:C1470.members:=[]
 			
-			//___________________________
+			// ___________________________
 		: (Value type:C1509($members)=Is collection:K8:32)
 			
+			// TODO: Manage non widget collections
 			This:C1470.members:=$members
 			
-			//___________________________
+			// ___________________________
 		: (Value type:C1509($members)=Is object:K8:27)  // 1 to N objects (could be groups)
 			
 			This:C1470.members:=[]
+			
+			var $i : Integer
 			
 			For ($i; 1; Count parameters:C259; 1)
 				
@@ -47,19 +51,19 @@ Class constructor($members : Variant;  ... )
 				
 			End for 
 			
-			//___________________________
+			// ___________________________
 		: (Value type:C1509($members)=Is text:K8:3)  // Comma separated list of object names
 			
 			This:C1470.members:=[]
 			
 			This:C1470.add($members)
 			
-			//___________________________
+			// ___________________________
 		Else 
 			
 			This:C1470.members:=[]
 			
-			//___________________________
+			// ___________________________
 	End case 
 	
 /*
@@ -99,49 +103,51 @@ or
 .add("Comma separated list of object names")
 	
 */
-Function add($member) : cs:C1710.group
+Function add($o) : cs:C1710.group
 	
 	var $t : Text
-	var $type : Integer
 	
-	$type:=Value type:C1509($member)
+	var $type:=Value type:C1509($o)
 	
 	Case of 
 			
-			//___________________________
+			// ___________________________
 		: ($type=Is collection:K8:32)
 			
-			This:C1470.members:=This:C1470.members.combine($member)
+			This:C1470.members:=This:C1470.members.combine($o)
 			
-			//___________________________
+			// ___________________________
 		: ($type=Is object:K8:27)
 			
-			If (OB Instance of:C1731($member; cs:C1710.group))
+			If (OB Instance of:C1731($o; cs:C1710.group))
 				
-				This:C1470.members:=This:C1470.members.combine($member.members)
+				This:C1470.members:=This:C1470.members.combine($o.members)
 				
 			Else 
 				
-				This:C1470.members.push($member)
+				This:C1470.members.push($o)
 				
 			End if 
 			
-			//___________________________
+			// ___________________________
 		: ($type=Is text:K8:3)  // Comma separated list of object names
 			
-			For each ($t; Split string:C1554($member; ","))
+			For each ($t; Split string:C1554($o; ","))
 				
 				This:C1470.members.push(cs:C1710.widget.new($t))  // Widget by default
 				
 			End for each 
 			
-			//___________________________
+			// ___________________________
 		Else 
 			
 			ASSERT:C1129(False:C215; "Bad parameter type")
 			
-			//___________________________
+			// ___________________________
 	End case 
+	
+	// Avoid Null members
+	This:C1470.members:=This:C1470.members.filter(Formula:C1597($1.value#Null:C1517))
 	
 	return This:C1470
 	
@@ -158,28 +164,26 @@ or
 */
 Function belongsTo($widget) : Boolean
 	
-	var $type : Integer
-	
-	$type:=Value type:C1509($widget)
+	var $type:=Value type:C1509($widget)
 	
 	Case of 
 			
-			//______________________________________________________
+			// ______________________________________________________
 		: ($type=Is object:K8:27)
 			
 			return This:C1470.members.includes($widget)
 			
-			//______________________________________________________
+			// ______________________________________________________
 		: ($type=Is text:K8:3)
 			
 			return This:C1470.members.query("name=:1"; $widget).pop()#Null:C1517
 			
-			//______________________________________________________
+			// ______________________________________________________
 		Else 
 			
 			ASSERT:C1129(False:C215; "Unmanaged parameter type")
 			
-			//______________________________________________________
+			// ______________________________________________________
 	End case 
 	
 	// === === === === === === === === === === === === === === === === === === === === === === === === === ===
@@ -189,13 +193,19 @@ with optional horizontal and vertical space.
 */
 Function enclosingRect($gap : Integer) : Object
 	
-	var $left; $top; $right; $bottom : Integer
-	var $member : cs:C1710.static
+	var $bottom; $left; $right; $top : Integer
 	var $coordinates : Object
+	var $o : cs:C1710.static
 	
-	For each ($member; This:C1470.members)
+	If (This:C1470.members.length=0)
 		
-		OBJECT GET COORDINATES:C663(*; $member.name; $left; $top; $right; $bottom)
+		return {left: 0; top: 0; right: 0; bottom: $bottom}
+		
+	End if 
+	
+	For each ($o; This:C1470.members)
+		
+		OBJECT GET COORDINATES:C663(*; $o.name; $left; $top; $right; $bottom)
 		
 		If ($coordinates=Null:C1517)
 			
@@ -203,7 +213,9 @@ Function enclosingRect($gap : Integer) : Object
 				left: $left; \
 				top: $top; \
 				right: $right; \
-				bottom: $bottom}
+				bottom: $bottom; \
+				width: 0; \
+				height: 0}
 			
 		Else 
 			
@@ -221,6 +233,9 @@ Function enclosingRect($gap : Integer) : Object
 		$coordinates.top-=$gap
 		$coordinates.right+=$gap
 		$coordinates.bottom+=$gap
+		
+		$coordinates.width:=$coordinates.right-$coordinates.left
+		$coordinates.height:=$coordinates.bottom-$coordinates.top
 		
 	End if 
 	
@@ -251,11 +266,11 @@ Function hiddenFromView()
 	// === === === === === === === === === === === === === === === === === === === === === === === === === ===
 Function moveHorizontally($offset : Integer)
 	
-	var $member : cs:C1710.static
+	var $o : cs:C1710.static
 	
-	For each ($member; This:C1470.members)
+	For each ($o; This:C1470.members)
 		
-		$member.moveHorizontally($offset)
+		$o.moveHorizontally($offset)
 		
 	End for each 
 	
@@ -275,27 +290,9 @@ The optional object type parameter allow to specify:
 */
 Function distributeLeftToRight($params : Object) : cs:C1710.group
 	
-	var $e : Object
-	var $key : Text
 	var $o : cs:C1710.static
 	
-	$e:={\
-		start: 0; \
-		spacing: 0; \
-		minWidth: 0; \
-		maxWidth: 0}
-	
-	If (Count parameters:C259>=1)
-		
-		For each ($key; $params)
-			
-			If ($params[$key]#Null:C1517)
-				
-				$e[$key]:=Num:C11($params[$key])
-				
-			End if 
-		End for each 
-	End if 
+	var $e:=This:C1470._userOptions({start: 0; spacing: 0; minWidth: 0; maxWidth: 0}; $params)
 	
 	$e.alignment:=Align left:K42:2
 	
@@ -316,35 +313,35 @@ Function distributeLeftToRight($params : Object) : cs:C1710.group
 			
 			Case of 
 					
-					//_______________________________
+					// _______________________________
 				: ($o.type=Object type push button:K79:16)\
 					 || ($o.type=Object type 3D button:K79:17)
 					
 					$e.start+=(Is macOS:C1572 ? 20 : 20)
 					
-					//_______________________________
+					// _______________________________
 				: ($o.type=Object type line:K79:33)
 					
 					$e.start+=(Is macOS:C1572 ? 40 : 20)
 					
-					//_______________________________
+					// _______________________________
 			End case 
 			
 		Else 
 			
 			Case of 
 					
-					//_______________________________
+					// _______________________________
 				: ($o.type=Object type line:K79:33)
 					
 					$e.start+=(Is macOS:C1572 ? 10 : 10)
 					
-					//_______________________________
+					// _______________________________
 				Else 
 					
 					$e.start+=$e.spacing
 					
-					//_______________________________
+					// _______________________________
 			End case 
 		End if 
 	End for each 
@@ -367,28 +364,9 @@ The optional object type parameter allow to specify:
 */
 Function distributeRigthToLeft($params : Object) : cs:C1710.group
 	
-	var $e : Object
-	var $key : Text
 	var $o : cs:C1710.static
 	
-	$e:={\
-		start: 0; \
-		spacing: 0; \
-		minWidth: 0; \
-		maxWidth: 0}
-	
-	If (Count parameters:C259>=1)
-		
-		For each ($key; $params)
-			
-			If ($params[$key]#Null:C1517)
-				
-				$e[$key]:=$params[$key]
-				
-			End if 
-		End for each 
-		
-	End if 
+	var $e:=This:C1470._userOptions({start: 0; spacing: 0; minWidth: 0; maxWidth: 0}; $params)
 	
 	$e.alignment:=Align right:K42:4
 	
@@ -409,13 +387,13 @@ Function distributeRigthToLeft($params : Object) : cs:C1710.group
 			
 			Case of 
 					
-					//_______________________________
+					// _______________________________
 				: ($o.type=Object type push button:K79:16)\
 					 || ($o.type=Object type 3D button:K79:17)
 					
 					$e.start-=(Is macOS:C1572 ? 20 : 20)
 					
-					//_______________________________
+					// _______________________________
 			End case 
 			
 		Else 
@@ -428,17 +406,110 @@ Function distributeRigthToLeft($params : Object) : cs:C1710.group
 	return This:C1470
 	
 	// === === === === === === === === === === === === === === === === === === === === === === === === === ===
-/** 
-This function reverses the horizontal order of the members 
+Function distributeVertically($params : Object) : cs:C1710.group
+	
+	var $o : cs:C1710.static
+	
+	var $e:=This:C1470._userOptions({start: 0; spacing: 0}; $params)
+	
+	For each ($o; This:C1470.members)
+		
+		If ($e.start#0)
+			
+			$o.moveVertically($e.start-$o._coordinates.top)
+			
+		End if 
+		
+		$e.start:=$o._coordinates.bottom
+		$e.start+=$e.spacing
+		
+	End for each 
+	
+	return This:C1470
+	
+	// === === === === === === === === === === === === === === === === === === === === === === === === === ===
+Function distributeHorizontally($params : Object) : cs:C1710.group
+	
+	var $o : cs:C1710.static
+	
+	var $e:=This:C1470._userOptions({start: 0; spacing: 0}; $params)
+	
+	For each ($o; This:C1470.members)
+		
+		$o.bestSize()
+		
+		If ($e.start#0)
+			
+			$o.moveHorizontally($e.start-$o._coordinates.left)
+			
+		End if 
+		
+		$e.start:=$o._coordinates.right
+		$e.start+=$e.spacing
+		
+	End for each 
+	
+	return This:C1470
+	
+	// === === === === === === === === === === === === === === === === === === === === === === === === === ===
+Function verticallyCentered($params : Object; $reference : Text) : cs:C1710.group
+	
+	var $bottom; $height; $left; $right; $top; $width : Integer
+	
+	var $e:=This:C1470._userOptions({start: 0; spacing: 0}; $params)
+	
+	This:C1470.distributeVertically($params)
+	
+	$reference:=$reference || String:C10($params.to)
+	
+	If (Length:C16($reference)>0)
+		
+		OBJECT GET COORDINATES:C663(*; $reference; $left; $top; $right; $bottom)
+		$height:=$bottom-$top
+		
+	Else 
+		
+		OBJECT GET SUBFORM CONTAINER SIZE:C1148($width; $height)
+		
+	End if 
+	
+	This:C1470.moveVertically(($height-This:C1470.enclosingRect().height)\2)
+	
+	// === === === === === === === === === === === === === === === === === === === === === === === === === ===
+Function horizontallyCentered($params : Object; $reference : Text) : cs:C1710.group
+	
+	var $bottom; $height; $left; $right; $top; $width : Integer
+	
+	var $e:=This:C1470._userOptions({start: 0; spacing: 0}; $params)
+	
+	This:C1470.distributeHorizontally($params)
+	
+	$reference:=$reference || String:C10($params.to)
+	
+	If (Length:C16($reference)>0)
+		
+		OBJECT GET COORDINATES:C663(*; $reference; $left; $top; $right; $bottom)
+		$width:=$right-$left
+		
+	Else 
+		
+		OBJECT GET SUBFORM CONTAINER SIZE:C1148($width; $height)
+		
+	End if 
+	
+	This:C1470.moveHorizontally(($width-This:C1470.enclosingRect().width)\2)
+	
+	// === === === === === === === === === === === === === === === === === === === === === === === === === ===
+/**
+This function reverses the horizontal order of the members
 useful, for example, for reversing the OK and Cancel buttons depending on the platform
 */
 Function switch() : cs:C1710.group
 	
 	var $left; $right; $spacing : Integer
-	var $c : Collection
 	var $o : cs:C1710.static
 	
-	$c:=This:C1470.members.orderBy("left")
+	var $c : Collection:=This:C1470.members.orderBy("left")
 	
 	For each ($o; $c)
 		
@@ -470,29 +541,27 @@ Function switch() : cs:C1710.group
 	/// Center all members on the first
 Function center($horizontally : Boolean; $vertically : Boolean)
 	
-	var $middle : Integer
-	var $member : Object
-	var $members : Collection
 	var $coordinates : cs:C1710.coord
 	var $dimensions : cs:C1710.dim
 	
 	// The reference is the first member of the group
 	// So we remove it and get its median position.
-	$members:=This:C1470.members.copy()
-	$member:=$members.shift()
-	$middle:=$member.coordinates.left+($member.dimensions.width\2)
+	var $members:=This:C1470.members.copy()
+	var $o : cs:C1710.static:=$members.shift()
+	
+	var $middle : Integer:=$o.coordinates.left+($o.dimensions.width\2)
 	
 	If ($horizontally)
 		
-		For each ($member; $members)
+		For each ($o; $members)
 			
-			$coordinates:=$member.coordinates
-			$dimensions:=$member.dimensions
+			$coordinates:=$o.coordinates
+			$dimensions:=$o.dimensions
 			
 			$coordinates.left:=$middle-($dimensions.width\2)
 			$coordinates.right:=$coordinates.left+$dimensions.width
 			
-			$member.setCoordinates($coordinates)
+			$o.setCoordinates($coordinates)
 			
 		End for each 
 	End if 
@@ -514,7 +583,8 @@ If ommited, the distribution is relative to the form
 */
 Function centerVertically($reference : Text) : cs:C1710.group
 	
-	var $bottom; $height; $left; $middle; $right; $top; $width : Integer
+	var $bottom; $height; $left; $middle; $right; $top : Integer
+	var $width : Integer
 	var $o : cs:C1710.static
 	
 	If (Count parameters:C259>=1)
@@ -602,30 +672,30 @@ Function alignRight($reference) : cs:C1710.group
 		
 		Case of 
 				
-				//______________________________________________________
+				// ______________________________________________________
 			: (Value type:C1509($reference)=Is object:K8:27)
 				
 				// We assume it is from the static class (or extend)
 				// #TO_DO: test the class
 				$right:=$reference.updateCoordinates().coordinates.right
 				
-				//______________________________________________________
+				// ______________________________________________________
 			: (Value type:C1509($reference)=Is integer:K8:5)\
 				 | (Value type:C1509($reference)=Is real:K8:4)
 				
 				$right:=$reference
 				
-				//______________________________________________________
+				// ______________________________________________________
 			: (Value type:C1509($reference)=Is text:K8:3)
 				
 				$right:=cs:C1710.static.new($reference).coordinates.right
 				
-				//______________________________________________________
+				// ______________________________________________________
 			Else 
 				
 				// #ERROR
 				
-				//______________________________________________________
+				// ______________________________________________________
 		End case 
 		
 	Else 
@@ -680,23 +750,33 @@ Function enable($enabled : Boolean) : cs:C1710.group
 	
 	For each ($o; This:C1470.members)
 		
-		If ($o.type=Object type subform:K79:40)
-			
-			If ($enabled)
+		Case of 
 				
-				$o.enable()
+				// ______________________________________________________
+			: ($o.type=Object type static text:K79:2)
 				
+				$o.restoreForegroundColor()
+				
+				// ______________________________________________________
+			: ($o.type=Object type subform:K79:40)
+				
+				If ($enabled)
+					
+					$o.enable()
+					
+				Else 
+					
+					$o.disable()
+					
+				End if 
+				
+				// ______________________________________________________
 			Else 
 				
-				$o.disable()
+				$o.enable($enabled)
 				
-			End if 
-			
-		Else 
-			
-			$o.enable($enabled)
-			
-		End if 
+				// ______________________________________________________
+		End case 
 	End for each 
 	
 	return This:C1470
@@ -708,8 +788,15 @@ Function disable() : cs:C1710.group
 	
 	For each ($o; This:C1470.members)
 		
-		$o.disable()
-		
+		If ($o.type=Object type static text:K79:2)
+			
+			$o.foregroundColor:=Dark shadow color:K23:3
+			
+		Else 
+			
+			$o.disable()
+			
+		End if 
 	End for each 
 	
 	return This:C1470
@@ -726,3 +813,25 @@ Function setFontStyle($style : Integer) : cs:C1710.group
 	End for each 
 	
 	return This:C1470
+	
+	// *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** *** ***
+Function _userOptions($e : Object; $user : Object) : Object
+	
+	If ($user=Null:C1517)
+		
+		return $e
+		
+	End if 
+	
+	var $key : Text
+	
+	For each ($key; $user)
+		
+		If ($user[$key]#Null:C1517)
+			
+			$e[$key]:=Num:C11($user[$key])
+			
+		End if 
+	End for each 
+	
+	return $e

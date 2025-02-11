@@ -82,7 +82,7 @@ Class constructor
 	
 	//-----------------------------------------------------------
 	// Build the list of source files
-Function getSources()->$this : cs:C1710.design
+Function getSources() : cs:C1710.design
 	
 	This:C1470.isRefreshing:=True:C214
 	
@@ -90,14 +90,13 @@ Function getSources()->$this : cs:C1710.design
 	This:C1470._folders()
 	
 	// Update sources list if any
-	var $mustBeUpdated : Boolean
 	var $i : Integer
 	var $stamp : Real
 	ARRAY TEXT:C222($dummy; 0x0000)
 	
 	If (This:C1470.methodStamp=0)
 		
-		$mustBeUpdated:=True:C214
+		var $mustBeUpdated:=True:C214
 		
 		// Initialize the timestamp
 		METHOD GET PATHS:C1163(Path database method:K72:2; $dummy; $stamp; *)
@@ -133,24 +132,22 @@ Function getSources()->$this : cs:C1710.design
 			
 			If (Not:C34($mustBeUpdated))  // #ACI0101530 - the timestamp isn't updated for forms.
 				
-				var $hash; $table : Text
-				var $c; $c1 : Collection
-				
 				FORM GET NAMES:C1167($dummy; *)
-				$c:=[]
+				var $c:=[]
 				ARRAY TO COLLECTION:C1563($c; $dummy)
 				
+				var $table : Text
 				For each ($table; ds:C1482)
 					
 					$i:=ds:C1482[$table].getInfo().tableNumber
 					FORM GET NAMES:C1167(Table:C252($i)->; $dummy; *)
-					$c1:=[]
+					var $c1:=[]
 					ARRAY TO COLLECTION:C1563($c1; $dummy)
 					$c:=$c.combine($c1)
 					
 				End for each 
 				
-				$hash:=Generate digest:C1147(JSON Stringify:C1217($c); MD5 digest:K66:1)
+				var $hash:=Generate digest:C1147(JSON Stringify:C1217($c); MD5 digest:K66:1)
 				$mustBeUpdated:=($hash#String:C10(This:C1470.formHash))
 				
 				If ($mustBeUpdated)
@@ -180,32 +177,26 @@ Function getSources()->$this : cs:C1710.design
 	
 	This:C1470.isRefreshing:=False:C215
 	
-	$this:=This:C1470
+	return This:C1470
 	
 	//-----------------------------------------------------------
 Function edit($designObject : Object; $formMethod : Boolean)
 	
-	var $formMethodƒ : Boolean
-	var $regex : cs:C1710.regex
-	
 	If ($designObject.type=Path project form:K72:3)\
 		 | ($designObject.type=Path table form:K72:5)
 		
-		If (Count parameters:C259>=2)
-			
-			$formMethodƒ:=$formMethod  // Edit form method
-			
-		End if 
+		$formMethod:=Count parameters:C259>=2 ? $formMethod : False:C215
 		
 	Else 
 		
-		$formMethodƒ:=True:C214
+		$formMethod:=True:C214
 		
 	End if 
 	
-	$regex:=cs:C1710.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$").match()
+	var $regex:=cs:C1710.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
+	$regex.match()
 	
-	If ($formMethodƒ)
+	If ($formMethod)
 		
 		// ⚠️ METHOD OPEN PATH could generate an error if form method doesn't exists
 		Case of 
@@ -244,11 +235,8 @@ Function edit($designObject : Object; $formMethod : Boolean)
 	//-----------------------------------------------------------
 Function editDoc($designObject : Object)
 	
-	var $o : Object
 	var $file : 4D:C1709.File
-	var $regex : cs:C1710.regex
-	
-	$o:=This:C1470.paths.query("type = :1"; $designObject.type).pop()
+	var $o : Object:=This:C1470.paths.query("type = :1"; $designObject.type).pop()
 	
 	Case of 
 			
@@ -271,8 +259,13 @@ Function editDoc($designObject : Object)
 			//______________________________________________________
 		: ($designObject.type=Path table form:K72:5)
 			
-			$regex:=cs:C1710.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$").match()
-			$file:=$o.doc.folder(String:C10($designObject.tableNumber)).folder($regex.matches[1].data).file("form.md")
+			var $regex:=cs:C1710.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
+			
+			If ($regex.match())
+				
+				$file:=$o.doc.folder(String:C10($designObject.tableNumber)).folder($regex.matches[1].data).file("form.md")
+				
+			End if 
 			
 			//______________________________________________________
 		Else 
@@ -299,12 +292,8 @@ Function editDoc($designObject : Object)
 	//-----------------------------------------------------------
 Function showOnDisk($designObject : Object)
 	
-	var $o : Object
 	var $file : 4D:C1709.File
-	var $regex : cs:C1710.regex
-	
-	$o:=This:C1470.paths.query("type = :1"; $designObject.type).pop()
-	
+	var $o : Object:=This:C1470.paths.query("type = :1"; $designObject.type).pop()
 	
 	Case of 
 			
@@ -321,8 +310,13 @@ Function showOnDisk($designObject : Object)
 			//______________________________________________________
 		: ($designObject.type=Path table form:K72:5)
 			
-			$regex:=cs:C1710.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$").match()
-			$file:=$o.sources.folder(String:C10($designObject.tableNumber)).folder($regex.matches[1].data).file("form.4dform")
+			var $regex:=cs:C1710.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
+			
+			If ($regex.match())
+				
+				$file:=$o.sources.folder(String:C10($designObject.tableNumber)).folder($regex.matches[1].data).file("form.4dform")
+				
+			End if 
 			
 			//______________________________________________________
 		: ($designObject.type=Path project form:K72:3)
@@ -347,23 +341,16 @@ Function showOnDisk($designObject : Object)
 	// Create, if necessary, and open the doc file
 Function showDocOnDisk($designObject : Object; $createIfNotExists : Boolean)
 	
-	var $file : 4D:C1709.File
-	var $o : Object
+	var $file : 4D:C1709.File:=$designObject.doc
 	
-	$file:=$designObject.doc
-	
-	If (Not:C34($file.exists))
+	If (Not:C34($file.exists))\
+		 && (Count parameters:C259>=2)\
+		 && ($createIfNotExists)
 		
-		If (Count parameters:C259>=2)
-			
-			If ($createIfNotExists)
-				
-				$o:=This:C1470.paths.query("type = :1"; $designObject.type).pop()
-				$file.create()
-				$file.setText("# "+$designObject.name+" "+String:C10($o.comment)+" Documentation\r")
-				
-			End if 
-		End if 
+		var $o : Object:=This:C1470.paths.query("type = :1"; $designObject.type).pop()
+		$file.create()
+		$file.setText("# "+$designObject.name+" "+String:C10($o.comment)+" Documentation\r")
+		
 	End if 
 	
 	If ($file.exists)
@@ -376,10 +363,7 @@ Function showDocOnDisk($designObject : Object; $createIfNotExists : Boolean)
 	// Delete a method file or a form folder & documentation if any
 Function delete($designObject : Object)
 	
-	var $o : Object
-	var $regex : cs:C1710.regex
-	
-	$o:=This:C1470.paths.query("type = :1"; $designObject.type).pop()
+	var $o : Object:=This:C1470.paths.query("type = :1"; $designObject.type).pop()
 	
 	Case of 
 			
@@ -396,8 +380,13 @@ Function delete($designObject : Object)
 			//………………………………………………………………………………………………
 		: ($designObject.type=Path table form:K72:5)
 			
-			$regex:=cs:C1710.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$").match()
-			$o.sources.folder(String:C10($designObject.tableNumber)).folder($regex.matches[1].data).delete(Delete with contents:K24:24)
+			var $regex:=cs:C1710.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
+			
+			If ($regex.match())
+				
+				$o.sources.folder(String:C10($designObject.tableNumber)).folder($regex.matches[1].data).delete(Delete with contents:K24:24)
+				
+			End if 
 			
 			//………………………………………………………………………………………………
 		: ($designObject.type=Path project form:K72:3)
@@ -421,10 +410,7 @@ Function delete($designObject : Object)
 	// Delete a documentation file
 Function deleteDoc($designObject : Object)
 	
-	var $o : Object
-	var $regex : cs:C1710.regex
-	
-	$o:=This:C1470.paths.query("type = :1"; $designObject.type).pop()
+	var $o : Object:=This:C1470.paths.query("type = :1"; $designObject.type).pop()
 	
 	Case of 
 			
@@ -447,8 +433,13 @@ Function deleteDoc($designObject : Object)
 			//………………………………………………………………………………………………
 		: ($designObject.type=Path table form:K72:5)
 			
-			$regex:=cs:C1710.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$").match()
-			$o.doc.folder(String:C10($designObject.tableNumber)).folder($regex.matches[1].data).delete(Delete with contents:K24:24)
+			var $regex:=cs:C1710.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
+			
+			If ($regex.match())
+				
+				$o.doc.folder(String:C10($designObject.tableNumber)).folder($regex.matches[1].data).delete(Delete with contents:K24:24)
+				
+			End if 
 			
 			//………………………………………………………………………………………………
 		Else 
@@ -462,80 +453,73 @@ Function deleteDoc($designObject : Object)
 	// Build the folders list
 Function _folders()
 	
-	var $key; $t : Text
-	var $folders : Object
-	var $file : 4D:C1709.File
-	var $sources : 4D:C1709.Folder
-	
 	This:C1470.folders:={\
 		classes: {}; \
 		methods: {}; \
 		forms: {}; \
 		tables: {}}
 	
-	$sources:=Folder:C1567("/PACKAGE/Project/Sources/"; *)
+	var $file:=File:C1566("/PACKAGE/Project/Sources/folders.json"; *)
 	
-	$file:=$sources.file("folders.json")
-	
-	If ($file.exists)
+	If (Not:C34($file.exists))
 		
-		$folders:=JSON Parse:C1218($file.getText())
+		return 
 		
-		For each ($key; $folders)
-			
-			If ($folders[$key].methods#Null:C1517)
-				
-				For each ($t; $folders[$key].methods)
-					
-					This:C1470.folders.methods[$t]:=$key
-					
-				End for each 
-			End if 
-			
-			If ($folders[$key].classes#Null:C1517)
-				
-				For each ($t; $folders[$key].classes)
-					
-					This:C1470.folders.classes[$t]:=$key
-					
-				End for each 
-			End if 
-			
-			If ($folders[$key].forms#Null:C1517)
-				
-				For each ($t; $folders[$key].forms)
-					
-					This:C1470.folders.forms[$t]:=$key
-					
-				End for each 
-			End if 
-			
-			If ($folders[$key].tables#Null:C1517)
-				
-				For each ($t; $folders[$key].tables)
-					
-					This:C1470.folders.tables[$t]:=$key
-					
-				End for each 
-			End if 
-		End for each 
 	End if 
+	
+	var $folders : Object:=JSON Parse:C1218($file.getText())
+	var $key; $t : Text
+	
+	For each ($key; $folders)
+		
+		If ($folders[$key].methods#Null:C1517)
+			
+			For each ($t; $folders[$key].methods)
+				
+				This:C1470.folders.methods[$t]:=$key
+				
+			End for each 
+		End if 
+		
+		If ($folders[$key].classes#Null:C1517)
+			
+			For each ($t; $folders[$key].classes)
+				
+				This:C1470.folders.classes[$t]:=$key
+				
+			End for each 
+		End if 
+		
+		If ($folders[$key].forms#Null:C1517)
+			
+			For each ($t; $folders[$key].forms)
+				
+				This:C1470.folders.forms[$t]:=$key
+				
+			End for each 
+		End if 
+		
+		If ($folders[$key].tables#Null:C1517)
+			
+			For each ($t; $folders[$key].tables)
+				
+				This:C1470.folders.tables[$t]:=$key
+				
+			End for each 
+		End if 
+	End for each 
 	
 	//-----------------------------------------------------------
 	// Load a type of source files
 Function _load($type : Integer)
 	
-	var $tableNumber : Integer
-	var $form; $item; $o : Object
-	var $docFiles; $sourceFiles : Collection
-	
-	$o:=This:C1470.paths.query("type = :1"; $type).pop()
+	var $o : Object:=This:C1470.paths.query("type = :1"; $type).pop()
 	
 	If ($type=Path project form:K72:3)\
 		 | ($type=Path table form:K72:5)
 		
 		// Each table items are in a folder nammed "N" with N = table number
-		$sourceFiles:=$o.sources.folders(fk ignore invisible:K87:22)
+		var $sourceFiles : Collection:=$o.sources.folders(fk ignore invisible:K87:22)
 		
 	Else 
 		
@@ -543,7 +527,8 @@ Function _load($type : Integer)
 		
 	End if 
 	
-	$docFiles:=$o.doc.files(fk ignore invisible:K87:22).query("extension = .md")
+	var $docFiles : Collection:=$o.doc.files(fk ignore invisible:K87:22).query("extension = .md")
+	var $item : Object
 	
 	For each ($item; $sourceFiles)
 		
@@ -552,7 +537,7 @@ Function _load($type : Integer)
 				//………………………………………………………………………………………………
 			: ($type=Path trigger:K72:4)
 				
-				$tableNumber:=Num:C11($item.name)
+				var $tableNumber : Integer:=Num:C11($item.name)
 				
 				If (Is table number valid:C999($tableNumber))
 					
@@ -575,6 +560,7 @@ Function _load($type : Integer)
 				
 				If (Is table number valid:C999($tableNumber))
 					
+					var $form : Object
 					For each ($form; $item.folders(fk ignore invisible:K87:22))
 						
 						If ($form.file("form.4DForm").exists)
@@ -648,10 +634,6 @@ Function _load($type : Integer)
 					doc: $docFiles.query("name = :1"; $item.name).pop(); \
 					icon: $o.icon; \
 					attributes: Null:C1517})
-				
-				//………………………………………………………………………………………………
-			Else 
-				
 				
 				//………………………………………………………………………………………………
 		End case 

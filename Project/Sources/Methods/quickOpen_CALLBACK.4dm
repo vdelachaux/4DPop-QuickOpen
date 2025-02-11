@@ -2,8 +2,6 @@
 // Call back from quickOpen_WORKER when the list refresh is finished.
 #DECLARE($design : cs:C1710.design)
 
-COMPILER_quickOpen
-
 design:=$design
 
 design.sources.combine(Form:C1466.quickOpen.commands)
