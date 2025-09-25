@@ -1,8 +1,6 @@
 //%attributes = {"invisible":true}
 #DECLARE($action : Object)
 
-var $process : Integer
-
 Case of 
 		
 		//______________________________________________________
@@ -14,7 +12,7 @@ Case of
 			
 		Else 
 			
-			$process:=New process:C317("quickAction_FORMULA"; 0; "$quickOpen"; OB Copy:C1225($action))
+			var $process:=New process:C317("quickAction_FORMULA"; 0; "$quickOpen"; OB Copy:C1225($action))
 			
 		End if 
 		
@@ -31,7 +29,7 @@ Case of
 		If (Last errors:C1799.length>0)\
 			 && (Last errors:C1799[0].errCode=-10531)
 			
-			ALERT:C41(Get localized string:C991("theUserSettingsOfTheDatabaseHaveNotBeenActivated"))
+			ALERT:C41(Localized string:C991("theUserSettingsOfTheDatabaseHaveNotBeenActivated"))
 			
 		End if 
 		
