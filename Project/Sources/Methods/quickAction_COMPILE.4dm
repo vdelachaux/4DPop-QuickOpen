@@ -1,21 +1,18 @@
 //%attributes = {"invisible":true}
 #DECLARE($options : Object)
 
-var $context; $t : Text
-var $compiler; $error : Object
-var $components : Collection
+var $context:=Localized string:C991(Bool:C1537($options.checkSyntax) ? "syntaxCheck" : "compilation")
 
-$context:=Get localized string:C991(Bool:C1537($options.checkSyntax) ? "syntaxCheck" : "compilation")
 //$progress:=Progress New
 //Progress SET TITLE($progress; $context; -1; ""; True)
 
 ARRAY TEXT:C222($names; 0x0000)
-$components:=[]
+var $components:=[]
 
 COMPONENT LIST:C1001($names)
 ARRAY TO COLLECTION:C1563($components; $names)
 
-$compiler:={components: $components}
+var $compiler:={components: $components}
 
 If (Bool:C1537($options.checkSyntax))
 	
@@ -42,6 +39,7 @@ Else
 	// Only show errors
 	$compiler.errors:=$compiler.errors.query("isError = true")
 	
+	var $error : Object
 	For each ($error; $compiler.errors)
 		
 		Case of 
@@ -58,7 +56,7 @@ Else
 				//______________________________________________________
 			: ($error.code.type="databaseMethod")
 				
-				$t:=Replace string:C233($error.code.path; "[databaseMethod]/"; "")
+				var $t:=Replace string:C233($error.code.path; "[databaseMethod]/"; "")
 				$t[[1]]:=Uppercase:C13($t[[1]])
 				$error.method:=_4D Get 4D App localized string:C1578("DatabaseMethodName_"+$t)
 				

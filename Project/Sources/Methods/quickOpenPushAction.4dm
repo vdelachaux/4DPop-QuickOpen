@@ -2,10 +2,6 @@
 // Allows the host database or a component to push its own actions.
 #DECLARE($action : Object)
 
-var $key : Text
-var $icon : Picture
-var $o : Object
-
 If (Storage:C1525.actions=Null:C1517)
 	
 	Use (Storage:C1525)
@@ -15,7 +11,7 @@ If (Storage:C1525.actions=Null:C1517)
 	End use 
 End if 
 
-$o:=Storage:C1525.actions.query("name = :1"; $action.name).pop()
+var $o : Object:=Storage:C1525.actions.query("name = :1"; $action.name).pop()
 
 Use (Storage:C1525.actions)
 	
@@ -29,6 +25,8 @@ Use (Storage:C1525.actions)
 			$action.desc:="action"
 			$action.comment:="embedded action"
 			$action.folder:="_"
+			
+			var $icon : Picture
 			
 			If ($action.icon=Null:C1517)
 				
@@ -48,24 +46,25 @@ Use (Storage:C1525.actions)
 		
 	Else   // *UPDATE
 		
+		var $key : Text
+		
 		For each ($key; $action)
 			
 			Case of 
 					
-					//______________________________________________________
+					// ______________________________________________________
 				: ($key="icon")
 					
 					CREATE THUMBNAIL:C679($action.icon; $icon; 16; 16)
 					$o.icon:=$icon
 					
-					//______________________________________________________
+					// ______________________________________________________
 				Else 
 					
 					$o[$key]:=$action[$key]
 					
-					//______________________________________________________
+					// ______________________________________________________
 			End case 
-			
 		End for each 
 	End if 
 End use 

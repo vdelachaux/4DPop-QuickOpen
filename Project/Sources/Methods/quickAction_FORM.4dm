@@ -1,9 +1,7 @@
 //%attributes = {"invisible":true}
 #DECLARE($action : Object)
 
-var $formName : Text
-
-$formName:=String:C10($action.form)
+var $formName:=String:C10($action.form)
 
 If ($formName="@.4DForm")
 	
@@ -25,6 +23,6 @@ If ($action.file.exists)
 	
 Else 
 	
-	ALERT:C41(Replace string:C233(Get localized string:C991("formNotFound"); "{name}"; $action.file.parent.platformPath))
+	ALERT:C41(Replace string:C233(Localized string:C991("formNotFound"); "{name}"; $action.file.parent.platformPath))
 	
 End if 

@@ -340,12 +340,47 @@
 					"width": 680,
 					"height": 1,
 					"stroke": "#c0c0c0"
+				},
+				"Oval": {
+					"type": "oval",
+					"top": 2,
+					"left": 702,
+					"width": 44,
+					"height": 44,
+					"stroke": "#c0c0c0",
+					"fill": "transparent"
+				},
+				"Oval1": {
+					"type": "oval",
+					"top": 0,
+					"left": 760,
+					"width": 44,
+					"height": 44,
+					"stroke": "#c0c0c0",
+					"fill": "transparent"
+				},
+				"Static Picture1": {
+					"type": "picture",
+					"top": 8,
+					"left": 708,
+					"width": 32,
+					"height": 32,
+					"picture": "/RESOURCES/Images/objectsIcons/Icon_604.png",
+					"pictureFormat": "scaled"
+				},
+				"Static Picture2": {
+					"type": "picture",
+					"top": 7,
+					"left": 766,
+					"width": 32,
+					"height": 32,
+					"picture": "/RESOURCES/Images/Forms.png"
 				}
 			}
 		}
 	],
 	"method": "method.4dm",
-	"geometryStamp": 593,
+	"geometryStamp": 618,
 	"editor": {
 		"activeView": "View 1",
 		"defaultView": "View 1",
