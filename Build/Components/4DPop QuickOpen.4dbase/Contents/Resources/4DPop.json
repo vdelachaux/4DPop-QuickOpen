@@ -1,6 +1,5 @@
 {
   "name": "QuickOpen",
-  "media": "4DPop.png",
   "handler": "_4DPopQuickOpen",
   "default": "open"
 }
