@@ -8,6 +8,10 @@
 		"Regex with Classes": {
 			"github": "vdelachaux/Regex-with-Classes",
 			"version": "4d"
+		},
+		"UI with Classes": {
+			"github": "vdelachaux/UI-with-Classes",
+			"version": "4d"
 		}
 	}
 }

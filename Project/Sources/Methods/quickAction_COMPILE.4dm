@@ -69,7 +69,7 @@ Else
 		End case 
 	End for each 
 	
-	cs:C1710.menuBar.new().defaultMinimalMenuBar().set()
+	cs:C1710.ui.menuBar.new().defaultMinimalMenuBar().set()
 	
 	$compiler.window:=Open form window:C675("COMPILER"; Plain form window:K39:10; Horizontally centered:K39:1; At the bottom:K39:6; *)
 	SET WINDOW TITLE:C213($context+" result")

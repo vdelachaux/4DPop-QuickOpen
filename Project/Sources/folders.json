@@ -7,15 +7,17 @@
 		]
 	},
 	"-👥 NAMESPACE": {},
+	"(UI)": {
+		"classes": [
+			"tips"
+		]
+	},
 	"# 🚧 DEV": {
 		"methods": [
 			"00_TEST"
 		]
 	},
 	"♻️ LIBRAIRIES": {
-		"groups": [
-			"UI"
-		],
 		"classes": [
 			"design"
 		]
@@ -47,22 +49,9 @@
 			"open"
 		]
 	},
-	"UI": {
-		"classes": [
-			"button",
-			"coord",
-			"dim",
-			"evt",
-			"group",
-			"listbox",
-			"menu",
-			"menuBar",
-			"scrollable",
-			"static",
-			"thermometer",
-			"tips",
-			"widget"
+	"trash": {
+		"groups": [
+			"(UI)"
 		]
-	},
-	"trash": {}
+	}
 }

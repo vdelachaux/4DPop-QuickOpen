@@ -6,11 +6,11 @@ Case of
 	: ($e.code=On Load:K2:1)
 		
 		// Set up the UI
-		Form:C1466.resultList:=cs:C1710.listbox.new("results")
-		Form:C1466.icon:=cs:C1710.static.new("currentIcon")
-		Form:C1466.minimized:=cs:C1710.widget.new("search.border")
-		Form:C1466.maximized:=cs:C1710.widget.new("list.border")
-		Form:C1466.weWork:=cs:C1710.thermometer.new("weWork").start()
+		Form:C1466.resultList:=cs:C1710.ui.listbox.new("results")
+		Form:C1466.icon:=cs:C1710.ui.static.new("currentIcon")
+		Form:C1466.minimized:=cs:C1710.ui.widget.new("search.border")
+		Form:C1466.maximized:=cs:C1710.ui.widget.new("list.border")
+		Form:C1466.weWork:=cs:C1710.ui.thermometer.new("weWork").start()
 		
 		var $file : 4D:C1709.File:=Folder:C1567(fk database folder:K87:14; *).file("Preferences/4DPop design.preferences")
 		
