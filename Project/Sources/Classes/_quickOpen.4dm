@@ -232,7 +232,7 @@ Function menu($item : Object)
 		
 	End if 
 	
-	var $menu:=cs:C1710.menu.new()\
+	var $menu:=cs:C1710.ui.menu.new()\
 		.append($item.type>0 ? ":xliff:edit" : ":xliff:execute"; "edit")
 	
 	If ($item.type>0)

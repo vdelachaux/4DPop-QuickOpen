@@ -13,7 +13,7 @@ Else
 	
 End if 
 
-cs:C1710.menuBar.new().defaultMinimalMenuBar().set()
+cs:C1710.ui.menuBar.new().defaultMinimalMenuBar().set()
 
 If ($action.file.exists)
 	
