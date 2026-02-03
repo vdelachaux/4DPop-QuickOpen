@@ -193,7 +193,7 @@ Function edit($designObject : Object; $formMethod : Boolean)
 		
 	End if 
 	
-	var $regex:=cs:C1710.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
+	var $regex:=cs:C1710.rgx.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
 	$regex.match()
 	
 	If ($formMethod)
@@ -259,7 +259,7 @@ Function editDoc($designObject : Object)
 			//______________________________________________________
 		: ($designObject.type=Path table form:K72:5)
 			
-			var $regex:=cs:C1710.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
+			var $regex:=cs:C1710.rgx.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
 			
 			If ($regex.match())
 				
@@ -310,7 +310,7 @@ Function showOnDisk($designObject : Object)
 			//______________________________________________________
 		: ($designObject.type=Path table form:K72:5)
 			
-			var $regex:=cs:C1710.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
+			var $regex:=cs:C1710.rgx.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
 			
 			If ($regex.match())
 				
@@ -380,7 +380,7 @@ Function delete($designObject : Object)
 			//………………………………………………………………………………………………
 		: ($designObject.type=Path table form:K72:5)
 			
-			var $regex:=cs:C1710.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
+			var $regex:=cs:C1710.rgx.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
 			
 			If ($regex.match())
 				
@@ -433,7 +433,7 @@ Function deleteDoc($designObject : Object)
 			//………………………………………………………………………………………………
 		: ($designObject.type=Path table form:K72:5)
 			
-			var $regex:=cs:C1710.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
+			var $regex:=cs:C1710.rgx.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
 			
 			If ($regex.match())
 				

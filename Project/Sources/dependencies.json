@@ -1,9 +1,13 @@
 {
-  "version": 2100,
-  "dependencies": {
-    "4DPop": {
-      "github": "vdelachaux/4DPop",
-      "version": "4d"
-    }
-  }
+	"version": 2100,
+	"dependencies": {
+		"4DPop": {
+			"github": "vdelachaux/4DPop",
+			"version": "4d"
+		},
+		"Regex with Classes": {
+			"github": "vdelachaux/Regex-with-Classes",
+			"version": "4d"
+		}
+	}
 }
