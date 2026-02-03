@@ -19,6 +19,16 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+    - name: Check out UI-with-Classes
+      uses: actions/checkout@v4
+      with:
+        repository: vdelachaux/UI-with-Classes
+        path: Components/UI with Classes.4dbase
+    - name: Check out Regex-with-Classes
+      uses: actions/checkout@v4
+      with:
+        repository: vdelachaux/Regex-with-Classe
+        path: Components/Regex with Classe.4dbase
     - name: Build
       uses: 4d/build4d-action@main
       with:
