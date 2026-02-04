@@ -232,36 +232,36 @@ Function menu($item : Object)
 		
 	End if 
 	
-	var $menu:=cs:C1710.menu.new()\
-		.append($item.type>0 ? ":xliff:edit" : ":xliff:execute"; "edit")
+	var $menu:=cs:C1710.ui.menu.new()\
+		.append($item.type>0 ? Localized string:C991("edit") : Localized string:C991("execute"); "edit")
 	
 	If ($item.type>0)
 		
 		If ($item.type=Path project form:K72:3)\
 			 | ($item.type=Path table form:K72:5)
 			
-			$menu.append(":xliff:editFormMethod"; "method")
+			$menu.append(Localized string:C991("editFormMethod"); "method")
 			
 		End if 
 		
-		$menu.append(Bool:C1537($item.doc.exists) ? ":xliff:editDocumentation" : ":xliff:createDocumentation"; "doc")\
-			.append(":xliff:showSourceFile"; "showSource")\
-			.append(":xliff:showDocumentationFile"; "showDoc").enable(Bool:C1537($item.doc.exists))\
+		$menu.append(Bool:C1537($item.doc.exists) ? Localized string:C991("editDocumentation") : Localized string:C991("createDocumentation"); "doc")\
+			.append(Localized string:C991("showSourceFile"); "showSource")\
+			.append(Localized string:C991("showDocumentationFile"); "showDoc").enable(Bool:C1537($item.doc.exists))\
 			.line()\
-			.append(":xliff:copyTheName"; "copy")\
+			.append(Localized string:C991("copyTheName"); "copy")\
 			.line()\
-			.append(":xliff:deleteSourceFile"; "deleteSource")
+			.append(Localized string:C991("deleteSourceFile"); "deleteSource")
 		
 		If (Bool:C1537($item.doc.exists))
 			
-			$menu.append(":xliff:deleteDocumentation"; "deleteDoc")
+			$menu.append(Localized string:C991("deleteDocumentation"); "deleteDoc")
 			
 		End if 
 		
 		If ($item.type=Path project form:K72:3)\
 			 | ($item.type=Path table form:K72:5)
 			
-			$menu.append(":xliff:deleteFormMethod"; "deleteFormMethod")
+			$menu.append(Localized string:C991("deleteFormMethod"); "deleteFormMethod")
 			
 		End if 
 	End if 
