@@ -27,8 +27,8 @@ jobs:
     - name: Check out Regex-with-Classes
       uses: actions/checkout@v4
       with:
-        repository: vdelachaux/Regex-with-Classe
-        path: Components/Regex with Classe.4dbase
+        repository: vdelachaux/Regex-with-Classes
+        path: Components/Regex with Classes.4dbase
     - name: Build
       uses: 4d/build4d-action@main
       with:
