@@ -31,6 +31,14 @@ jobs:
         fetch-depth: 0
         lfs: true
         
+    - name: Check out SVG with Classes
+      uses: actions/checkout@v4
+      with:
+        repository: vdelachaux/SVG-with-Classes
+        path: Components/SVG-with-Classes.4dbase
+        fetch-depth: 0
+        lfs: true
+        
     - name: Check out UI-with-Classes
       uses: actions/checkout@v4
       with:
