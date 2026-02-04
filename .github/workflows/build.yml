@@ -19,6 +19,34 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+        lfs: true 
+        
+    - name: Check out 4DPop
+      uses: actions/checkout@v4
+      with:
+        repository: vdelachaux4DPop
+        path: Components/4DPop.4dbase
+        fetch-depth: 0
+        lfs: true
+        
+    - name: Check out UI-with-Classes
+      uses: actions/checkout@v4
+      with:
+        repository: vdelachaux/UI-with-Classes
+        path: Components/UI-with-Classes.4dbase
+        fetch-depth: 0
+        lfs: true
+        
+    - name: Check out Regex-with-Classes
+      uses: actions/checkout@v4
+      with:
+        repository: vdelachaux/Regex-with-Classes
+        path: Components/Regex-with-Classes.4dbase
+        fetch-depth: 0
+        lfs: true
+        
     - name: Build
       uses: 4d/build4d-action@main
       with:
@@ -26,4 +54,3 @@ jobs:
         version: vcs
         build: official
         token: ${{ secrets.DLTK }}
-

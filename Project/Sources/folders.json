@@ -7,6 +7,7 @@
 		]
 	},
 	"-👥 NAMESPACE": {},
+	"(UI)": {},
 	"# 🚧 DEV": {
 		"methods": [
 			"00_TEST"
@@ -48,21 +49,10 @@
 			"open"
 		]
 	},
-	"UI": {
-		"classes": [
-			"button",
-			"coord",
-			"dim",
-			"evt",
-			"group",
-			"listbox",
-			"menu",
-			"menuBar",
-			"scrollable",
-			"static",
-			"thermometer",
-			"tips",
-			"widget"
+	"trash": {
+		"groups": [
+			"(UI)",
+			"(UI)"
 		]
 	},
 	"trash": {}
