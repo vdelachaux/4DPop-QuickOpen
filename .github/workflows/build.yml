@@ -26,7 +26,7 @@ jobs:
     - name: Check out 4DPop
       uses: actions/checkout@v4
       with:
-        repository: vdelachaux4DPop
+        repository: vdelachaux/4DPop
         path: Components/4DPop.4dbase
         fetch-depth: 0
         lfs: true
