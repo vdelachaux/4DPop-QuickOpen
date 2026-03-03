@@ -1,0 +1,52 @@
+name: Build
+on:
+  push:
+    paths:
+      - '**.4dm'
+      - '**.yml'
+  pull_request:
+    paths:
+      - '**.4dm'
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: "Build on ${{ matrix.os }}"
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ macos-latest, windows-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+# Get dependencies
+    - name: Get 4DPop
+      uses: actions/checkout@v4
+      with:
+        repository: vdelachaux/4DPop
+        path: Components/4DPop.4dbase
+    - name: Get SVG with Classes
+      uses: actions/checkout@v4
+      with:
+        repository: vdelachaux/SVG-with-Classes
+        path: Components/SVG with Classes.4dbase
+    - name: Get UI with Classes
+      uses: actions/checkout@v4
+      with:
+        repository: vdelachaux/UI-with-Classes
+        path: Components/UI with Classes.4dbase
+    - name: Get Regex with Classes
+      uses: actions/checkout@v4
+      with:
+        repository: vdelachaux/Regex-with-Classes
+        path: Components/Regex with Classes.4dbase
+    - name: Build
+      uses: 4d/build4d-action@main
+      with:
+        product-line: vcs
+        version: vcs
+        build: official
+        token: ${{ secrets.DLTK }}
+
+
