@@ -7,8 +7,6 @@ property formHash : Text
 
 Class constructor
 	
-	var $icon : Picture
-	
 	This:C1470.isRefreshing:=False:C215
 	This:C1470.sources:=Null:C1517
 	This:C1470.methodStamp:=0
@@ -26,6 +24,7 @@ Class constructor
 	// List of managed source types
 	This:C1470.paths:=[]
 	
+	var $icon : Picture
 	READ PICTURE FILE:C678(File:C1566("/RESOURCES/Images/objectsIcons/Icon_628.png").platformPath; $icon)
 	This:C1470.paths.push({\
 		type: Path class:K72:19; \
@@ -90,7 +89,6 @@ Function getSources() : cs:C1710.design
 	This:C1470._folders()
 	
 	// Update sources list if any
-	var $i : Integer
 	var $stamp : Real
 	ARRAY TEXT:C222($_txt; 0x0000)
 	
@@ -121,6 +119,7 @@ Function getSources() : cs:C1710.design
 			
 			For each ($table; ds:C1482) While (Not:C34($mustBeUpdated))
 				
+				var $i : Integer
 				$i:=ds:C1482[$table].getInfo().tableNumber
 				FORM GET NAMES:C1167(Table:C252($i)->; $_txt; $stamp; *)
 				$mustBeUpdated:=($stamp#This:C1470.formStamp)
@@ -180,10 +179,10 @@ Function getSources() : cs:C1710.design
 	return This:C1470
 	
 	//-----------------------------------------------------------
-Function edit($designObject : Object; $formMethod : Boolean)
+Function edit($source : cs:C1710._source; $formMethod : Boolean)
 	
-	If ($designObject.type=Path project form:K72:3)\
-		 | ($designObject.type=Path table form:K72:5)
+	If ($source.isProjectForm)\
+		 || ($source.isTableForm)
 		
 		$formMethod:=Count parameters:C259>=2 ? $formMethod : False:C215
 		
@@ -193,84 +192,86 @@ Function edit($designObject : Object; $formMethod : Boolean)
 		
 	End if 
 	
-	var $regex:=cs:C1710.rgx.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
+	var $regex:=cs:C1710.rgx.regex.new($source.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
 	$regex.match()
 	
 	If ($formMethod)
 		
-		// ⚠️ METHOD OPEN PATH could generate an error if form method doesn't exists
-		Case of 
-				
-				//………………………………………………………………………………………………
-			: ($designObject.type=Path table form:K72:5)
-				
-				Try(METHOD OPEN PATH:C1213(METHOD Get path:C1164(Path table form:K72:5; Table:C252($designObject.tableNumber)->; $regex.matches[1].data); *))
-				
-				//………………………………………………………………………………………………
-			: ($designObject.type=Path project form:K72:3)
-				
-				Try(METHOD OPEN PATH:C1213("[projectForm]/"+This:C1470.paths.query("type = :1"; $designObject.type).pop().path+$designObject.name+"/{formMethod}"; *))
-				
-				//………………………………………………………………………………………………
-			Else 
-				
-				Try(METHOD OPEN PATH:C1213(This:C1470.paths.query("type = :1"; $designObject.type).pop().path+$designObject.name; *))
-				
-				//………………………………………………………………………………………………
-		End case 
+		Try  // ⚠️ METHOD OPEN PATH could generate an error if form method doesn't exists
+			
+			Case of 
+					
+					//………………………………………………………………………………………………
+				: ($source.isTableForm)
+					
+					METHOD OPEN PATH:C1213(METHOD Get path:C1164(Path table form:K72:5; Table:C252($source.tableNumber)->; $regex.matches[1].data); *)
+					
+					//………………………………………………………………………………………………
+				: ($source.isProjectForm)
+					
+					METHOD OPEN PATH:C1213("[projectForm]/"+This:C1470.paths.query("type = :1"; $source.type).pop().path+$source.name+"/{formMethod}"; *)
+					
+					//………………………………………………………………………………………………
+				Else 
+					
+					METHOD OPEN PATH:C1213(This:C1470.paths.query("type = :1"; $source.type).pop().path+$source.name; *)
+					
+					//………………………………………………………………………………………………
+			End case 
+		End try
 		
 	Else 
 		
-		If ($designObject.type=Path table form:K72:5)
+		If ($source.isTableForm)
 			
-			FORM EDIT:C1749(Table:C252($designObject.tableNumber)->; $regex.matches[1].data)
+			FORM EDIT:C1749(Table:C252($source.tableNumber)->; $regex.matches[1].data)
 			
 		Else 
 			
-			FORM EDIT:C1749(String:C10($designObject.name))
+			FORM EDIT:C1749(String:C10($source.name))
 			
 		End if 
 	End if 
 	
 	//-----------------------------------------------------------
-Function editDoc($designObject : Object)
+Function editDoc($source : cs:C1710._source)
 	
 	var $file : 4D:C1709.File
-	var $o : Object:=This:C1470.paths.query("type = :1"; $designObject.type).pop()
+	var $o : Object:=This:C1470.paths.query("type = :1"; $source.type).pop()
 	
 	Case of 
 			
 			//______________________________________________________
-		: ($designObject.type<0)
+		: ($source.type<0)
 			
 			// <NOTHING MORE TO DO>
 			
 			//______________________________________________________
-		: ($designObject.type=Path trigger:K72:4)
+		: ($source.isTrigger)
 			
 			// Triggers are referenced by the table number
-			$file:=$o.doc.file("table_"+String:C10($designObject.tableNumber)+".md")
+			$file:=$o.doc.file("table_"+String:C10($source.tableNumber)+".md")
 			
 			//______________________________________________________
-		: ($designObject.type=Path project form:K72:3)
+		: ($source.isProjectForm)
 			
-			$file:=$o.doc.folder($designObject.name).file("form.md")
+			$file:=$o.doc.folder($source.name).file("form.md")
 			
 			//______________________________________________________
-		: ($designObject.type=Path table form:K72:5)
+		: ($source.isTableForm)
 			
-			var $regex:=cs:C1710.rgx.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
+			var $regex:=cs:C1710.rgx.regex.new($source.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
 			
 			If ($regex.match())
 				
-				$file:=$o.doc.folder(String:C10($designObject.tableNumber)).folder($regex.matches[1].data).file("form.md")
+				$file:=$o.doc.folder(String:C10($source.tableNumber)).folder($regex.matches[1].data).file("form.md")
 				
 			End if 
 			
 			//______________________________________________________
 		Else 
 			
-			$file:=$o.doc.file($designObject.name+".md")
+			$file:=$o.doc.file($source.name+".md")
 			
 			//______________________________________________________
 	End case 
@@ -279,7 +280,7 @@ Function editDoc($designObject : Object)
 	If (Not:C34($file.exists))
 		
 		$file.create()
-		$file.setText("# "+$designObject.name+" "+$o.comment+" Documentation\r")
+		$file.setText("# "+$source.name+" "+$o.comment+" Documentation\r")
 		
 	End if 
 	
@@ -290,43 +291,43 @@ Function editDoc($designObject : Object)
 	End if 
 	
 	//-----------------------------------------------------------
-Function showOnDisk($designObject : Object)
+Function showOnDisk($source : cs:C1710._source)
 	
 	var $file : 4D:C1709.File
-	var $o : Object:=This:C1470.paths.query("type = :1"; $designObject.type).pop()
+	var $o : Object:=This:C1470.paths.query("type = :1"; $source.type).pop()
 	
 	Case of 
 			
 			//______________________________________________________
-		: ($designObject.type<0)
+		: ($source.type<0)
 			
 			// <NOTHING MORE TO DO>
 			
 			//______________________________________________________
-		: ($designObject.type=Path trigger:K72:4)
+		: ($source.isTrigger)
 			
-			$file:=$o.sources.file("table_"+String:C10($designObject.tableNumber)+".4dm")
+			$file:=$o.sources.file("table_"+String:C10($source.tableNumber)+".4dm")
 			
 			//______________________________________________________
-		: ($designObject.type=Path table form:K72:5)
+		: ($source.isTableForm)
 			
-			var $regex:=cs:C1710.rgx.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
+			var $regex:=cs:C1710.rgx.regex.new($source.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
 			
 			If ($regex.match())
 				
-				$file:=$o.sources.folder(String:C10($designObject.tableNumber)).folder($regex.matches[1].data).file("form.4dform")
+				$file:=$o.sources.folder(String:C10($source.tableNumber)).folder($regex.matches[1].data).file("form.4dform")
 				
 			End if 
 			
 			//______________________________________________________
-		: ($designObject.type=Path project form:K72:3)
+		: ($source.isProjectForm)
 			
-			$file:=$o.sources.folder($designObject.name).file("form.4dform")
+			$file:=$o.sources.folder($source.name).file("form.4dform")
 			
 			//______________________________________________________
 		Else 
 			
-			$file:=$o.sources.file($designObject.name+".4dm")
+			$file:=$o.sources.file($source.name+".4dm")
 			
 			//______________________________________________________
 	End case 
@@ -339,17 +340,17 @@ Function showOnDisk($designObject : Object)
 	
 	//-----------------------------------------------------------
 	// Create, if necessary, and open the doc file
-Function showDocOnDisk($designObject : Object; $createIfNotExists : Boolean)
+Function showDocOnDisk($source : cs:C1710._source; $createIfNotExists : Boolean)
 	
-	var $file : 4D:C1709.File:=$designObject.doc
+	var $file : 4D:C1709.File:=$source.doc
 	
 	If (Not:C34($file.exists))\
 		 && (Count parameters:C259>=2)\
 		 && ($createIfNotExists)
 		
-		var $o : Object:=This:C1470.paths.query("type = :1"; $designObject.type).pop()
+		var $o : Object:=This:C1470.paths.query("type = :1"; $source.type).pop()
 		$file.create()
-		$file.setText("# "+$designObject.name+" "+String:C10($o.comment)+" Documentation\r")
+		$file.setText("# "+$source.name+" "+String:C10($o.comment)+" Documentation\r")
 		
 	End if 
 	
@@ -361,90 +362,90 @@ Function showDocOnDisk($designObject : Object; $createIfNotExists : Boolean)
 	
 	//-----------------------------------------------------------
 	// Delete a method file or a form folder & documentation if any
-Function delete($designObject : Object)
+Function delete($source : cs:C1710._source)
 	
-	var $o : Object:=This:C1470.paths.query("type = :1"; $designObject.type).pop()
+	var $o : Object:=This:C1470.paths.query("type = :1"; $source.type).pop()
 	
 	Case of 
 			
 			//______________________________________________________
-		: ($designObject.type<0)
+		: ($source.type<0)
 			
 			// <NOTHING MORE TO DO>
 			
 			//______________________________________________________
-		: ($designObject.type=Path trigger:K72:4)
+		: ($source.isTrigger)
 			
-			$o.sources.file("table_"+String:C10($designObject.tableNumber)+".4dm").delete()
+			$o.sources.file("table_"+String:C10($source.tableNumber)+".4dm").delete()
 			
 			//………………………………………………………………………………………………
-		: ($designObject.type=Path table form:K72:5)
+		: ($source.isTableForm)
 			
-			var $regex:=cs:C1710.rgx.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
+			var $regex:=cs:C1710.rgx.regex.new($source.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
 			
 			If ($regex.match())
 				
-				$o.sources.folder(String:C10($designObject.tableNumber)).folder($regex.matches[1].data).delete(Delete with contents:K24:24)
+				$o.sources.folder(String:C10($source.tableNumber)).folder($regex.matches[1].data).delete(Delete with contents:K24:24)
 				
 			End if 
 			
 			//………………………………………………………………………………………………
-		: ($designObject.type=Path project form:K72:3)
+		: ($source.isProjectForm)
 			
-			$o.sources.folder($designObject.name).delete(Delete with contents:K24:24)
+			$o.sources.folder($source.name).delete(Delete with contents:K24:24)
 			
 			//………………………………………………………………………………………………
 		Else 
 			
-			$o.sources.file($designObject.name+".4dm").delete()
+			$o.sources.file($source.name+".4dm").delete()
 			
 			//………………………………………………………………………………………………
 	End case 
 	
 	//delete doc
-	This:C1470.deleteDoc($designObject)
+	This:C1470.deleteDoc($source)
 	
 	RELOAD PROJECT:C1739
 	
 	//-----------------------------------------------------------
 	// Delete a documentation file
-Function deleteDoc($designObject : Object)
+Function deleteDoc($source : cs:C1710._source)
 	
-	var $o : Object:=This:C1470.paths.query("type = :1"; $designObject.type).pop()
+	var $o : Object:=This:C1470.paths.query("type = :1"; $source.type).pop()
 	
 	Case of 
 			
 			//______________________________________________________
-		: ($designObject.type<0)
+		: ($source.type<0)
 			
 			// <NOTHING MORE TO DO>
 			
 			//………………………………………………………………………………………………
-		: ($designObject.type=Path trigger:K72:4)
+		: ($source.isTrigger)
 			
 			// Triggers are referenced by the table number
-			$o.doc.file("table_"+String:C10($designObject.tableNumber)+".md").delete()
+			$o.doc.file("table_"+String:C10($source.tableNumber)+".md").delete()
 			
 			//………………………………………………………………………………………………
-		: ($designObject.type=Path project form:K72:3)
+		: ($source.isProjectForm)
 			
-			$o.doc.folder($designObject.name).delete(Delete with contents:K24:24)
+			$o.doc.folder($source.name).delete(Delete with contents:K24:24)
 			
 			//………………………………………………………………………………………………
-		: ($designObject.type=Path table form:K72:5)
+		: ($source.isTableForm)
 			
-			var $regex:=cs:C1710.rgx.regex.new($designObject.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
+			var $regex:=cs:C1710.rgx.regex.new($source.name; "(?mi-s)^\\[[^\\]]*\\]([^$]*)$")
 			
 			If ($regex.match())
 				
-				$o.doc.folder(String:C10($designObject.tableNumber)).folder($regex.matches[1].data).delete(Delete with contents:K24:24)
+				$o.doc.folder(String:C10($source.tableNumber)).folder($regex.matches[1].data).delete(Delete with contents:K24:24)
 				
 			End if 
 			
 			//………………………………………………………………………………………………
 		Else 
 			
-			$o.doc.file($designObject.name+".md").delete()
+			$o.doc.file($source.name+".md").delete()
 			
 			//………………………………………………………………………………………………
 	End case 
@@ -532,6 +533,8 @@ Function _load($type : Integer)
 	
 	For each ($item; $sourceFiles)
 		
+		var $source:=cs:C1710._source.new()
+		
 		Case of 
 				
 				//………………………………………………………………………………………………
@@ -539,101 +542,107 @@ Function _load($type : Integer)
 				
 				var $tableNumber : Integer:=Num:C11($item.name)
 				
-				If (Is table number valid:C999($tableNumber))
+				If (Not:C34(Is table number valid:C999($tableNumber)))
 					
-					This:C1470.sources.push({\
-						type: Path trigger:K72:4; \
-						tableNumber: $tableNumber; \
-						name: Table name:C256($tableNumber); \
-						desc: This:C1470.desc[Path trigger:K72:4]; \
-						folder: String:C10(This:C1470.folders.tables["Table_"+String:C10($tableNumber)]); \
-						doc: $docFiles.query("name = :1"; "table_"+String:C10($tableNumber)).pop(); \
-						icon: $o.icon; \
-						attributes: Null:C1517})
+					continue
 					
 				End if 
+				
+				$source.type:=$type
+				$source.tableNumber:=$tableNumber
+				$source.name:=Table name:C256($tableNumber)
+				$source.desc:=This:C1470.desc[$type]
+				$source.folder:=String:C10(This:C1470.folders.tables["Table_"+String:C10($tableNumber)])
+				$source.doc:=$docFiles.query("name = :1"; "table_"+String:C10($tableNumber)).first()
+				$source.icon:=$o.icon
+				
+				This:C1470.sources.push($source)
 				
 				//………………………………………………………………………………………………
 			: ($type=Path table form:K72:5)
 				
 				$tableNumber:=Num:C11($item.name)
 				
-				If (Is table number valid:C999($tableNumber))
+				If (Not:C34(Is table number valid:C999($tableNumber)))
 					
-					var $form : Object
-					For each ($form; $item.folders(fk ignore invisible:K87:22))
-						
-						If ($form.file("form.4DForm").exists)
-							
-							This:C1470.sources.push({\
-								type: Path table form:K72:5; \
-								tableNumber: $tableNumber; \
-								name: "["+Table name:C256($tableNumber)+"]"+$form.name; \
-								desc: This:C1470.desc[Path table form:K72:5]; \
-								folder: String:C10(This:C1470.folders.tables["Table_"+String:C10($tableNumber)]); \
-								doc: $o.doc.folder(String:C10($tableNumber)).folder($form.name).file("form.md"); \
-								icon: $o.icon; \
-								attributes: Null:C1517})
-							
-						End if 
-					End for each 
+					continue
+					
 				End if 
+				
+				var $form : Object
+				For each ($form; $item.folders(fk ignore invisible:K87:22))
+					
+					If ($form.file("form.4DForm").exists)
+						
+						$source.type:=$type
+						$source.tableNumber:=$tableNumber
+						$source.name:="["+Table name:C256($tableNumber)+"]"+$form.name
+						$source.desc:=This:C1470.desc[$type]
+						$source.folder:=String:C10(This:C1470.folders.tables["Table_"+String:C10($tableNumber)])
+						$source.doc:=$o.doc.folder(String:C10($tableNumber)).folder($form.name).file("form.md")
+						$source.icon:=$o.icon
+						
+						This:C1470.sources.push($source)
+						
+					End if 
+				End for each 
 				
 				//………………………………………………………………………………………………
 			: ($type=Path project form:K72:3)
 				
-				If ($item.file("form.4DForm").exists)
+				If (Not:C34($item.file("form.4DForm").exists))
 					
-					This:C1470.sources.push({\
-						type: Path project form:K72:3; \
-						name: $item.name; \
-						desc: This:C1470.desc[Path project form:K72:3]; \
-						folder: String:C10(This:C1470.folders.forms[$item.name]); \
-						doc: $o.doc.folder($item.name).file("form.md"); \
-						icon: $o.icon; \
-						attributes: Null:C1517})
+					continue
 					
 				End if 
+				
+				$source.type:=$type
+				$source.name:=$item.name
+				$source.desc:=This:C1470.desc[$type]
+				$source.folder:=String:C10(This:C1470.folders.forms[$item.name])
+				$source.doc:=$o.doc.folder($item.name).file("form.md")
+				$source.icon:=$o.icon
+				
+				This:C1470.sources.push($source)
 				
 				//………………………………………………………………………………………………
 			: ($type=Path class:K72:19)
 				
-				This:C1470.sources.push({\
-					type: $type; \
-					name: $item.name; \
-					desc: This:C1470.desc[$type]; \
-					folder: String:C10(This:C1470.folders.classes[$item.name]); \
-					doc: $docFiles.query("name = :1"; $item.name).pop(); \
-					icon: $o.icon; \
-					attributes: Null:C1517})
+				$source.type:=$type
+				$source.name:=$item.name
+				$source.desc:=This:C1470.desc[$type]
+				$source.folder:=String:C10(This:C1470.folders.forms[$item.name])
+				$source.doc:=$o.doc.folder($item.name).file("form.md")
+				$source.icon:=$o.icon
+				
+				This:C1470.sources.push($source)
 				
 				//………………………………………………………………………………………………
 			: ($type=Path project method:K72:1)
 				
 				var $attributes : Object
-				
 				Try(METHOD GET ATTRIBUTES:C1334($item.name; $attributes; *))
 				
-				This:C1470.sources.push({\
-					type: $type; \
-					name: $item.name; \
-					desc: This:C1470.desc[$type]; \
-					folder: String:C10(This:C1470.folders.methods[$item.name]); \
-					doc: $docFiles.query("name = :1"; $item.name).pop(); \
-					icon: $o.icon; \
-					attributes: $attributes})
+				$source.type:=$type
+				$source.name:=$item.name
+				$source.desc:=This:C1470.desc[$type]
+				$source.folder:=String:C10(This:C1470.folders.methods[$item.name])
+				$source.doc:=$docFiles.query("name = :1"; $item.name).first()
+				$source.icon:=$o.icon
+				$source.attributes:=$attributes
+				
+				This:C1470.sources.push($source)
 				
 				//………………………………………………………………………………………………
 			: ($type=Path database method:K72:2)
 				
-				This:C1470.sources.push({\
-					type: $type; \
-					name: $item.name; \
-					desc: This:C1470.desc[$type]; \
-					folder: ""; \
-					doc: $docFiles.query("name = :1"; $item.name).pop(); \
-					icon: $o.icon; \
-					attributes: Null:C1517})
+				$source.type:=$type
+				$source.name:=$item.name
+				$source.desc:=This:C1470.desc[$type]
+				$source.doc:=$docFiles.query("name = :1"; $item.name).first()
+				$source.icon:=$o.icon
+				
+				This:C1470.sources.push($source)
 				
 				//………………………………………………………………………………………………
 		End case 

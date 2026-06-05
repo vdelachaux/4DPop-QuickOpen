@@ -1,12 +1,4 @@
 {
-	"- #️⃣ API": {
-		"methods": [
-			"quickOpenEventHandler",
-			"quickOpenInit",
-			"quickOpenPushAction"
-		]
-	},
-	"-👥 NAMESPACE": {},
 	"(UI)": {
 		"classes": [
 			"tips"
@@ -17,12 +9,20 @@
 			"00_TEST"
 		]
 	},
-	"♻️ LIBRAIRIES": {
+	"#️⃣ API": {
+		"methods": [
+			"quickOpenEventHandler",
+			"quickOpenInit",
+			"quickOpenPushAction"
+		]
+	},
+	"♻️ LIBRAIRIES": {},
+	"⚙️ MACROS": {},
+	"👥 NAMESPACE": {
 		"classes": [
 			"design"
 		]
 	},
-	"⚙️ MACROS": {},
 	"📦 COMPONENT": {
 		"methods": [
 			"noError",
@@ -39,7 +39,8 @@
 			"QUICK_OPEN"
 		],
 		"classes": [
-			"_quickOpen"
+			"_quickOpen",
+			"_source"
 		]
 	},
 	"🛠️ Tools": {},

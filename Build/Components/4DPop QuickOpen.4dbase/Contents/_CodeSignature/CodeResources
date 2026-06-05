@@ -74,13 +74,13 @@
 		</data>
 		<key>Resources/InfoPlist.strings</key>
 		<data>
-		x+9ukw9WJebBhjejzmszCXS6Iog=
+		Je2ZvleN/+Hc+RGAKG5tF8qDiXc=
 		</data>
 		<key>Resources/en.lproj/quickOpen.xlf</key>
 		<dict>
 			<key>hash</key>
 			<data>
-			7JQvvoPIzJrQDIt/++MtNPPal5k=
+			0eK51U4aaIMkiss5C6xXtad8DmM=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -89,7 +89,7 @@
 		<dict>
 			<key>hash</key>
 			<data>
-			Gvrj3+BLE+/+HUOELSnhbay21XY=
+			kjmLOormfHN6WPBCdsTuoS90Yfo=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -121,7 +121,7 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			ZRVMRcEYfvycRnpYhzsoTRLqebY=
+			abaleWqmsnI9huzYSNzvFMtmluE=
 			</data>
 			<key>requirement</key>
 			<string>identifier "4DPop QuickOpen.4DZ" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = DYRKW64QA9</string>
@@ -200,7 +200,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			+iSD1AbIdGAd2ky6o3w+lVIXNJPceQysqYwUWA8NLIQ=
+			Ciyb2cV029zw+MDLtCtoG84k/rc1ATHrob6ZnwcmloE=
 			</data>
 		</dict>
 		<key>Resources/4DPop.json</key>
@@ -326,14 +326,14 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			IH6B7bxZabEcLsnJ9ijmIoruzmS+NcU4jiTYMau2BY0=
+			cc2z8d/lEErZoR/IlQzWoNAzs9XKcfifQGm9Rd8oC4E=
 			</data>
 		</dict>
 		<key>Resources/en.lproj/quickOpen.xlf</key>
 		<dict>
 			<key>hash2</key>
 			<data>
-			XFCkelg3AidDbG7JCbqxCUtjttxTqAJ9Sg1zfGHuFG4=
+			K4XOW4byGcAcn3Oq05qqJg3sHcwwZ8cfOcvbgBvqQvI=
 			</data>
 			<key>optional</key>
 			<true/>
@@ -342,7 +342,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			Ub4nJZmCs5blBmb516AotpsOAsIX0hIrVuf4fXQvXqw=
+			JM3ib952xy9ljZ+p4BLaL4kvOTFei98TtPllwvkUxkQ=
 			</data>
 			<key>optional</key>
 			<true/>
