@@ -92,20 +92,20 @@ Function getSources() : cs:C1710.design
 	// Update sources list if any
 	var $i : Integer
 	var $stamp : Real
-	ARRAY TEXT:C222($dummy; 0x0000)
+	ARRAY TEXT:C222($_txt; 0x0000)
 	
 	If (This:C1470.methodStamp=0)
 		
 		var $mustBeUpdated:=True:C214
 		
 		// Initialize the timestamp
-		METHOD GET PATHS:C1163(Path database method:K72:2; $dummy; $stamp; *)
+		METHOD GET PATHS:C1163(Path database method:K72:2; $_txt; $stamp; *)
 		This:C1470.methodStamp:=$stamp
 		
 	Else 
 		
 		$stamp:=This:C1470.methodStamp
-		METHOD GET PATHS:C1163(Path all objects:K72:16; $dummy; $stamp; *)
+		METHOD GET PATHS:C1163(Path all objects:K72:16; $_txt; $stamp; *)
 		$mustBeUpdated:=($stamp#This:C1470.methodStamp)
 		
 		If ($mustBeUpdated)
@@ -116,13 +116,13 @@ Function getSources() : cs:C1710.design
 		Else 
 			
 			$stamp:=This:C1470.formStamp
-			FORM GET NAMES:C1167($dummy; $stamp; *)
+			FORM GET NAMES:C1167($_txt; $stamp; *)
 			$mustBeUpdated:=($stamp#This:C1470.formStamp)
 			
 			For each ($table; ds:C1482) While (Not:C34($mustBeUpdated))
 				
 				$i:=ds:C1482[$table].getInfo().tableNumber
-				FORM GET NAMES:C1167(Table:C252($i)->; $dummy; $stamp; *)
+				FORM GET NAMES:C1167(Table:C252($i)->; $_txt; $stamp; *)
 				$mustBeUpdated:=($stamp#This:C1470.formStamp)
 				
 			End for each 
@@ -132,17 +132,17 @@ Function getSources() : cs:C1710.design
 			
 			If (Not:C34($mustBeUpdated))  // #ACI0101530 - the timestamp isn't updated for forms.
 				
-				FORM GET NAMES:C1167($dummy; *)
+				FORM GET NAMES:C1167($_txt; *)
 				var $c:=[]
-				ARRAY TO COLLECTION:C1563($c; $dummy)
+				ARRAY TO COLLECTION:C1563($c; $_txt)
 				
 				var $table : Text
 				For each ($table; ds:C1482)
 					
 					$i:=ds:C1482[$table].getInfo().tableNumber
-					FORM GET NAMES:C1167(Table:C252($i)->; $dummy; *)
+					FORM GET NAMES:C1167(Table:C252($i)->; $_txt; *)
 					var $c1:=[]
-					ARRAY TO COLLECTION:C1563($c1; $dummy)
+					ARRAY TO COLLECTION:C1563($c1; $_txt)
 					$c:=$c.combine($c1)
 					
 				End for each 

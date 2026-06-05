@@ -6,15 +6,15 @@
     <key>NSHumanReadableCopyright</key>
     <string>©vdl 2021-2026</string>
     <key>CFBundleVersion</key>
-    <string>95</string>
+    <string>97</string>
     <key>CFBundleDisplayName</key>
     <string>4DPop QuickOpen</string>
     <key>CFBundleShortVersionString</key>
-    <string>21</string>
+    <string>21.1</string>
     <key>CFBundleGetInfoString</key>
-    <string>21</string>
+    <string>21.1</string>
     <key>CFBundleLongVersionString</key>
-    <string>21 (94)</string>
+    <string>21.1 (96)</string>
     <key>CFBundleName</key>
     <string>4DPop QuickOpen</string>
   </dict>

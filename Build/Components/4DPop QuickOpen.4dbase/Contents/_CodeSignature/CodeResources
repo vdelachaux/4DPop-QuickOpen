@@ -74,7 +74,7 @@
 		</data>
 		<key>Resources/InfoPlist.strings</key>
 		<data>
-		4ygSAwRK4JLcc1r4uYD8HPGJPYc=
+		x+9ukw9WJebBhjejzmszCXS6Iog=
 		</data>
 		<key>Resources/en.lproj/quickOpen.xlf</key>
 		<dict>
@@ -121,7 +121,7 @@
 		<dict>
 			<key>cdhash</key>
 			<data>
-			E8SLjPBfgyUymfeTxPA7cVroJfc=
+			ZRVMRcEYfvycRnpYhzsoTRLqebY=
 			</data>
 			<key>requirement</key>
 			<string>identifier "4DPop QuickOpen.4DZ" and anchor apple generic and certificate 1[field.1.2.840.113635.100.6.2.6] /* exists */ and certificate leaf[field.1.2.840.113635.100.6.1.13] /* exists */ and certificate leaf[subject.OU] = DYRKW64QA9</string>
@@ -200,7 +200,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			/GFAKiD40vmXhwgMmbhVm96MdbtBxX9RM/PaugDS16Y=
+			+iSD1AbIdGAd2ky6o3w+lVIXNJPceQysqYwUWA8NLIQ=
 			</data>
 		</dict>
 		<key>Resources/4DPop.json</key>
@@ -326,7 +326,7 @@
 		<dict>
 			<key>hash2</key>
 			<data>
-			NFDRVSX52OkMrXfi1cP1ScHNLm0J/ZOlnGyfQEM9fxk=
+			IH6B7bxZabEcLsnJ9ijmIoruzmS+NcU4jiTYMau2BY0=
 			</data>
 		</dict>
 		<key>Resources/en.lproj/quickOpen.xlf</key>
