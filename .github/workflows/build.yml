@@ -20,27 +20,52 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
-# Get dependencies
-    - name: Get 4DPop
-      uses: actions/checkout@v4
-      with:
-        repository: vdelachaux/4DPop
-        path: Components/4DPop.4dbase
-    - name: Get SVG with Classes
-      uses: actions/checkout@v4
-      with:
-        repository: vdelachaux/SVG-with-Classes
-        path: Components/SVG with Classes.4dbase
-    - name: Get UI with Classes
-      uses: actions/checkout@v4
-      with:
-        repository: vdelachaux/UI-with-Classes
-        path: Components/UI with Classes.4dbase
-    - name: Get Regex with Classes
-      uses: actions/checkout@v4
-      with:
-        repository: vdelachaux/Regex-with-Classes
-        path: Components/Regex with Classes.4dbase
+    - name: Get dependencies from BUILD zip (macOS)
+      if: runner.os == 'macOS'
+      shell: bash
+      run: |
+        set -euo pipefail
+        mkdir -p Components
+
+        curl -fL "https://github.com/vdelachaux/4DPop/raw/main/Build/4DPop.zip" -o "4DPop.zip"
+        curl -fL "https://github.com/vdelachaux/SVG-with-Classes/raw/master/BUILD/SVG-with-Classes.zip" -o "SVG-with-Classes.zip"
+        curl -fL "https://github.com/vdelachaux/UI-with-Classes/raw/main/BUILD/UI-with-Classes.zip" -o "UI-with-Classes.zip"
+        curl -fL "https://github.com/vdelachaux/Regex-with-Classes/raw/main/BUILD/Regex-with-Classes.zip" -o "Regex-with-Classes.zip"
+
+        rm -rf "Components/4DPop.4dbase" "Components/SVG with Classes.4dbase" "Components/UI with Classes.4dbase" "Components/Regex-with-Classes.4dbase"
+
+        mkdir -p "Components/4DPop.4dbase"
+        unzip -o "4DPop.zip" -d "Components/4DPop.4dbase"
+        unzip -o "SVG-with-Classes.zip" -d Components
+        unzip -o "UI-with-Classes.zip" -d Components
+        unzip -o "Regex-with-Classes.zip" -d Components
+
+        rm -rf "Components/__MACOSX"
+        rm -f *.zip
+
+    - name: Get dependencies from BUILD zip (Windows)
+      if: runner.os == 'Windows'
+      shell: pwsh
+      run: |
+        New-Item -ItemType Directory -Path Components -Force | Out-Null
+
+        Invoke-WebRequest -Uri "https://github.com/vdelachaux/4DPop/raw/main/Build/4DPop.zip" -OutFile "4DPop.zip"
+        Invoke-WebRequest -Uri "https://github.com/vdelachaux/SVG-with-Classes/raw/master/BUILD/SVG-with-Classes.zip" -OutFile "SVG-with-Classes.zip"
+        Invoke-WebRequest -Uri "https://github.com/vdelachaux/UI-with-Classes/raw/main/BUILD/UI-with-Classes.zip" -OutFile "UI-with-Classes.zip"
+        Invoke-WebRequest -Uri "https://github.com/vdelachaux/Regex-with-Classes/raw/main/BUILD/Regex-with-Classes.zip" -OutFile "Regex-with-Classes.zip"
+
+        Remove-Item -Recurse -Force "Components/4DPop.4dbase" -ErrorAction SilentlyContinue
+        Remove-Item -Recurse -Force "Components/SVG with Classes.4dbase" -ErrorAction SilentlyContinue
+        Remove-Item -Recurse -Force "Components/UI with Classes.4dbase" -ErrorAction SilentlyContinue
+        Remove-Item -Recurse -Force "Components/Regex-with-Classes.4dbase" -ErrorAction SilentlyContinue
+
+        New-Item -ItemType Directory -Path "Components/4DPop.4dbase" -Force | Out-Null
+        Expand-Archive -Path "4DPop.zip" -DestinationPath "Components/4DPop.4dbase" -Force
+        Expand-Archive -Path "SVG-with-Classes.zip" -DestinationPath "Components" -Force
+        Expand-Archive -Path "UI-with-Classes.zip" -DestinationPath "Components" -Force
+        Expand-Archive -Path "Regex-with-Classes.zip" -DestinationPath "Components" -Force
+
+        Remove-Item -Path "*.zip" -Force -ErrorAction SilentlyContinue
     - name: Build
       uses: 4d/build4d-action@main
       with:
