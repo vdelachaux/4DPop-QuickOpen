@@ -28,7 +28,7 @@ jobs:
         mkdir -p Components
 
         curl -fL "https://github.com/vdelachaux/4DPop/raw/main/Build/4DPop.zip" -o "4DPop.zip"
-        curl -fL "https://github.com/vdelachaux/SVG-with-Classes/raw/master/BUILD/SVG-with-Classes.zip" -o "SVG-with-Classes.zip"
+        curl -fL "https://github.com/vdelachaux/SVG-with-Classes/raw/main/BUILD/SVG-with-Classes.zip" -o "SVG-with-Classes.zip"
         curl -fL "https://github.com/vdelachaux/UI-with-Classes/raw/main/BUILD/UI-with-Classes.zip" -o "UI-with-Classes.zip"
         curl -fL "https://github.com/vdelachaux/Regex-with-Classes/raw/main/BUILD/Regex-with-Classes.zip" -o "Regex-with-Classes.zip"
 
@@ -50,7 +50,7 @@ jobs:
         New-Item -ItemType Directory -Path Components -Force | Out-Null
 
         Invoke-WebRequest -Uri "https://github.com/vdelachaux/4DPop/raw/main/Build/4DPop.zip" -OutFile "4DPop.zip"
-        Invoke-WebRequest -Uri "https://github.com/vdelachaux/SVG-with-Classes/raw/master/BUILD/SVG-with-Classes.zip" -OutFile "SVG-with-Classes.zip"
+        Invoke-WebRequest -Uri "https://github.com/vdelachaux/SVG-with-Classes/raw/main/BUILD/SVG-with-Classes.zip" -OutFile "SVG-with-Classes.zip"
         Invoke-WebRequest -Uri "https://github.com/vdelachaux/UI-with-Classes/raw/main/BUILD/UI-with-Classes.zip" -OutFile "UI-with-Classes.zip"
         Invoke-WebRequest -Uri "https://github.com/vdelachaux/Regex-with-Classes/raw/main/BUILD/Regex-with-Classes.zip" -OutFile "Regex-with-Classes.zip"
 
