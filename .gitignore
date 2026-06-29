@@ -1,6 +1,8 @@
 # Ignore invisible files/folders except .gitignore
 .*
 !.gitignore
+!.github/
+!.github/**
 
 #--------------------------------
 # Ignore data file
@@ -46,6 +48,7 @@ backupHistory.json
 *symbols.txt
 ehthumbs.db
 Thumbs.db
+.DS_Store
 
 Resources/php.ini
 
