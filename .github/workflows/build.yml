@@ -71,5 +71,5 @@ jobs:
       with:
         product-line: vcs
         version: vcs
-        build: official
+        build: latest
         token: ${{ secrets.DLTK }}
