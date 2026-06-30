@@ -20,52 +20,69 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v6
-    - name: Get dependencies from BUILD zip (macOS)
+
+    - name: Load dependencies from dependencies.json (macOS)
       if: runner.os == 'macOS'
       shell: bash
       run: |
         set -euo pipefail
+        deps_file="Project/Sources/dependencies.json"
+        if [ ! -f "$deps_file" ]; then
+          exit 0
+        fi
         mkdir -p Components
-
-        curl -fL "https://github.com/vdelachaux/4DPop/raw/main/BUILD/4DPop.zip" -o "4DPop.zip"
-        curl -fL "https://github.com/vdelachaux/SVG-with-Classes/raw/main/BUILD/SVG-with-Classes.zip" -o "SVG-with-Classes.zip"
-        curl -fL "https://github.com/vdelachaux/UI-with-Classes/raw/main/BUILD/UI-with-Classes.zip" -o "UI-with-Classes.zip"
-        curl -fL "https://github.com/vdelachaux/Regex-with-Classes/raw/main/BUILD/Regex-with-Classes.zip" -o "Regex-with-Classes.zip"
-
-        rm -rf "Components/4DPop.4dbase" "Components/SVG with Classes.4dbase" "Components/UI with Classes.4dbase" "Components/Regex-with-Classes.4dbase"
-
-        mkdir -p "Components/4DPop.4dbase"
-        unzip -o "4DPop.zip" -d "Components/4DPop.4dbase"
-        unzip -o "SVG-with-Classes.zip" -d Components
-        unzip -o "UI-with-Classes.zip" -d Components
-        unzip -o "Regex-with-Classes.zip" -d Components
-
+        jq -r '.dependencies // {} | to_entries[] | [.key, .value.github] | @tsv' "$deps_file" | while IFS=$'\t' read -r dep_name github; do
+          if [ -z "$github" ]; then
+            continue
+          fi
+          repo="${github##*/}"
+          zip="${repo}.zip"
+          curl -fL "https://github.com/${github}/raw/main/BUILD/${zip}" -o "${zip}"
+          if [ "$dep_name" = "4DPop" ]; then
+            rm -rf "Components/4DPop.4dbase"
+            mkdir -p "Components/4DPop.4dbase"
+            unzip -o "${zip}" -d "Components/4DPop.4dbase"
+          else
+            rm -rf "Components/${dep_name}.4dbase"
+            unzip -o "${zip}" -d Components
+          fi
+          rm -f "${zip}"
+        done
         rm -rf "Components/__MACOSX"
-        rm -f *.zip
 
-    - name: Get dependencies from BUILD zip (Windows)
+    - name: Load dependencies from dependencies.json (Windows)
       if: runner.os == 'Windows'
       shell: pwsh
       run: |
+        $depsFile = "Project/Sources/dependencies.json"
+        if (!(Test-Path $depsFile)) {
+          exit 0
+        }
         New-Item -ItemType Directory -Path Components -Force | Out-Null
-
-        Invoke-WebRequest -Uri "https://github.com/vdelachaux/4DPop/raw/main/BUILD/4DPop.zip" -OutFile "4DPop.zip"
-        Invoke-WebRequest -Uri "https://github.com/vdelachaux/SVG-with-Classes/raw/main/BUILD/SVG-with-Classes.zip" -OutFile "SVG-with-Classes.zip"
-        Invoke-WebRequest -Uri "https://github.com/vdelachaux/UI-with-Classes/raw/main/BUILD/UI-with-Classes.zip" -OutFile "UI-with-Classes.zip"
-        Invoke-WebRequest -Uri "https://github.com/vdelachaux/Regex-with-Classes/raw/main/BUILD/Regex-with-Classes.zip" -OutFile "Regex-with-Classes.zip"
-
-        Remove-Item -Recurse -Force "Components/4DPop.4dbase" -ErrorAction SilentlyContinue
-        Remove-Item -Recurse -Force "Components/SVG with Classes.4dbase" -ErrorAction SilentlyContinue
-        Remove-Item -Recurse -Force "Components/UI with Classes.4dbase" -ErrorAction SilentlyContinue
-        Remove-Item -Recurse -Force "Components/Regex-with-Classes.4dbase" -ErrorAction SilentlyContinue
-
-        New-Item -ItemType Directory -Path "Components/4DPop.4dbase" -Force | Out-Null
-        Expand-Archive -Path "4DPop.zip" -DestinationPath "Components/4DPop.4dbase" -Force
-        Expand-Archive -Path "SVG-with-Classes.zip" -DestinationPath "Components" -Force
-        Expand-Archive -Path "UI-with-Classes.zip" -DestinationPath "Components" -Force
-        Expand-Archive -Path "Regex-with-Classes.zip" -DestinationPath "Components" -Force
-
-        Remove-Item -Path "*.zip" -Force -ErrorAction SilentlyContinue
+        $depsObj = Get-Content $depsFile -Raw | ConvertFrom-Json
+        if ($null -eq $depsObj.dependencies) {
+          exit 0
+        }
+        foreach ($dep in $depsObj.dependencies.PSObject.Properties) {
+          $depName = $dep.Name
+          $github = $dep.Value.github
+          if ([string]::IsNullOrWhiteSpace($github)) {
+            continue
+          }
+          $repo = $github.Split("/")[-1]
+          $zip = "$repo.zip"
+          $url = "https://github.com/$github/raw/main/BUILD/$zip"
+          Invoke-WebRequest -Uri $url -OutFile $zip
+          if ($depName -eq "4DPop") {
+            Remove-Item -Recurse -Force "Components/4DPop.4dbase" -ErrorAction SilentlyContinue
+            New-Item -ItemType Directory -Path "Components/4DPop.4dbase" -Force | Out-Null
+            Expand-Archive -Path $zip -DestinationPath "Components/4DPop.4dbase" -Force
+          } else {
+            Remove-Item -Recurse -Force "Components/$depName.4dbase" -ErrorAction SilentlyContinue
+            Expand-Archive -Path $zip -DestinationPath "Components" -Force
+          }
+          Remove-Item -Path $zip -Force -ErrorAction SilentlyContinue
+        }
     - name: Build
       uses: 4d/build4d-action@main
       with:
